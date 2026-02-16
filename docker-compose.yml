@@ -1,0 +1,24 @@
+services:
+  toursandtravel_sa:
+    container_name: toursandtravel_sa
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        VITE_BASE_API: ${VITE_BASE_API}
+        # VITE_APP_MAPBOX_ACCESS_TOKEN: ${VITE_APP_MAPBOX_ACCESS_TOKEN}
+        # VITE_APP_GOOGLE_SIGNIN_CLIENT_ID: ${VITE_APP_GOOGLE_SIGNIN_CLIENT_ID}
+        # VITE_LINKEDIN_CLIENT_ID: ${VITE_LINKEDIN_CLIENT_ID}
+        # GENERATE_SOURCEMAP: ${GENERATE_SOURCEMAP}
+        
+    ports:
+      - "8001:80"
+    env_file:
+      - .env
+    networks: 
+      - toursandtravel_network
+    restart: always
+
+networks:
+  toursandtravel_network:
+    external: true

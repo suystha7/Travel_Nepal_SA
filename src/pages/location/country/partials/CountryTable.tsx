@@ -1,0 +1,103 @@
+import Table from '@/components/Table';
+import React from 'react';
+import LoadingScreen from '@/components/LoadingScreen';
+import ErrorMessage from '@/components/ErrorMessage';
+import { PlusCircle } from 'lucide-react';
+import Modal from '@/components/Modal';
+import type { ICountryListItem } from '../interface/ICountry';
+import { useGetCountry } from '../hooks/useGetCountry';
+import { useDeleteCountry } from '../hooks/useDeleteCountry';
+import CreateCountryModal from '../modal/CreateCountryModal';
+import UpdateCountryModal from '../modal/UpdateCountryModal';
+import { getColumns } from './CountryColumns';
+import CountryFilterList from './CountryFilterList';
+import DeleteModal from '@/components/DeleteModal';
+
+const CountryTable: React.FC = () => {
+  const {
+    countryData,
+    isLoading,
+    isSuccess,
+    createModal,
+    updateId,
+    updateModal,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
+    rowSelection,
+    setRowSelection,
+    search,
+    setSearch,
+  } = useGetCountry();
+
+  const {
+    deleteModal,
+    deleteIdState,
+    handleDelete,
+    isLoading: isDeleteLoading,
+  } = useDeleteCountry();
+
+  const columns = getColumns({
+    countryData,
+    updateId,
+    updateModal,
+    deleteIdState,
+    deleteModal,
+  });
+
+  return (
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-md overflow-hidden">
+      <div className="flex items-center justify-between h-12 gap-4">
+        <CountryFilterList setSearch={setSearch} search={search} />
+        <button
+          onClick={createModal.open}
+          className="flex items-center gap-2 px-4 py-3 border border-primary-500 rounded-md cursor-pointer"
+        >
+          <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
+          <PlusCircle className="w-5 h-5 text-primary-500" />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-hidden">
+        {isSuccess ? (
+          <Table<ICountryListItem>
+            columns={columns}
+            data={countryData?.data?.records || []}
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
+            totalPage={countryData?.data?.totalPages}
+            pages={{
+              page: countryData?.data?.currentPage || page,
+              pageSize: countryData?.data?.perPage || pageSize,
+              setPage,
+              setPageSize,
+            }}
+            totalItem={countryData?.data?.totalRecords}
+            maxHeight="400px"
+          />
+        ) : isLoading ? (
+          <LoadingScreen />
+        ) : (
+          <ErrorMessage />
+        )}
+      </div>
+
+      <DeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.close}
+        onDelete={handleDelete}
+        isLoading={isDeleteLoading}
+      />
+
+      <Modal isOpen={createModal.isOpen} name="Create Country" onOpenChange={createModal.toggle}>
+        <CreateCountryModal closeModal={createModal.close} />
+      </Modal>
+      <Modal isOpen={updateModal.isOpen} name="Update Country" onOpenChange={updateModal.toggle}>
+        <UpdateCountryModal updateId={updateId.values} closeModal={updateModal.close} />
+      </Modal>
+    </div>
+  );
+};
+
+export default CountryTable;
