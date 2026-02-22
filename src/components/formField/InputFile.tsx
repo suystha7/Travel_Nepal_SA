@@ -13,6 +13,21 @@ interface InputFileProps {
   multiple?: boolean;
 }
 
+const getUrl = (file: any) => {
+  if (!file) return null;
+  if (typeof file === 'string') return file;
+  if (file?.image) return file.image;
+  if (file instanceof File) return URL.createObjectURL(file);
+  return null;
+};
+
+const isVideoFile = (file: any) => {
+  const url = typeof file === 'string' ? file : file?.image;
+  if (url && /\.(mp4|webm|ogg)$/i.test(url)) return true;
+  if (file instanceof File && file.type.startsWith('video/')) return true;
+  return false;
+};
+
 const InputFileWithPreview: React.FC<InputFileProps> = ({
   label,
   styles,
@@ -40,117 +55,79 @@ const InputFileWithPreview: React.FC<InputFileProps> = ({
       const updatedFiles = [...existingFiles, ...fileArray];
       setFieldValue(name, updatedFiles);
 
+      const newUrls = fileArray.map(file => URL.createObjectURL(file));
       const existingPreviews = Array.isArray(previewField.value) ? previewField.value : [];
-      const newObjectUrls = fileArray.map((file) => URL.createObjectURL(file));
-      previewHelpers.setValue([...existingPreviews, ...newObjectUrls]);
+      previewHelpers.setValue([...existingPreviews, ...newUrls]);
     } else {
-      if (previewField.value) {
-        if (Array.isArray(previewField.value)) {
-          previewField.value.forEach((url: string) => {
-            if (url.startsWith('blob:')) URL.revokeObjectURL(url);
-          });
-        } else if (typeof previewField.value === 'string' && previewField.value.startsWith('blob:')) {
-          URL.revokeObjectURL(previewField.value);
-        }
-      }
+      const file = fileArray[0];
+      const url = URL.createObjectURL(file);
 
-      setFieldValue(name, fileArray[0]);
-      previewHelpers.setValue(URL.createObjectURL(fileArray[0]));
+      setFieldValue(name, file);
+      previewHelpers.setValue(url);
     }
 
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
+    if (inputRef.current) inputRef.current.value = '';
   };
 
   const removePreview = (index: number) => {
     if (multiple) {
-      const updatedFiles = [...(field.value || [])];
-      const updatedPreviews = [...(previewField.value || [])];
+      const files = [...(field.value || [])];
+      const previews = [...(previewField.value || [])];
 
-      if (updatedPreviews[index]?.startsWith('blob:')) {
-        URL.revokeObjectURL(updatedPreviews[index]);
-      }
+      const url = previews[index];
+      if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
 
-      updatedFiles.splice(index, 1);
-      updatedPreviews.splice(index, 1);
+      files.splice(index, 1);
+      previews.splice(index, 1);
 
-      setFieldValue(name, updatedFiles);
-      previewHelpers.setValue(updatedPreviews);
+      setFieldValue(name, files);
+      previewHelpers.setValue(previews);
     } else {
-      if (previewField.value?.startsWith('blob:')) {
-        URL.revokeObjectURL(previewField.value);
-      }
+      const url = previewField.value;
+      if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
+
       setFieldValue(name, null);
       previewHelpers.setValue(null);
     }
   };
 
+  // Auto-generate preview from API data
   useEffect(() => {
-    if (field.value && !previewField.value) {
-      if (Array.isArray(field.value)) {
-        const objectUrls = field.value.map((file: File | string) =>
-          typeof file === 'string' ? file : URL.createObjectURL(file)
-        );
-        previewHelpers.setValue(objectUrls);
-      } else {
-        const url = typeof field.value === 'string' ? field.value : URL.createObjectURL(field.value);
-        previewHelpers.setValue(url);
-      }
+    if (!field.value) return;
+    if (previewField.value) return;
+
+    const values = Array.isArray(field.value) ? field.value : [field.value];
+
+    const urls = values.map(item => getUrl(item)).filter(Boolean);
+
+    if (multiple) {
+      previewHelpers.setValue(urls);
+    } else {
+      previewHelpers.setValue(urls[0]);
     }
-  }, [field.value, previewField.value, previewHelpers]);
+  }, [field.value]);
 
   useEffect(() => {
     return () => {
-      if (previewField.value) {
-        const previews = Array.isArray(previewField.value) ? previewField.value : [previewField.value];
-        previews.forEach((url: string) => {
-          if (typeof url === 'string' && url.startsWith('blob:')) {
-            URL.revokeObjectURL(url);
-          }
-        });
-      }
+      const previews = Array.isArray(previewField.value)
+        ? previewField.value
+        : [previewField.value];
+
+      previews?.forEach((url: string) => {
+        if (url?.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
     };
   }, []);
 
-  const renderPreview = () => {
-    if (!previewField.value) return null;
+  const previews = Array.isArray(previewField.value)
+    ? previewField.value
+    : previewField.value
+      ? [previewField.value]
+      : [];
 
-    const previews = Array.isArray(previewField.value) ? previewField.value : [previewField.value];
-    const files = Array.isArray(field.value) ? field.value : [field.value];
-
-    return (
-      <div className="mt-2 flex flex-wrap gap-4">
-        {previews.map((url, idx) => {
-          const fileSource = files[idx];
-          const isVideo =
-            (typeof fileSource === 'string' && /\.(mp4|webm|ogg)$/i.test(fileSource)) ||
-            (fileSource instanceof File && fileSource.type.startsWith('video/'));
-
-          return (
-            <div key={`${url}-${idx}`} className="relative">
-              {isVideo ? (
-                <video src={url} className="border rounded-md w-64 h-40 object-cover" />
-              ) : (
-                <img
-                  src={url}
-                  alt={`Preview ${idx + 1}`}
-                  className="border rounded-md w-32 h-32 object-cover"
-                />
-              )}
-              <button
-                type="button"
-                onClick={() => removePreview(idx)}
-                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  const files = Array.isArray(field.value) ? field.value : field.value ? [field.value] : [];
 
   return (
     <div>
@@ -159,6 +136,7 @@ const InputFileWithPreview: React.FC<InputFileProps> = ({
           <span className="text-gray-900 font-medium text-sm">{label}</span>
           {required && <span className="text-red-500">*</span>}
         </label>
+
         <input
           ref={inputRef}
           id={name}
@@ -166,10 +144,45 @@ const InputFileWithPreview: React.FC<InputFileProps> = ({
           accept={accept}
           multiple={multiple}
           onChange={handleChange}
-          className={`p-2 file:px-4 file:py-0.5 file:text-gray-600 file:font-sans file:border-none file:bg-gray-100 border bg-white rounded-md ${inputstyles}`}
+          className={`p-2 border bg-white rounded-md file:px-4 file:py-1 file:bg-gray-100 file:border-none ${inputstyles}`}
         />
-        {renderPreview()}
+
+        {previews.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-4">
+            {previews.map((url, idx) => {
+              const file = files[idx];
+              const isVideo = isVideoFile(file);
+
+              return (
+                <div key={`${url}-${idx}`} className="relative">
+                  {isVideo ? (
+                    <video
+                      src={url}
+                      className="border rounded-md w-64 h-40 object-cover"
+                      controls
+                    />
+                  ) : (
+                    <img
+                      src={url}
+                      alt="preview"
+                      className="border rounded-md w-32 h-32 object-cover"
+                    />
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => removePreview(idx)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
+
       {meta.touched && meta.error && <p className="mt-2 text-red-500 text-sm">{meta.error}</p>}
     </div>
   );

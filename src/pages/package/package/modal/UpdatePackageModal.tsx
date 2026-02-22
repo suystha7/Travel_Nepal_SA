@@ -39,8 +39,6 @@ const UpdatePackageModal: React.FC<IProps> = ({ closeModal, updateId }) => {
         onStepChange={nextStep => setStep(nextStep)}
         steps={[
           {
-            id: 'overview',
-            title: 'Basic Info',
             content: (
               <Overview
                 countryOptions={countryOptions}
@@ -49,27 +47,16 @@ const UpdatePackageModal: React.FC<IProps> = ({ closeModal, updateId }) => {
                 packageTypeOptions={packageTypeOptions}
               />
             ),
+            id: 'overview',
+            title: 'Basic Info',
           },
+          { content: <Itinerary />, id: 'itinerary', title: 'Itinerary' },
           {
-            id: 'highlights',
-            title: 'Highlights/Notices',
-            content: <HighlightsNotice />,
-          },
-          {
+            content: <InclusionExclusion />,
             id: 'inclusionExclusion',
             title: 'Inclusion/Exclusion',
-            content: <InclusionExclusion />,
           },
-          {
-            id: 'itinerary',
-            title: 'Itinerary',
-            content: <Itinerary />,
-          },
-          // {
-          //   id: 'attributes',
-          //   title: 'Attributes',
-          //   content: <Attributes />,
-          // },
+          { content: <HighlightsNotice />, id: 'highlights', title: 'Highlights/Notices' },
           {
             content: (
               <Review

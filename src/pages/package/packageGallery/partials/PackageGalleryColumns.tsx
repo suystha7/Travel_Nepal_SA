@@ -24,7 +24,7 @@ export const getColumns = ({
     cell: ({ row }) => row.index + (packageGalleryData?.data?.pagingCounter ?? 0),
   },
   {
-    header: 'Image',
+    header: 'Main Image',
     size: 100,
     cell: ({ row }) => (
       <img
@@ -34,12 +34,9 @@ export const getColumns = ({
       />
     ),
   },
+
   {
-    header: 'Type',
-    accessorKey: 'type',
-  },
-  {
-    header: 'Name',
+    header: 'Package Name',
     cell: ({ row }) => {
       return row.original.package?.name || row.original.itinerary?.title || '-';
     },

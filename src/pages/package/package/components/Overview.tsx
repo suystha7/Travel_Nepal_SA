@@ -53,26 +53,26 @@ const Overview: React.FC<OverviewProps> = ({
           options={packageCategoryOptions}
           placeholder="Select package category"
         />
-        <InputSelectMulti
-          name="availability_month"
-          label="Choose Availability Months"
-          placeholder="Select months"
-          options={[
-            { label: 'January', value: 'jan' },
-            { label: 'February', value: 'feb' },
-            { label: 'March', value: 'mar' },
-            { label: 'April', value: 'apr' },
-            { label: 'May', value: 'may' },
-            { label: 'June', value: 'jun' },
-            { label: 'July', value: 'jul' },
-            { label: 'August', value: 'aug' },
-            { label: 'September', value: 'sep' },
-            { label: 'October', value: 'oct' },
-            { label: 'November', value: 'nov' },
-            { label: 'December', value: 'dec' },
-          ]}
-          required
-        />
+          {/* <InputSelectMulti
+            name="availability_month"
+            label="Choose Availability Months"
+            placeholder="Select months"
+            options={[
+              { label: 'January', value: 'jan' },
+              { label: 'February', value: 'feb' },
+              { label: 'March', value: 'mar' },
+              { label: 'April', value: 'apr' },
+              { label: 'May', value: 'may' },
+              { label: 'June', value: 'jun' },
+              { label: 'July', value: 'jul' },
+              { label: 'August', value: 'aug' },
+              { label: 'September', value: 'sep' },
+              { label: 'October', value: 'oct' },
+              { label: 'November', value: 'nov' },
+              { label: 'December', value: 'dec' },
+            ]}
+            required
+          /> */}
 
         <InputText required label="Title" name="name" placeholder="Enter title..." />
         <InputFileWithPreview label="Thumbnail Image" name="image" accept="image/*" required />
@@ -123,7 +123,7 @@ const Overview: React.FC<OverviewProps> = ({
           name="current_price"
           placeholder="Enter current price..."
         />
-        <div className="flex gap-5 mt-12">
+        <div className="flex gap-5 mt-2">
           <InputSwitch name="is_top_tour" label="Is Top Tours ?" />
           <InputSwitch name="is_top_deals" label="Is Top Deals ?" />
         </div>

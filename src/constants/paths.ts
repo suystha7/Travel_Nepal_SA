@@ -36,6 +36,8 @@ export const PATH = {
     stats: '/about/stats',
     whoWeAre: '/about/who-we-are',
     team: '/about/team',
+    missionVision: "/about/mission-vision",
+    whyUs: "/about/why-us"
   },
   reservation: '/reservation',
   settings: {

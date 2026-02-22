@@ -50,6 +50,20 @@ export const Endpoints = {
       details: '/who-we-are/id',
       delete: '/who-we-are/id',
     },
+    missionVision: {
+      list: '/mission-vision',
+      create: '/mission-vision',
+      update: '/mission-vision',
+      details: '/mission-vision/id',
+      delete: '/mission-vision/id',
+    },
+    whyUs: {
+      list: '/why-us',
+      create: '/why-us',
+      update: '/why-us/id',
+      details: '/why-us/id',
+      delete: '/why-us/id',
+    },
     team: {
       list: '/team',
       create: '/team',

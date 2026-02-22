@@ -35,9 +35,8 @@ export const useLogin = () => {
       try {
         const res = (await login({
           url: Endpoints.auth.login,
-          data: values,
+          data: values, 
         })) as ApiResponse;
-
         if (res?.error?.data?.errors) {
           handleErrors(res, formik.setErrors);
         }

@@ -16,7 +16,7 @@ interface FormValues {
   image: string;
 }
 
-const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions, itineraryOptions }) => {
+const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions }) => {
   const { values, setFieldValue } = useFormikContext<FormValues>();
   const selectedType = values.type;
 
@@ -33,17 +33,6 @@ const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions, itiner
   return (
     <div className="flex flex-col gap-3">
       <div className="grid grid-cols-1 gap-x-6 gap-y-2 bg-white container-shadow rounded-md px-2">
-        <ReactSelect
-          required
-          label="Type"
-          name="type"
-          options={[
-            { label: 'Package', value: 'Package' },
-            { label: 'Itinerary', value: 'Itinerary' },
-          ]}
-          placeholder="Select type"
-        />
-
         {selectedType === 'Package' && (
           <>
             <ReactSelect
@@ -54,21 +43,7 @@ const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions, itiner
               placeholder="Select package"
             />
 
-            <InputFileWithPreview label="Images" name="image" required />
-          </>
-        )}
-
-        {selectedType === 'Itinerary' && (
-          <>
-            <ReactSelect
-              required
-              label="Itinerary Name"
-              name="itinerary_id"
-              options={itineraryOptions}
-              placeholder="Select itinerary"
-            />
-
-            <InputFileWithPreview label="Images" name="image" required />
+            <InputFileWithPreview label="Images" name="image" required multiple />
           </>
         )}
       </div>

@@ -3,14 +3,17 @@ import { useFormikContext, FieldArray } from 'formik';
 import { ChevronDown, ChevronUp, X, Plus } from 'lucide-react';
 import InputText from '@/components/formField/InputText';
 import TextEditor from '@/components/TextEditor';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Entry {
+  id?: string;
   title: string;
   description: string;
 }
 
 interface ItineraryItem {
-  day: string;
+  id?: string;
+  day: string | number;
   title: string;
   description: string;
   activities: Entry[];
@@ -24,15 +27,20 @@ interface FormValues {
 
 const SECTION_KEYS = ['activities', 'accommodations', 'meals'] as const;
 
-const createEmptyEntry = (): Entry => ({ title: '', description: '' });
-
-const createEmptyDay = (): ItineraryItem => ({
-  day: '',
+const createEmptyEntry = (): Entry => ({
+  id: uuidv4(),
   title: '',
   description: '',
-  activities: [createEmptyEntry()],
-  accommodations: [createEmptyEntry()],
-  meals: [createEmptyEntry()],
+});
+
+const createEmptyDay = (index: number): ItineraryItem => ({
+  id: uuidv4(),
+  day: index + 1,
+  title: '',
+  description: '',
+  activities: [],
+  accommodations: [],
+  meals: [],
 });
 
 const Itinerary = () => {
@@ -40,19 +48,15 @@ const Itinerary = () => {
   const [openDays, setOpenDays] = useState<Record<number, boolean>>({ 0: true });
   const [openNested, setOpenNested] = useState<Record<string, boolean>>({});
 
+  const itinerary = values?.itinerary || [];
+
   const toggleDay = (index: number) => {
-    setOpenDays(prev => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+    setOpenDays(prev => ({ ...prev, [index]: !prev[index] }));
   };
 
   const toggleNested = (dayIdx: number, section: string, entryIdx: number) => {
     const key = `${dayIdx}-${section}-${entryIdx}`;
-    setOpenNested(prev => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setOpenNested(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -60,20 +64,23 @@ const Itinerary = () => {
       <FieldArray name="itinerary">
         {({ push, remove }) => (
           <>
-            {values.itinerary?.map((dayItem, dayIdx) => (
-              <div key={dayIdx} className="border rounded-lg bg-white overflow-hidden">
+            {itinerary.map((dayItem, dayIdx) => (
+              <div
+                key={dayItem.id || dayIdx}
+                className="border rounded-lg bg-white overflow-hidden shadow-sm"
+              >
                 <div
-                  className="flex justify-between items-center p-4 bg-gray-50 border-b cursor-pointer select-none"
+                  className="flex justify-between items-center p-4 bg-gray-50 border-b cursor-pointer"
                   onClick={() => toggleDay(dayIdx)}
                 >
                   <span className="font-bold text-lg text-gray-800">
-                    Day {dayItem.day || dayIdx + 1}: {dayItem.title || ''}
+                    Day {dayItem?.day}: {dayItem?.title || 'Untitled Day'}
                   </span>
                   <div className="flex items-center gap-4">
                     {openDays[dayIdx] ? <ChevronUp /> : <ChevronDown />}
-                    {values.itinerary.length > 1 && (
+                    {itinerary.length > 1 && (
                       <X
-                        className="text-red-500 hover:scale-110 transition-transform cursor-pointer"
+                        className="text-red-500 hover:scale-110 cursor-pointer"
                         onClick={e => {
                           e.stopPropagation();
                           remove(dayIdx);
@@ -84,108 +91,85 @@ const Itinerary = () => {
                 </div>
 
                 {openDays[dayIdx] && (
-                  <div className="p-6 space-y-8 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <div className="p-4 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <InputText
-                        label="Day"
-                        name={`itinerary.${dayIdx}.day`}
-                        placeholder="1"
-                      />
-                      <InputText
-                        label="Title"
-                        required
-                        name={`itinerary.${dayIdx}.title`}
-                        placeholder="Arrival & Check-in"
-                      />
+                      <InputText label="Day Number" name={`itinerary.${dayIdx}.day`} />
+                      <InputText label="Day Title" name={`itinerary.${dayIdx}.title`} />
                     </div>
-
+                  
                     <div className="grid grid-cols-1 gap-8">
-                      {SECTION_KEYS.map(section => (
-                        <div key={section} className="space-y-4">
-                          <div className="flex items-center justify-between border-b pb-1">
-                            <h4 className="text-sm font-bold uppercase tracking-widest text-primary-600">
+                      {SECTION_KEYS.map(section => {
+                        const entries = dayItem?.[section] || [];
+                        return (
+                          <div key={section} className="space-y-4">
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-primary-600 border-b pb-1">
                               {section}
                             </h4>
-                          </div>
 
-                          <FieldArray name={`itinerary.${dayIdx}.${section}`}>
-                            {({ push: pushNested, remove: removeNested }) => (
-                              <div className="space-y-3">
-                                {dayItem[section]?.map((entry, entryIdx) => {
-                                  const nestedKey = `${dayIdx}-${section}-${entryIdx}`;
-                                  const isNestedOpen = !!openNested[nestedKey];
-
-                                  return (
-                                    <div
-                                      key={entryIdx}
-                                      className="border rounded-md bg-white overflow-hidden shadow-sm"
-                                    >
-                                      <div
-                                        className="flex justify-between items-center p-3 bg-gray-50/50 cursor-pointer hover:bg-gray-100 transition-colors"
-                                        onClick={() => toggleNested(dayIdx, section, entryIdx)}
-                                      >
-                                        <span className="text-sm font-medium text-gray-700">
-                                          {entry.title || `Edit ${section.slice(0, -1)}...`}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                          {isNestedOpen ? (
-                                            <ChevronUp size={16} />
-                                          ) : (
-                                            <ChevronDown size={16} />
-                                          )}
-                                          {dayItem[section].length > 1 && (
+                            <FieldArray name={`itinerary.${dayIdx}.${section}`}>
+                              {({ push: pushNested, remove: removeNested }) => (
+                                <div className="space-y-3">
+                                  {entries.map((entry, entryIdx) => {
+                                    const nestedKey = `${dayIdx}-${section}-${entryIdx}`;
+                                    return (
+                                      <div key={entry.id || entryIdx} className="border rounded-md">
+                                        <div
+                                          className="flex justify-between p-3 bg-gray-50/50 cursor-pointer"
+                                          onClick={() => toggleNested(dayIdx, section, entryIdx)}
+                                        >
+                                          <span className="text-sm font-medium">
+                                            {entry?.title || `New ${section}...`}
+                                          </span>
+                                          <div className="flex gap-2">
+                                            {openNested[nestedKey] ? (
+                                              <ChevronUp size={16} />
+                                            ) : (
+                                              <ChevronDown size={16} />
+                                            )}
                                             <X
                                               size={16}
-                                              className="text-red-400 hover:text-red-600 cursor-pointer"
+                                              className="text-red-400"
                                               onClick={e => {
                                                 e.stopPropagation();
                                                 removeNested(entryIdx);
                                               }}
                                             />
-                                          )}
+                                          </div>
                                         </div>
+
+                                        {openNested[nestedKey] && (
+                                          <div className="p-4 border-t space-y-4">
+                                            <InputText
+                                              label="Title"
+                                              name={`itinerary.${dayIdx}.${section}.${entryIdx}.title`}
+                                            />
+                                            <TextEditor
+                                              label="Description"
+                                              name={`itinerary.${dayIdx}.${section}.${entryIdx}.description`}
+                                            />
+                                          </div>
+                                        )}
                                       </div>
-
-                                      {isNestedOpen && (
-                                        <div className="p-4 border-t space-y-4 bg-white animate-in zoom-in-95 duration-150">
-                                          <InputText
-                                            label="Item Title"
-                                            name={`itinerary.${dayIdx}.${section}.${entryIdx}.title`}
-                                            placeholder="e.g. Breakfast at Hotel"
-                                          />
-                                          <TextEditor
-                                            label="Details"
-                                            name={`itinerary.${dayIdx}.${section}.${entryIdx}.description`}
-                                          />
-                                        </div>
-                                      )}
-                                    </div>
-                                  );
-                                })}
-
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    pushNested(createEmptyEntry());
-                                    setOpenNested(prev => ({
-                                      ...prev,
-                                      [`${dayIdx}-${section}-${dayItem[section].length}`]: true,
-                                    }));
-                                  }}
-                                  className="flex items-center gap-1 text-sm font-bold cursor-pointer text-primary-500 hover:text-primary-700 transition-colors"
-                                >
-                                  <Plus size={14} /> Add {section}
-                                </button>
-                              </div>
-                            )}
-                          </FieldArray>
-                        </div>
-                      ))}
+                                    );
+                                  })}
+                                  <button
+                                    type="button"
+                                    onClick={() => pushNested(createEmptyEntry())}
+                                    className="text-sm font-bold text-primary-500 flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <Plus size={14} /> Add {section}
+                                  </button>
+                                </div>
+                              )}
+                            </FieldArray>
+                          </div>
+                        );
+                      })}
                     </div>
 
-                    <div className="pt-4 border-t">
+                    <div>
                       <TextEditor
-                        label="Description"
+                        label="Overall Day Description"
                         name={`itinerary.${dayIdx}.description`}
                       />
                     </div>
@@ -196,11 +180,8 @@ const Itinerary = () => {
 
             <button
               type="button"
-              onClick={() => {
-                push(createEmptyDay());
-                setOpenDays(prev => ({ ...prev, [values.itinerary?.length || 0]: true }));
-              }}
-              className="flex items-center justify-center gap-2 w-full p-4 border-2 border-dashed cursor-pointer border-gray-300 rounded-lg text-gray-400 hover:border-primary-500 hover:text-primary-500 transition-all font-bold hover:bg-primary-50/20"
+              onClick={() => push(createEmptyDay(itinerary.length))}
+              className="w-full p-4 border-2 border-dashed rounded-lg text-gray-400 hover:text-primary  -500 hover:border-primary -500 font-bold flex justify-center items-center gap-2"
             >
               <Plus /> Add Itinerary Day
             </button>

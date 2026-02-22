@@ -49,14 +49,13 @@ const CreatePackageModal: React.FC<IProps> = ({ closeModal }) => {
             id: 'overview',
             title: 'Basic Info',
           },
-          { content: <HighlightsNotice />, id: 'highlights', title: 'Highlights/Notices' },
+          { content: <Itinerary />, id: 'itinerary', title: 'Itinerary' },
           {
             content: <InclusionExclusion />,
             id: 'inclusionExclusion',
             title: 'Inclusion/Exclusion',
           },
-          { content: <Itinerary />, id: 'itinerary', title: 'Itinerary' },
-          // { content: <Attributes />, id: 'attributes', title: 'Attributes' },
+          { content: <HighlightsNotice />, id: 'highlights', title: 'Highlights/Notices' },
           {
             content: (
               <Review

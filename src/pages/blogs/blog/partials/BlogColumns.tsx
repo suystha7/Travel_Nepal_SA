@@ -54,7 +54,7 @@ export const getColumns = ({
     {
       header: 'Author',
       cell: ({ row }) => {
-        return <span>{row.original.author.name}</span>;
+        return <span>{row.original?.author?.name}</span>;
       },
     },
     {

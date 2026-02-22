@@ -37,6 +37,12 @@ export const apiTags = {
     whoWeAre: {
       list: 'get_all_who_we_are',
     },
+    missionVision: {
+      list: 'get_all_mission_vision',
+    },
+    whyUs: {
+      list: 'get_all_why_us',
+    },
   },
   booking: {
     list: 'get_all_booking',

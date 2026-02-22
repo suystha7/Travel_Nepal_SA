@@ -15,6 +15,7 @@ interface IProps {
 }
 
 interface ISimpleListItem {
+  id?: string;
   title?: string;
   description?: string;
 }
@@ -24,71 +25,58 @@ interface IRecordItem {
   name: string;
 }
 
+interface ICity {
+  id: string;
+  name: string;
+}
+
+interface IItineraryItem {
+  id: string;
+  day: number | string;
+  title: string;
+  description: string;
+  accommodations?: ISimpleListItem[];
+  meals?: ISimpleListItem[];
+  activities?: ISimpleListItem[];
+}
+
 const mapSimpleList = (list: ISimpleListItem[] | undefined | null) =>
   Array.isArray(list)
     ? list.map(item => ({
+        id: item?.id || undefined,
         title: item?.title || '',
         description: item?.description || '',
       }))
     : [];
 
-export const monthNameMap: Record<string, string> = {
-  jan: 'January',
-  feb: 'February',
-  mar: 'March',
-  apr: 'April',
-  may: 'May',
-  jun: 'June',
-  jul: 'July',
-  aug: 'August',
-  sep: 'September',
-  oct: 'October',
-  nov: 'November',
-  dec: 'December',
-};
-
 export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
   const [updatePackage, mutationState] = useUpdateDataMutation();
   const { data: packageData, isLoading: isPackageLoading } = useGetPackageDetails({ id: updateId });
 
-  /* ---------------- Initial Values ---------------- */
   const initialValues = useMemo(
     () => ({
       package_type_id: packageData?.data?.package_type?.id || '',
       category_id: packageData?.data?.category?.id || '',
       country_id: packageData?.data?.country?.id || '',
-      city_id: packageData?.data?.city?.map(c => c.id) || [],
-
+      city_id: packageData?.data?.city?.map((c: ICity) => c.id) || [],
       name: packageData?.data?.name || '',
       description: packageData?.data?.description || '',
       destination: packageData?.data?.destination || '',
       duration: Number(packageData?.data?.duration) || 0,
-
       start_point: packageData?.data?.start_point || '',
       end_point: packageData?.data?.end_point || '',
       group_size: packageData?.data?.group_size || '',
       max_altitude: packageData?.data?.max_altitude || '',
-
       previous_price: packageData?.data?.previous_price || '',
       current_price: packageData?.data?.current_price || '',
-
       start_date: packageData?.data?.start_date || '',
       end_date: packageData?.data?.end_date || '',
-
       cancellation_policy: packageData?.data?.cancellation_policy || '',
       payment_policy: packageData?.data?.payment_policy || '',
       terms_conditions: packageData?.data?.terms_conditions || '',
-
       is_top_tour: Boolean(packageData?.data?.is_top_tour),
       is_top_deals: Boolean(packageData?.data?.is_top_deals),
-
       image: packageData?.data?.image || undefined,
-
-      availability_month:
-        packageData?.data?.availability_month?.map(
-          (m: string | { month?: string; name?: string }) =>
-            typeof m === 'string' ? m : m?.month || m?.name || ''
-        ) || [],
 
       inclusions: mapSimpleList(packageData?.data?.inclusions),
       exclusions: mapSimpleList(packageData?.data?.exclusions),
@@ -96,32 +84,28 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
       highlights: mapSimpleList(packageData?.data?.highlights),
 
       itinerary:
-        packageData?.data?.itinerary?.map(item => ({
+        packageData?.data?.itinerary?.map((item: IItineraryItem) => ({
+          id: item.id,
           day: Number(item.day),
-          title: item.title,
+          title: item.title || '',
           description: item.description || '',
+          accommodations: mapSimpleList(item.accommodations),
+          meals: mapSimpleList(item.meals),
+          activities: mapSimpleList(item.activities),
         })) || [],
-
-      meals: mapSimpleList(packageData?.data?.meals),
-      activities: mapSimpleList(packageData?.data?.activities),
-      accommodations: mapSimpleList(packageData?.data?.accommodations),
     }),
     [packageData]
   );
 
-  /* ---------------- Formik ---------------- */
   const formik = useFormik<PackageValidationSchemaType>({
     initialValues,
     validationSchema: PackageValidationSchema,
     enableReinitialize: true,
-
     onSubmit: async values => {
-      // console.log('Submitting form with values:', values);
       try {
         const formData = new FormData();
 
-        /* Basic fields */
-        const fields = {
+        const fields: Record<string, string> = {
           country_id: values.country_id,
           package_type_id: values.package_type_id,
           category_id: values.category_id,
@@ -148,26 +132,12 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
           formData.append(key, value);
         });
 
-        /* Arrays */
-        formData.append('city_ids', JSON.stringify(values.city_id));
-        const availabilityPayload = Array.isArray(values.availability_month)
-          ? values.availability_month.map(m => ({
-              month: m,
-              name: monthNameMap[m as string] || (m as string),
-            }))
-          : [];
-
-        formData.append('availability_month', JSON.stringify(availabilityPayload));
         formData.append('highlights', JSON.stringify(values.highlights));
         formData.append('notices', JSON.stringify(values.notices));
         formData.append('inclusions', JSON.stringify(values.inclusions));
         formData.append('exclusions', JSON.stringify(values.exclusions));
         formData.append('itinerary', JSON.stringify(values.itinerary));
-        formData.append('meals', JSON.stringify(values.meals));
-        formData.append('activities', JSON.stringify(values.activities));
-        formData.append('accommodations', JSON.stringify(values.accommodations));
 
-        /* Image: only append when user selected a new File (not existing URL) */
         if (values.image && typeof values.image !== 'string') {
           formData.append('image', values.image as File);
         }
@@ -181,7 +151,7 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
         showSuccessMessage(response.message || 'Package updated successfully');
         closeModal();
       } catch (error: unknown) {
-        handleErrors(error as import('@/api/api.error').ApiResponse, formik.setErrors);
+        handleErrors(error, formik.setErrors);
         showErrorMessage(
           (error as { data?: { message?: string } })?.data?.message ||
             'Something went wrong while updating the package.'
@@ -189,8 +159,6 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
       }
     },
   });
-
-  /* ---------------- Dropdown Data ---------------- */
 
   const { data: countryResponse } = useGetDataQuery({
     url: Endpoints.location.country.list,

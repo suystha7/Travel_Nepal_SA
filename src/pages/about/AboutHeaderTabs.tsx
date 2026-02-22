@@ -1,6 +1,7 @@
 import { PATH } from '@/constants/paths';
-import { ChartLine, Info, Users2 } from 'lucide-react';
+import { ChartLine, Info, Target, Users2 } from 'lucide-react';
 import { IoPeople } from 'react-icons/io5';
+import { MdQuestionMark } from 'react-icons/md';
 
 export const aboutHeaderItem = [
   {
@@ -16,6 +17,20 @@ export const aboutHeaderItem = [
     label: 'Stats',
     active: false,
     link: PATH.about.stats,
+  },
+  {
+    id: 'missionVision',
+    icon: Target,
+    label: 'Mission/Vision',
+    active: false,
+    link: PATH.about.missionVision, 
+  },
+  {
+    id: 'whyUs',
+    icon: MdQuestionMark,
+    label: 'Why Us',
+    active: false,
+    link: PATH.about.whyUs,
   },
   {
     id: 'whoWeAre',

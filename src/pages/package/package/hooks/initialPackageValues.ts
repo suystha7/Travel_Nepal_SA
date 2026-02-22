@@ -23,13 +23,18 @@ export const initialPackageValues: PackageValidationSchemaType = {
   is_top_tour: false,
   is_top_deals: false,
   image: undefined,
-  availability_month: [],
   inclusions: [{ title: '', description: '' }],
   exclusions: [{ title: '', description: '' }],
   notices: [{ title: '', description: '' }],
   highlights: [{ title: '', description: '' }],
-  itinerary: [{ day: 0, title: '', description: '' }],
-  meals: [{ title: '', description: '' }],
-  accommodations: [{ title: '', description: '' }],
-  activities: [{ title: '', description: '' }],
+  itinerary: [
+    {
+      day: 1,
+      title: '',
+      description: '',
+      accommodations: [],
+      meals: [],
+      activities: [],
+    },
+  ],
 };

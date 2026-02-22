@@ -22,7 +22,6 @@ export const mapPackagePayload = (values: PackageValidationSchemaType) => ({
   terms_conditions: values.terms_conditions,
   is_top_tour: values.is_top_tour,
   is_top_deals: values.is_top_deals,
-  availability: values.availability_month,
 
   inclusions: values.inclusions.map(i => ({
     title: i.title,
@@ -44,24 +43,28 @@ export const mapPackagePayload = (values: PackageValidationSchemaType) => ({
     description: h.description,
   })),
 
-  itinerary: values.itinerary.map(it => ({
-    day: Number(it.day),
-    title: it.title,
-    description: it.description,
-  })),
-
-  meals: values.meals.map(m => ({
-    title: m.title,
-    description: m.description,
-  })),
-
-  accommodations: values.accommodations.map(a => ({
-    title: a.title,
-    description: a.description,
-  })),
-
-  activities: values.activities.map(act => ({
-    title: act.title,
-    description: act.description,
-  })),
+  itinerary:
+    values?.itinerary?.map(it => ({
+      day: Number(it.day),
+      title: it.title,
+      description: it.description,
+      accommodations:
+        it.accommodations?.map(item => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        })) || [],
+      meals:
+        it.meals?.map(item => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        })) || [],
+      activities:
+        it.activities?.map(item => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        })) || [],
+    })) || [], 
 });
