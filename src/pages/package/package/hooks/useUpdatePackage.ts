@@ -151,7 +151,7 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
         showSuccessMessage(response.message || 'Package updated successfully');
         closeModal();
       } catch (error: unknown) {
-        handleErrors(error, formik.setErrors);
+        handleErrors(error as any, formik.setErrors);
         showErrorMessage(
           (error as { data?: { message?: string } })?.data?.message ||
             'Something went wrong while updating the package.'
