@@ -1,15 +1,15 @@
+'use client';
+
 import { useUpdatePutDataMutation } from '@/api/api';
 import { useFormik } from 'formik';
 import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
-import type { ApiResponse } from '@/api/api.error';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import handleErrors from '@/api/api.error';
-import { PackageGallerySchema, type packageGalleryFormField } from '../schema/PackageGallerySchema';
+import { PackageGallerySchema } from '../schema/PackageGallerySchema';
 import { useGetPackageGalleryDetails } from './useGetPackageGalleryDetails';
 import { useGetPackage } from '../../package/hooks/useGetPackage';
 import { useMemo } from 'react';
-import type { IOption } from '@/types/common';
 
 interface IProps {
   closeModal: () => void;
@@ -22,16 +22,16 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
 
   const { data, isLoading: isGetDetailsLoading } = useGetPackageGalleryDetails({ id: updateId });
 
-  const initialValues: packageGalleryFormField = {
-    type: data?.data?.type || '',
-    image: data?.data?.image || '',
+  const initialValues = {
+    images: data?.data?.image?.url
+      ? [{ id: String(data?.data?.image?.id || ''), url: data?.data?.image?.url }]
+      : [],
     package_id: data?.data?.package?.id || '',
-    itinerary_id: data?.data?.itinerary?.id || '',
   };
 
-  const { packageData, packageItineraryData } = useGetPackage();
+  const { packageData } = useGetPackage();
 
-  const packageOptions: IOption[] = useMemo(() => {
+  const packageOptions = useMemo(() => {
     return (
       packageData?.data?.records?.map(item => ({
         label: item?.name,
@@ -40,49 +40,46 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     );
   }, [packageData]);
 
-  const itineraryOptions: IOption[] = useMemo(() => {
-    return (
-      packageItineraryData?.data?.records?.flatMap(
-        record =>
-          record?.itinerary?.map(it => ({
-            label: it.title,
-            value: it.id,
-          })) || []
-      ) || []
-    );
-  }, [packageItineraryData]);
-
-  const formik = useFormik<packageGalleryFormField>({
+  const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
 
-      formData.append('type', values.type);
-
-      if (values.type === 'Package' && values.package_id) {
+      if (values.package_id) {
         formData.append('package_id', values.package_id);
-      } else if (values.type === 'Itinerary' && values.itinerary_id) {
-        formData.append('itinerary_id', values.itinerary_id);
       }
 
-      if (values?.image && values?.image instanceof File) {
-        formData.append('image', values.image);
+      if (Array.isArray(values.images)) {
+        values.images.forEach(img => {
+          if (img instanceof File) {
+            formData.append('images[]', img);
+          } else if (img && typeof img === 'object' && img.id) {
+            formData.append('existing_images[]', JSON.stringify(img));
+          }
+        });
       }
-      const response = (await updatePackageGallery({
+
+      const response = await updatePackageGallery({
         url: Endpoints.packages.packageGallery.update.replace('id', updateId),
         data: formData,
         invalidateTag: [apiTags.packages.packageGallery.list],
-      })) as ApiResponse;
+      });
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
         formik.resetForm();
         closeModal();
       }
-      if (response?.error?.data?.message) showErrorMessage(response.error.data.message);
-      if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);
+
+      if (response?.error?.data?.message) {
+        showErrorMessage(response.error.data.message);
+      }
+
+      if (response?.error?.data?.errors) {
+        handleErrors(response, formik.setErrors);
+      }
     },
   });
 
@@ -93,6 +90,5 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     isSuccess,
     isGetDetailsLoading,
     packageOptions,
-    itineraryOptions,
   };
 };

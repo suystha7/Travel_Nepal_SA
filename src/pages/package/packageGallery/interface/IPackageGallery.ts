@@ -4,11 +4,8 @@ import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiRe
 export interface IPackageGalleryListItem {
   id: string;
   type: string;
-  image: string;
+  image: {id: string; url: string};
   package: { id: string; name: string };
-  itinerary: { id: string; title: string };
-  package_id: string;
-  itinerary_id: string;
   created_at: string;
   updated_at: string;
 }

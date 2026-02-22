@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const CreatePackageGalleryModal: React.FC<IProps> = ({ closeModal }) => {
-  const { formik, isLoading, packageOptions, itineraryOptions } = useCreatePackageGallery({
+  const { formik, isLoading, packageOptions } = useCreatePackageGallery({
     closeModal,
   });
 
@@ -17,7 +17,7 @@ const CreatePackageGalleryModal: React.FC<IProps> = ({ closeModal }) => {
     <FormikProvider value={formik}>
       <form>
         <div className="max-h-[80vh] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <PackageForm packageOptions={packageOptions} itineraryOptions={itineraryOptions} />
+          <PackageForm packageOptions={packageOptions} />
           <div className="my-4 flex items-center justify-end col-span-2 px-2">
             <button
               disabled={isLoading}
