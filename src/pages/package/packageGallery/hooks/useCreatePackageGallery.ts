@@ -1,5 +1,3 @@
-'use client';
-
 import { usePostDataMutation } from '@/api/api';
 import type { ApiResponse } from '@/api/api.error';
 import handleErrors from '@/api/api.error';
@@ -11,6 +9,7 @@ import { PackageGallerySchema, type packageGalleryFormField } from '../schema/Pa
 import { useGetPackage } from '../../package/hooks/useGetPackage';
 import type { IOption } from '@/types/common';
 import { useMemo } from 'react';
+// import { useGetPackageItinerary } from '../../packageItinerary/hooks/useGetPackageItinerary';
 
 interface IProps {
   closeModal: () => void;
@@ -20,11 +19,11 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
   const [createPackageGallery, { isError, isLoading, isSuccess }] = usePostDataMutation();
 
   const initialValues: packageGalleryFormField = {
-    images: [],
+    images: '',
     package_id: '',
   };
 
-  const { packageData } = useGetPackage();
+  const { packageData, packageItineraryData } = useGetPackage();
 
   const packageOptions: IOption[] = useMemo(() => {
     return (
@@ -35,26 +34,31 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
     );
   }, [packageData]);
 
+  const itineraryOptions: IOption[] = useMemo(() => {
+    return (
+      packageItineraryData?.data?.records?.flatMap(
+        record =>
+          record?.itinerary?.map(it => ({
+            label: it.title,
+            value: it.id,
+          })) || []
+      ) || []
+    );
+  }, [packageItineraryData]);
+
+  console.log('first', packageItineraryData);
+
   const formik = useFormik({
     initialValues,
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
 
-      if (values.package_id) {
-        formData.append('package_id', values.package_id);
-      }
+      formData.append('package_id', values.package_id || '');
 
-      if (Array.isArray(values.images)) {
-        values.images.forEach((img) => {
-          if (img instanceof File) {
-            formData.append('images[]', img);
-          } else if (img && typeof img === 'object' && img.id) {
-            formData.append('existing_images[]', JSON.stringify(img));
-          }
-        });
+      if (values?.images && values?.images instanceof File) {
+        formData.append('images', values.images);
       }
-
       const response = (await createPackageGallery({
         url: Endpoints?.packages.packageGallery.list,
         data: formData,
@@ -66,16 +70,10 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
         formik.resetForm();
         closeModal();
       }
-
-      if (response?.error?.data?.message) {
-        showErrorMessage(response.error.data.message);
-      }
-
-      if (response?.error?.data?.errors) {
-        handleErrors(response, formik.setErrors);
-      }
+      if (response?.error?.data?.message) showErrorMessage(response.error.data.message);
+      if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);
     },
   });
 
-  return { formik, isError, isLoading, isSuccess, packageOptions };
+  return { formik, isError, isLoading, isSuccess, packageOptions, itineraryOptions };
 };

@@ -1,15 +1,15 @@
-'use client';
-
 import { useUpdatePutDataMutation } from '@/api/api';
 import { useFormik } from 'formik';
 import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
+import type { ApiResponse } from '@/api/api.error';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import handleErrors from '@/api/api.error';
-import { PackageGallerySchema } from '../schema/PackageGallerySchema';
+import { PackageGallerySchema, type packageGalleryFormField } from '../schema/PackageGallerySchema';
 import { useGetPackageGalleryDetails } from './useGetPackageGalleryDetails';
 import { useGetPackage } from '../../package/hooks/useGetPackage';
 import { useMemo } from 'react';
+import type { IOption } from '@/types/common';
 
 interface IProps {
   closeModal: () => void;
@@ -22,16 +22,14 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
 
   const { data, isLoading: isGetDetailsLoading } = useGetPackageGalleryDetails({ id: updateId });
 
-  const initialValues = {
-    images: data?.data?.image?.url
-      ? [{ id: String(data?.data?.image?.id || ''), url: data?.data?.image?.url }]
-      : [],
+  const initialValues: packageGalleryFormField = {
+    images: data?.data?.images || '',
     package_id: data?.data?.package?.id || '',
   };
 
-  const { packageData } = useGetPackage();
+  const { packageData, packageItineraryData } = useGetPackage();
 
-  const packageOptions = useMemo(() => {
+  const packageOptions: IOption[] = useMemo(() => {
     return (
       packageData?.data?.records?.map(item => ({
         label: item?.name,
@@ -40,46 +38,43 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     );
   }, [packageData]);
 
-  const formik = useFormik({
+  const itineraryOptions: IOption[] = useMemo(() => {
+    return (
+      packageItineraryData?.data?.records?.flatMap(
+        record =>
+          record?.itinerary?.map(it => ({
+            label: it.title,
+            value: it.id,
+          })) || []
+      ) || []
+    );
+  }, [packageItineraryData]);
+
+  const formik = useFormik<packageGalleryFormField>({
     initialValues,
     enableReinitialize: true,
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
 
-      if (values.package_id) {
-        formData.append('package_id', values.package_id);
-      }
+      formData.append('package_id', values.package_id || '');
 
-      if (Array.isArray(values.images)) {
-        values.images.forEach(img => {
-          if (img instanceof File) {
-            formData.append('images[]', img);
-          } else if (img && typeof img === 'object' && img.id) {
-            formData.append('existing_images[]', JSON.stringify(img));
-          }
-        });
+      if (values?.images && values?.images instanceof File) {
+        formData.append('images', values.images);
       }
-
-      const response = await updatePackageGallery({
+      const response = (await updatePackageGallery({
         url: Endpoints.packages.packageGallery.update.replace('id', updateId),
         data: formData,
         invalidateTag: [apiTags.packages.packageGallery.list],
-      });
+      })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
         formik.resetForm();
         closeModal();
       }
-
-      if (response?.error?.data?.message) {
-        showErrorMessage(response.error.data.message);
-      }
-
-      if (response?.error?.data?.errors) {
-        handleErrors(response, formik.setErrors);
-      }
+      if (response?.error?.data?.message) showErrorMessage(response.error.data.message);
+      if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);
     },
   });
 
@@ -90,5 +85,6 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     isSuccess,
     isGetDetailsLoading,
     packageOptions,
+    itineraryOptions,
   };
 };
