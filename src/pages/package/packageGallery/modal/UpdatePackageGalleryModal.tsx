@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const UpdatePackageGalleryModal: React.FC<IProps> = ({ closeModal, updateId }) => {
-  const { formik, isLoading, packageOptions, itineraryOptions } = useUpdatePackageGallery({
+  const { formik, isLoading, packageOptions } = useUpdatePackageGallery({
     closeModal,
     updateId,
   });
@@ -19,7 +19,7 @@ const UpdatePackageGalleryModal: React.FC<IProps> = ({ closeModal, updateId }) =
     <FormikProvider value={formik}>
       <form>
         <div className="max-h-[80vh] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <PackageForm packageOptions={packageOptions} itineraryOptions={itineraryOptions} />
+          <PackageForm packageOptions={packageOptions} />
           <div className="my-4 flex items-center justify-end col-span-2 px-2">
             <button
               disabled={isLoading}

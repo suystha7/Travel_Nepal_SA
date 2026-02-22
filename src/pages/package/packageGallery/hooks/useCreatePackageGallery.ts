@@ -23,7 +23,7 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
     package_id: '',
   };
 
-  const { packageData, packageItineraryData } = useGetPackage();
+  const { packageData } = useGetPackage();
 
   const packageOptions: IOption[] = useMemo(() => {
     return (
@@ -33,20 +33,6 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
       })) || []
     );
   }, [packageData]);
-
-  const itineraryOptions: IOption[] = useMemo(() => {
-    return (
-      packageItineraryData?.data?.records?.flatMap(
-        record =>
-          record?.itinerary?.map(it => ({
-            label: it.title,
-            value: it.id,
-          })) || []
-      ) || []
-    );
-  }, [packageItineraryData]);
-
-  console.log('first', packageItineraryData);
 
   const formik = useFormik({
     initialValues,
@@ -75,5 +61,5 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
     },
   });
 
-  return { formik, isError, isLoading, isSuccess, packageOptions, itineraryOptions };
+  return { formik, isError, isLoading, isSuccess, packageOptions };
 };

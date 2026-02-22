@@ -27,7 +27,7 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     package_id: data?.data?.package?.id || '',
   };
 
-  const { packageData, packageItineraryData } = useGetPackage();
+  const { packageData } = useGetPackage();
 
   const packageOptions: IOption[] = useMemo(() => {
     return (
@@ -37,18 +37,6 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
       })) || []
     );
   }, [packageData]);
-
-  const itineraryOptions: IOption[] = useMemo(() => {
-    return (
-      packageItineraryData?.data?.records?.flatMap(
-        record =>
-          record?.itinerary?.map(it => ({
-            label: it.title,
-            value: it.id,
-          })) || []
-      ) || []
-    );
-  }, [packageItineraryData]);
 
   const formik = useFormik<packageGalleryFormField>({
     initialValues,
@@ -85,6 +73,5 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     isSuccess,
     isGetDetailsLoading,
     packageOptions,
-    itineraryOptions,
   };
 };
