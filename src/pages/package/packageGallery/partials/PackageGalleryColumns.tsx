@@ -24,22 +24,22 @@ export const getColumns = ({
     cell: ({ row }) => row.index + (packageGalleryData?.data?.pagingCounter ?? 0),
   },
   {
+    header: 'Package Name',
+    size: 100,
+    cell: ({ row }) => (
+      <span>{row.original.package?.name || '-'}</span>
+    ),
+  },
+  {
     header: 'Main Image',
     size: 100,
     cell: ({ row }) => (
       <img
-        src={row.original.image}
-        alt={row.original.type || 'Package image'}
+        src={row.original.images?.url || ''}
+        alt={row.original.id || 'Package image'}
         className="w-16 h-16 object-cover rounded-md"
       />
     ),
-  },
-
-  {
-    header: 'Package Name',
-    cell: ({ row }) => {
-      return row.original.package?.name || row.original.itinerary?.title || '-';
-    },
   },
   {
     header: 'Action',
