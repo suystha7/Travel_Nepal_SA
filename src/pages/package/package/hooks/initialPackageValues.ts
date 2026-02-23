@@ -22,7 +22,6 @@ export const initialPackageValues: PackageValidationSchemaType = {
   terms_conditions: '',
   is_top_tour: false,
   is_top_deals: false,
-  image: undefined,
   inclusions: [{ title: '', description: '' }],
   exclusions: [{ title: '', description: '' }],
   notices: [{ title: '', description: '' }],
