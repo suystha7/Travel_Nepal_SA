@@ -7,7 +7,7 @@ import type { IUserListItem } from '../interface/IUser';
 import Modal from '@/components/Modal';
 import CreateUserModal from '../modal/CreateUserModal';
 import UpdateUserModal from '../modal/UpdateUserModal';
-import { getColumns } from './UserColumns';
+import { getColumns, getFilteredSortedUsers } from './UserColumns';
 import { useDeleteUser } from '../hooks/useDeleteUser';
 import DeleteModal from '@/components/DeleteModal';
 import UserFilterList from './UserFilterList';
@@ -60,18 +60,6 @@ const UserTable: React.FC = () => {
     currentUserId: profileData?.data?.id,
   });
 
-  const sortedUsers: IUserListItem[] = userData?.data?.records
-    ? [...userData.data.records].sort((a, b) => {
-        if (a.is_superuser && !b.is_superuser) return -1;
-        if (!a.is_superuser && b.is_superuser) return 1;
-
-        if (a.is_admin && !b.is_admin) return -1;
-        if (!a.is_admin && b.is_admin) return 1;
-
-        return 0;
-      })
-    : [];
-
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
       <div className="flex justify-between items-center h-12 gap-4">
@@ -87,12 +75,12 @@ const UserTable: React.FC = () => {
           </button>
         )}
       </div>
-
+        
       <div className="flex-1 overflow-hidden">
         {isGetUserSuccess ? (
           <Table<IUserListItem>
+            data={getFilteredSortedUsers(userData?.data?.records?.filter(u => u.role !== 'user'))}
             columns={columns}
-            data={sortedUsers}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
             totalPage={userData?.data?.totalPages}
@@ -103,7 +91,7 @@ const UserTable: React.FC = () => {
               setPageSize,
             }}
             totalItem={userData?.data?.totalRecords}
-            maxHeight="500px"
+            maxHeight="450px"
           />
         ) : isGetUserLoading ? (
           <LoadingScreen />

@@ -33,7 +33,7 @@ export const useUpdatePolicy = ({ closeModal, updateId }: IProps) => {
 
     onSubmit: async values => {
       const response = (await updatePolicy({
-        url: Endpoints.settings.policy.update.replace('id', updateId),
+        url: Endpoints.settings.policy.update.replace(':id', updateId),
         data: values,
         invalidateTag: [apiTags.settings.policy.list, apiTags.settings.policy.details],
       })) as ApiResponse;

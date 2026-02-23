@@ -14,7 +14,7 @@ export const useDeleteUser = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.user.delete.replace('id', deleteIdState.values),
+      url: Endpoints.user.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.user.list],
     })) as ApiResponse;
     if (response?.data?.message) {

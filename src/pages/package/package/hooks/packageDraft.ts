@@ -11,7 +11,7 @@ export const savePackageDraft = (draft: PackageDraft) => {
   localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
 };
 
-export const loadPackageDraft = (): PackageDraft | null => {
+export const  loadPackageDraft = (): PackageDraft | null => {
   const raw = localStorage.getItem(DRAFT_KEY);
   return raw ? JSON.parse(raw) : null;
 };

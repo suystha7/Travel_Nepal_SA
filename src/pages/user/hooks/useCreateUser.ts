@@ -17,12 +17,9 @@ export const useCreateUser = ({ closeModal }: IProps) => {
   const initialValues: userFormField = {
     full_name: '',
     email: '',
-    // avatar: '',
     phone_no: '',
-    password: '',
-    is_active: true,
-    is_admin: false,
-    is_staff: false,
+    role: '',
+    avatar: '',
   };
 
   const formik = useFormik({
@@ -35,10 +32,7 @@ export const useCreateUser = ({ closeModal }: IProps) => {
       formData.append('full_name', values.full_name);
       formData.append('email', values.email);
       formData.append('phone_no', values.phone_no);
-      formData.append('password', String(values.password));
-      formData.append('is_active', String(values.is_active));
-      formData.append('is_admin', String(values.is_admin));
-      formData.append('is_staff', String(values.is_staff));
+      formData.append('role', values.role);
 
       // if (values.avatar) {
       //   formData.append('avatar', values.avatar);

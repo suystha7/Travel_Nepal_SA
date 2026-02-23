@@ -1,9 +1,9 @@
+import ActionButtons from '@/components/ActionButtons';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { IUserListItem } from '../interface/IUser';
-import ActionButtons from '@/components/ActionButtons';
 
 interface ColumnsProps {
-  userData?: { data?: { pagingCounter?: number } };
+  userData?: { data?: { users?: IUserListItem[]; pagingCounter?: number } };
   updateId?: { setValue: (value: string) => void; values?: string };
   updateModal?: { open: () => void };
   deleteIdState?: { setValue: (value: string) => void };
@@ -29,75 +29,82 @@ export const getColumns = ({
     id: 'S.N.',
     accessorKey: 'S.N.',
     size: 50,
-    cell: ({ row }) => row.index + (userData?.data?.pagingCounter ?? 0),
+    cell: ({ row }) =>
+      row.original.role === 'user' ? null : row.index + (userData?.data?.pagingCounter ?? 0),
   },
-  // {
-  //   header: 'Avatar',
-  //   size: 100,
-  //   cell: ({ row }) => (
-  //     <img
-  //       src={row.original.avatar}
-  //       alt={row.original.full_name || 'Package image'}
-  //       className="w-14 h-14 object-cover rounded-md"
-  //     />
-  //   ),
-  // },
+  {
+    header: 'Avatar',
+    size: 100,
+    cell: ({ row }) =>
+      row.original.role === 'user' ? null : (
+        <img
+          src={row.original.avatar}
+          alt={row.original.full_name || 'Avatar'}
+          className="w-14 h-14 object-cover rounded-md"
+        />
+      ),
+  },
   {
     header: 'Full Name',
     accessorKey: 'full_name',
+    cell: ({ row }) => (row.original.role === 'user' ? null : row.original.full_name),
   },
   {
     header: 'Email',
     accessorKey: 'email',
+    cell: ({ row }) => (row.original.role === 'user' ? null : row.original.email),
+  },
+  {
+    header: 'Phone No',
+    accessorKey: 'phone_no',
+    cell: ({ row }) => (row.original.role === 'user' ? null : row.original.phone_no),
   },
   {
     header: 'Role',
     accessorKey: 'role',
     cell: ({ row }) => {
-      if (row.original.is_superuser) {
-        return (
-          <span className="bg-white px-2 text-red-500 text-sm border border-red-500 rounded-full">
-            Superuser
-          </span>
-        );
-      }
+      if (row.original.role === 'user') return null;
 
-      if (row.original.is_admin) {
-        return (
-          <span className="bg-white px-2 text-yellow-500 text-sm border border-yellow-500 rounded-full">
-            Admin
-          </span>
-        );
+      switch (row.original.role) {
+        case 'superadmin':
+          return (
+            <span className="bg-white px-2 text-primary-500 text-sm border border-primary-500 rounded-full">
+              Superadmin
+            </span>
+          );
+        case 'admin':
+          return (
+            <span className="bg-white px-2 text-secondary-500 text-sm border border-secondary-500 rounded-full">
+              Admin
+            </span>
+          );
+        case 'staff':
+          return (
+            <span className="bg-white px-2 text-blue-500 text-sm border border-blue-500 rounded-full">
+              Staff
+            </span>
+          );
+        default:
+          return null;
       }
-
-      if (row.original.is_staff) {
-        return (
-          <span className="bg-white px-2 text-blue-500 text-sm border border-blue-500 rounded-full">
-            Staff
-          </span>
-        );
-      }
-
-      return (
-        <span className="bg-white px-2 text-gray-500 text-sm border border-gray-500 rounded-full">
-          User
-        </span>
-      );
     },
   },
-
   {
     header: 'Status',
     accessorKey: 'is_active',
+    size: 100,
     cell: ({ row }) => {
-      const isActive = row.original.is_active;
-      return (
-        <div className="flex items-center gap-2">
-          <span
-            className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-400'}`}
-          ></span>
-          <span className="capitalize">{isActive ? 'Active' : 'Inactive'}</span>
-        </div>
+      if (row.original.role === 'user') return null;
+      return row.original.is_active ? (
+        <span className=" text-green-500 px-2 text-sm rounded-full border border-green-500">
+          {' '}
+          Active{' '}
+        </span>
+      ) : (
+        <span className=" text-red-500 px-2 text-sm rounded-full border border-red-500">
+          {' '}
+          Inactive{' '}
+        </span>
       );
     },
   },
@@ -105,8 +112,10 @@ export const getColumns = ({
     header: 'Action',
     size: 180,
     cell: ({ row }) => {
+      if (row.original.role === 'user') return null;
+
       const isSelf = row.original.id === currentUserId;
-      const isTargetSuperuser = row.original.is_superuser;
+      const isTargetSuperuser = row.original.role === 'superadmin';
       const disableDelete = isSelf || isTargetSuperuser;
 
       const canReset = (isSuperuser || isAdmin) && !isSelf && !isTargetSuperuser;
@@ -135,3 +144,8 @@ export const getColumns = ({
     },
   },
 ];
+
+export const getFilteredSortedUsers = (users?: IUserListItem[]) =>
+  (users || [])
+    .filter(u => u.role !== 'user')
+    .sort((a, b) => (a.role === 'superadmin' ? -1 : b.role === 'superadmin' ? 1 : 0));

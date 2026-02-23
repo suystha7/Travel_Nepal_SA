@@ -44,7 +44,7 @@ export const useUpdateSocialMedia = ({ closeModal, updateId }: IProps) => {
       const response = (await updateSocialMedia({
         url: Endpoints.settings.socialMedia.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.settings.socialMedia.list, apiTags.settings.socialMedia.details ],
+        invalidateTag: [apiTags.settings.socialMedia.list, apiTags.settings.socialMedia.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {

@@ -14,7 +14,7 @@ export const useDeleteTestimonial = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.testimonial.delete.replace('id', deleteIdState.values),
+      url: Endpoints.testimonial.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.testimonial.list],
     })) as ApiResponse;
     if (response?.data?.message) {

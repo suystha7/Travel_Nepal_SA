@@ -14,7 +14,7 @@ export const useDeletePolicy = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.settings.policy.delete.replace('id', deleteIdState.values),
+      url: Endpoints.settings.policy.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.settings.policy.list],
     })) as ApiResponse;
     if (response?.data?.message) {

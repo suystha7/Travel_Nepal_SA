@@ -2,7 +2,7 @@ export const Endpoints = {
   auth: {
     login: '/user/login',
     profile: {
-      list: '/user/profile/:id',
+      list: '/user/profile/',
       details: '/user/profile/:id',
       update: '/user/profile-update',
     },
@@ -18,7 +18,7 @@ export const Endpoints = {
       details: '/country/:id',
       delete: '/country/:id',
     },
-
+    
     city: {
       list: '/city',
       create: '/city',
@@ -224,11 +224,10 @@ export const Endpoints = {
       details: '/organization/:id',
     },
     socialMedia: {
-      // socialMedia: '/social-media',
       list: '/social-media',
+      create: '/social-media',
       delete: '/social-media/:id',
       update: '/social-media/:id',
-      create: '/social-media',
       details: '/social-media/:id',
     },
     policy: {

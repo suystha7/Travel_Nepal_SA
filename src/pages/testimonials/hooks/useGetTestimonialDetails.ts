@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { TestimonialDetailsResponse } from '../interface/ITestimonial';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -13,7 +14,8 @@ export const useGetTestimonialDetails = ({ id }: IProps) => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.testimonial.details.replace('id', id),
+    url: Endpoints.testimonial.details.replace(':id', id),
+    tag: apiTags.testimonial.details
   });
 
   return { data, isLoading, isError, isSuccess };

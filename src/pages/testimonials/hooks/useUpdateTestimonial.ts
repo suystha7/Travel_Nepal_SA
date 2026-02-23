@@ -17,12 +17,14 @@ export const useUpdateTestimonial = ({ closeModal, updateId }: IProps) => {
   const [updateTestimonial, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
   const { data, isLoading } = useGetTestimonialDetails({ id: updateId });
+
   const initialValues: testimonialFormField = {
     name: data?.data?.name || '',
     message: data?.data?.message || '',
     rating: data?.data?.rating || '0',
     image: null,
   };
+
   const formik = useFormik<testimonialFormField>({
     initialValues,
     enableReinitialize: true,
@@ -30,26 +32,22 @@ export const useUpdateTestimonial = ({ closeModal, updateId }: IProps) => {
     onSubmit: async values => {
       const formData = new FormData();
 
-      // append text fields
       formData.append('name', values.name);
       formData.append('message', values.message);
       formData.append('rating', values.rating.toString());
-
-      // append file fields
 
       if (values?.image && values?.image instanceof File) {
         formData.append('image', values?.image);
       }
 
       const response = (await updateTestimonial({
-        url: Endpoints.testimonial.update.replace('id', updateId),
+        url: Endpoints.testimonial.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.testimonial.list],
+        invalidateTag: [apiTags.testimonial.list, apiTags.testimonial.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

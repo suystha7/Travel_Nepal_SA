@@ -19,7 +19,7 @@ export const useGetPolicyDetails = ({ id }: IProps) => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.settings.policy.details.replace('id', id),
+    url: Endpoints.settings.policy.details.replace(':id', id),
     tag: apiTags.settings.policy.details
   });
 

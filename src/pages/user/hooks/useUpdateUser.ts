@@ -21,12 +21,10 @@ export const useUpdateUser = ({ closeModal, updateId }: IProps) => {
 
   const initialValues: userFormField = {
     full_name: data?.data?.full_name || '',
+    avatar: data?.data?.avatar || '',
     email: data?.data?.email || '',
-    // avatar: data?.data?.avatar || '',
+    role: data?.data?.role || '',
     phone_no: data?.data?.phone_no || '',
-    is_active: data?.data?.is_active || false,
-    is_admin: data?.data?.is_admin || false,
-    is_staff: data?.data?.is_staff || false,
   };
 
   const formik = useFormik<userFormField>({
@@ -37,26 +35,19 @@ export const useUpdateUser = ({ closeModal, updateId }: IProps) => {
       const formData = new FormData();
 
       formData.append('full_name', values.full_name);
+      formData.append('avatar', values.avatar);
       formData.append('email', values.email);
       formData.append('phone_no', values.phone_no);
-      formData.append('password', String(values.password));
-      formData.append('is_active', String(values.is_active));
-      formData.append('is_admin', String(values.is_admin));
-      formData.append('is_staff', String(values.is_staff));
-
-      // if (values.avatar) {
-      //   formData.append('avatar', values.avatar);
-      // }
+      formData.append('role', values.role);
 
       const response = (await updateUser({
-        url: Endpoints.user.update.replace('id', updateId),
+        url: Endpoints.user.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.user.list],
+        invalidateTag: [apiTags.user.list, apiTags.user.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        formik.resetForm();
         closeModal();
       }
 
