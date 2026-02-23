@@ -8,6 +8,8 @@ import { useGetPackageDetails } from './useGetPackageDetails';
 import { PackageValidationSchema, type PackageValidationSchemaType } from '../schema/PackageSchema';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useMemo } from 'react';
+import { mapPackagePayload } from './mapPayload';
+import type { ApiErrorResponse } from '@/service/api.error';
 
 interface IProps {
   closeModal: () => void;
@@ -101,57 +103,18 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
     initialValues,
     validationSchema: PackageValidationSchema,
     enableReinitialize: true,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-
-        const fields: Record<string, string> = {
-          country_id: values.country_id,
-          package_type_id: values.package_type_id,
-          category_id: values.category_id,
-          name: values.name,
-          description: values.description,
-          destination: values.destination,
-          duration: String(values.duration),
-          group_size: values.group_size,
-          max_altitude: values.max_altitude,
-          previous_price: values.previous_price,
-          current_price: values.current_price,
-          start_date: values.start_date,
-          end_date: values.end_date,
-          start_point: values.start_point,
-          end_point: values.end_point,
-          cancellation_policy: values.cancellation_policy,
-          payment_policy: values.payment_policy,
-          terms_conditions: values.terms_conditions,
-          is_top_tour: values.is_top_tour ? '1' : '0',
-          is_top_deals: values.is_top_deals ? '1' : '0',
-        };
-
-        Object.entries(fields).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-
-        formData.append('highlights', JSON.stringify(values.highlights));
-        formData.append('notices', JSON.stringify(values.notices));
-        formData.append('inclusions', JSON.stringify(values.inclusions));
-        formData.append('exclusions', JSON.stringify(values.exclusions));
-        formData.append('itinerary', JSON.stringify(values.itinerary));
-
-        if (values.image && typeof values.image !== 'string') {
-          formData.append('image', values.image as File);
-        }
-
         const response = await updatePackage({
           url: Endpoints.packages.package.update.replace('id', updateId),
-          data: formData,
+          data: mapPackagePayload(values),
           invalidateTag: [apiTags.packages.package.list],
         }).unwrap();
 
         showSuccessMessage(response.message || 'Package updated successfully');
         closeModal();
       } catch (error: unknown) {
-        handleErrors(error as any, formik.setErrors);
+        handleErrors(error as ApiErrorResponse, formik.setErrors);
         showErrorMessage(
           (error as { data?: { message?: string } })?.data?.message ||
             'Something went wrong while updating the package.'
