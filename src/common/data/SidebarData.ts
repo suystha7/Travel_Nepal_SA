@@ -76,7 +76,7 @@ export const mainMenuItems = [
   {
     id: 'testimonials',
     icon: MdOutlinePreview,
-    label: 'Review',
+    label: 'Testimonials',
     active: false,
     link: PATH.testimonials,
   },

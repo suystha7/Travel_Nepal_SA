@@ -23,7 +23,7 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
   const { data, isLoading: isGetDetailsLoading } = useGetPackageGalleryDetails({ id: updateId });
 
   const initialValues: packageGalleryFormField = {
-    images: data?.data?.images || '',
+    url: Array.isArray(data?.data?.images) ? data.data.images.map((img: any) => img.url) : [],
     package_id: data?.data?.package?.id || '',
   };
 
@@ -44,16 +44,34 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
-
       formData.append('package_id', values.package_id || '');
 
-      if (values?.images && values?.images instanceof File) {
-        formData.append('images', values.images);
+      const newFiles: File[] = [];
+      const existingImages: { url: string }[] = [];
+
+      if (Array.isArray(values?.url)) {
+        values.url.forEach((img: any) => {
+          if (img instanceof File) {
+            newFiles.push(img);
+          } else if (typeof img === 'string') {
+            existingImages.push({ url: img });
+          }
+        });
       }
+
+      newFiles.forEach(file => formData.append('url', file));
+
+      if (existingImages.length) {
+        formData.append('existingImages', JSON.stringify(existingImages));
+      }
+
       const response = (await updatePackageGallery({
         url: Endpoints.packages.packageGallery.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.packages.packageGallery.list, apiTags.packages.packageGallery.details],
+        invalidateTag: [
+          apiTags.packages.packageGallery.list,
+          apiTags.packages.packageGallery.details,
+        ],
       })) as ApiResponse;
 
       if (response?.data?.message) {

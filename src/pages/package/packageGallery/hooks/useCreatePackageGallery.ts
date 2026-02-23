@@ -9,7 +9,6 @@ import { PackageGallerySchema, type packageGalleryFormField } from '../schema/Pa
 import { useGetPackage } from '../../package/hooks/useGetPackage';
 import type { IOption } from '@/types/common';
 import { useMemo } from 'react';
-// import { useGetPackageItinerary } from '../../packageItinerary/hooks/useGetPackageItinerary';
 
 interface IProps {
   closeModal: () => void;
@@ -17,11 +16,6 @@ interface IProps {
 
 export const useCreatePackageGallery = ({ closeModal }: IProps) => {
   const [createPackageGallery, { isError, isLoading, isSuccess }] = usePostDataMutation();
-
-  const initialValues: packageGalleryFormField = {
-    images: '',
-    package_id: '',
-  };
 
   const { packageData } = useGetPackage();
 
@@ -34,19 +28,22 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
     );
   }, [packageData]);
 
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<packageGalleryFormField>({
+    initialValues: {
+      url: [],
+      package_id: '',
+    },
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
-
       formData.append('package_id', values.package_id || '');
 
-      if (values?.images && values?.images instanceof File) {
-        formData.append('images', values.images);
+      if (values?.url && values?.url instanceof File) {
+        formData.append('url', values.url);
       }
+
       const response = (await createPackageGallery({
-        url: Endpoints?.packages.packageGallery.list,
+        url: Endpoints.packages.packageGallery.list,
         data: formData,
         invalidateTag: [apiTags.packages.packageGallery.list],
       })) as ApiResponse;
@@ -56,6 +53,7 @@ export const useCreatePackageGallery = ({ closeModal }: IProps) => {
         formik.resetForm();
         closeModal();
       }
+
       if (response?.error?.data?.message) showErrorMessage(response.error.data.message);
       if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);
     },

@@ -65,7 +65,7 @@ const UserTable: React.FC = () => {
       <div className="flex justify-between items-center h-12 gap-4">
         <UserFilterList setSearch={setSearch} search={search} />
 
-        {profileData?.data?.is_superuser && (
+        {profileData?.data?.is_superuser && (     
           <button
             onClick={createModal.open}
             className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"

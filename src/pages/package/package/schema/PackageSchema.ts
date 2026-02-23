@@ -28,8 +28,6 @@ export const PackageValidationSchema = Yup.object({
   group_size: Yup.string().required(),
   max_altitude: Yup.string().required(),
 
-  image: Yup.mixed().optional(),
-
   previous_price: Yup.string().required(),
   current_price: Yup.string().required(),
 

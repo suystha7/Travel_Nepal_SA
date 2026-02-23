@@ -1,5 +1,4 @@
 import React from 'react';
-// import InputFileWithPreview from '@/components/formField/InputFile';
 import InputSwitch from '@/components/formField/InputSwitch';
 import InputText from '@/components/formField/InputText';
 import ReactSelect from '@/components/formField/ReactSelect';
@@ -7,7 +6,6 @@ import TextEditor from '@/components/TextEditor';
 import type { IOption } from '@/components/formField/SearchSelect';
 import InputDate from '@/components/formField/InputDate';
 import InputSelectMulti from '@/components/formField/ReactSelectMultiple';
-import InputFileWithPreview from '@/components/formField/InputFile';
 
 interface OverviewProps {
   countryOptions: IOption[];
@@ -53,29 +51,8 @@ const Overview: React.FC<OverviewProps> = ({
           options={packageCategoryOptions}
           placeholder="Select package category"
         />
-          {/* <InputSelectMulti
-            name="availability_month"
-            label="Choose Availability Months"
-            placeholder="Select months"
-            options={[
-              { label: 'January', value: 'jan' },
-              { label: 'February', value: 'feb' },
-              { label: 'March', value: 'mar' },
-              { label: 'April', value: 'apr' },
-              { label: 'May', value: 'may' },
-              { label: 'June', value: 'jun' },
-              { label: 'July', value: 'jul' },
-              { label: 'August', value: 'aug' },
-              { label: 'September', value: 'sep' },
-              { label: 'October', value: 'oct' },
-              { label: 'November', value: 'nov' },
-              { label: 'December', value: 'dec' },
-            ]}
-            required
-          /> */}
 
         <InputText required label="Title" name="name" placeholder="Enter title..." />
-        <InputFileWithPreview label="Thumbnail Image" name="image" accept="image/*" required />
 
         <InputText
           required
@@ -121,9 +98,9 @@ const Overview: React.FC<OverviewProps> = ({
           required
           label="Discount Price"
           name="current_price"
-          placeholder="Enter current price..."
+          placeholder="Enter current price..."  
         />
-        <div className="flex gap-5 mt-2">
+        <div className="flex gap-5 mt-12">
           <InputSwitch name="is_top_tour" label="Is Top Tours ?" />
           <InputSwitch name="is_top_deals" label="Is Top Deals ?" />
         </div>

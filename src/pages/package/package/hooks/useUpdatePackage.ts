@@ -79,8 +79,6 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
       terms_conditions: packageData?.data?.terms_conditions || '',
       is_top_tour: Boolean(packageData?.data?.is_top_tour),
       is_top_deals: Boolean(packageData?.data?.is_top_deals),
-      image: packageData?.data?.image || undefined,
-
       inclusions: mapSimpleList(packageData?.data?.inclusions),
       exclusions: mapSimpleList(packageData?.data?.exclusions),
       notices: mapSimpleList(packageData?.data?.notices),
@@ -92,7 +90,7 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
           day: Number(item.day),
           title: item.title || '',
           description: item.description || '',
-          accommodations: mapSimpleList(item.accommodations),
+          accommodations: mapSimpleList(item.accommodations), 
           meals: mapSimpleList(item.meals),
           activities: mapSimpleList(item.activities),
         })) || [],
@@ -104,22 +102,27 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
     initialValues,
     validationSchema: PackageValidationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       try {
         await updatePackage({
           url: `${Endpoints.packages.package.update.replace(':id', updateId)}`,
           data: mapPackagePayload(values),
-          invalidateTag: [apiTags.packages.package.list, apiTags.packages.package.details]
+          invalidateTag: [apiTags.packages.package.list, apiTags.packages.package.details],
         }).unwrap();
 
         showSuccessMessage('Package updated successfully');
         closeModal();
       } catch (error: unknown) {
         handleErrors(error as ApiErrorResponse, formik.setErrors);
-        showErrorMessage(
-          (error as { data?: { message?: string } })?.data?.message ||
-            'Something went wrong while updating the package.'
-        );
+
+        const message =
+          (
+            error as {
+              data?: { error?: { msg?: string }[] };
+            }
+          )?.data?.error?.[0]?.msg ?? 'Something went wrong while updating the package.';
+
+        showErrorMessage(message);
       }
     },
   });

@@ -29,7 +29,7 @@ export const PATH = {
     blogImage: '/blogs/blog-image',
   },
   contactUs: '/contact-us',
-  testimonials: '/review  ',
+  testimonials: '/review',
   subscribers: '/subscribers',
   about: {
     about: '/about/about-us',

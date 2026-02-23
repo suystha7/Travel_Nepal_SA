@@ -1,17 +1,23 @@
 import { Pencil, Trash2, Eye } from 'lucide-react';
+
 interface ActionButtonsProps {
-  row: any;
+  row: {
+    original: {
+      id: string;
+      is_superuser?: boolean;
+    };
+  };
   updateId?: { setValue: (value: string) => void };
   updateModal?: { open: () => void };
   deleteIdState?: { setValue: (value: string) => void };
   deleteModal?: { open: () => void };
   viewId?: { setValue: (value: string) => void };
   viewModal?: { open: () => void };
-
   disableDelete?: boolean;
+  disableUpdate?: boolean;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
+const ActionButtons = ({
   row,
   updateId,
   updateModal,
@@ -20,9 +26,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   viewId,
   viewModal,
   disableDelete,
-}) => {
-  const id = row?.original?.id;
-  const isSuperuser = row?.original?.is_superuser;
+  disableUpdate,
+}: ActionButtonsProps) => {
+  const id = row.original.id;
+  const isSuperuser = row.original.is_superuser;
 
   const handleDelete = () => {
     if (disableDelete) {
@@ -33,8 +40,21 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       }
       return;
     }
+
     deleteIdState?.setValue(id);
     deleteModal?.open();
+  };
+
+  const handleUpdate = () => {
+    if (disableUpdate) {
+      if (isSuperuser) {
+        alert("You can't update a superuser account");
+      }
+      return;
+    }
+
+    updateId?.setValue(id);
+    updateModal?.open();
   };
 
   return (
@@ -53,11 +73,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
       {updateId && updateModal && (
         <button
-          onClick={() => {
-            updateId.setValue(id);
-            updateModal.open();
-          }}
-          className="text-primary-500 hover:text-primary-600 bg-primary-300/20 rounded-full p-2 cursor-pointer"
+          onClick={handleUpdate}
+          disabled={disableUpdate}
+          className={`rounded-full p-2 ${
+            disableUpdate
+              ? 'text-white bg-primary-200/50 cursor-not-allowed'
+              : 'text-primary-500 hover:text-primary-600 bg-primary-300/20 cursor-pointer'
+          }`}
         >
           <Pencil size={16} />
         </button>

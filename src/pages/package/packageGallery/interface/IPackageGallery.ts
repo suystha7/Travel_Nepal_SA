@@ -3,7 +3,7 @@ import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiRe
 // list
 export interface IPackageGalleryListItem {
   id: string;
-  images: {id: string; url: string};
+  images: { url: string};
   package: { id: string; name: string };
   created_at: string;
   updated_at: string;

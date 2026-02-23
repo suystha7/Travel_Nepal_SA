@@ -31,7 +31,7 @@ const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions }) => {
 
         <InputFileWithPreview 
           label="Images" 
-          name="images" 
+          name="url" 
           required 
           multiple 
         />
