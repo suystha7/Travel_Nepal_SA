@@ -5,16 +5,16 @@ import { Star } from 'lucide-react';
 
 interface ColumnsProps {
   testimonialData?: { data?: { pagingCounter?: number } };
-  updateId: { setValue: (value: string) => void; values?: string };
-  updateModal: { open: () => void };
+  viewId: { setValue: (value: string) => void; values?: string };
+  viewModal: { open: () => void };
   deleteIdState: { setValue: (value: string) => void };
   deleteModal: { open: () => void };
 }
 
 export const getColumns = ({
   testimonialData,
-  updateId,
-  updateModal,
+  viewId,
+  viewModal,
   deleteIdState,
   deleteModal,
 }: ColumnsProps): ColumnDef<ITestimonialItem>[] => [
@@ -66,8 +66,8 @@ export const getColumns = ({
     cell: ({ row }) => (
       <ActionButtons
         row={row}
-        updateId={updateId}
-        updateModal={updateModal}
+        viewId={viewId}
+        viewModal={viewModal}
         deleteIdState={deleteIdState}
         deleteModal={deleteModal}
       />

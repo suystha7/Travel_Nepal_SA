@@ -23,14 +23,7 @@ export const getColumns = ({
     size: 50,
     cell: ({ row }) => row.index + (packageGalleryData?.data?.pagingCounter ?? 0),
   },
-  {
-    header: 'Package Name',
-    size: 100,
-    cell: ({ row }) => (
-      <span>{row.original.package?.name || '-'}</span>
-    ),
-  },
-  {
+   {
     header: 'Main Image',
     size: 100,
     cell: ({ row }) => (
@@ -41,6 +34,14 @@ export const getColumns = ({
       />
     ),
   },
+  {
+    header: 'Package Name',
+    size: 100,
+    cell: ({ row }) => (
+      <span>{row.original.package?.name || '-'}</span>
+    ),
+  },
+ 
   {
     header: 'Action',
     size: 100,

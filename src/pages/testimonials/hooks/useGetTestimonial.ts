@@ -9,8 +9,8 @@ import { useState } from 'react';
 
 export const useGetTestimonial = () => {
   const createModal = useDisclosure();
-  const updateModal = useDisclosure();
-  const updateId = useStringState();
+  const viewModal = useDisclosure();
+  const viewId = useStringState();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -33,8 +33,8 @@ export const useGetTestimonial = () => {
     isLoading,
     isSuccess,
     createModal,
-    updateModal,
-    updateId,
+    viewModal,
+    viewId,
     page,
     pageSize,
     setPage,

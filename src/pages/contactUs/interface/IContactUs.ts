@@ -1,9 +1,9 @@
 import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiResponse.interface';
 
 export interface IContactUsListItem {
-  id: string;
-  created_at: string;
-  updated_at: string;
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
   name: string;
   email: string;
   service: string;

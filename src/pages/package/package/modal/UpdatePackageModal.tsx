@@ -29,7 +29,6 @@ const UpdatePackageModal: React.FC<IProps> = ({ closeModal, updateId }) => {
     updateId,
   });
 
-  console.log(formik.values,"Fromik Values");
   return (
     <div className="overflow-y-auto overflow-x-hidden h-[80vh]" style={{ scrollbarWidth: 'thin' }}>
       <MultiStepForm<PackageValidationSchemaType>

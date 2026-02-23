@@ -24,17 +24,6 @@ export const getColumns = ({
     cell: ({ row }) => row.index + (packageVideoData?.data?.pagingCounter ?? 0),
   },
   {
-    header: 'Video',
-    size: 100,
-    cell: ({ row }) => (
-      <img
-        src={row.original.video}
-        alt="Package Video"
-        className="w-16 h-16 object-cover rounded-md"
-      />
-    ),
-  },
-  {
     header: 'Package Name',
     accessorKey: 'package',
     cell: ({ row }) => {

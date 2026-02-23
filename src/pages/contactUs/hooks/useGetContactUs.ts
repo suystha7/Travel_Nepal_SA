@@ -5,10 +5,14 @@ import type { ContactUsListItemResponse } from '../interface/IContactUs';
 import { useState } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
 import { useDebounce } from '@/utils/useDebounce';
+import useStringState from '@/utils/useStringState';
+import useDisclosure from '@/utils/useDisclosure';
 
 export const useGetContactUs = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const viewModal = useDisclosure();
+  const viewId = useStringState();
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce<string>(search, 500);
@@ -30,6 +34,8 @@ export const useGetContactUs = () => {
     pageSize,
     setPage,
     setPageSize,
+    viewModal,
+    viewId,
     isError,
     isLoading,
     isSuccess,

@@ -1,5 +1,6 @@
 import type { IOption } from '@/types/common';
 import type { PackageValidationSchemaType } from '../schema/PackageSchema';
+import { Check, X } from 'lucide-react';
 
 interface IProps {
   packageData: PackageValidationSchemaType;
@@ -16,7 +17,8 @@ const Review = ({
   packageTypeOptions = [],
   packageCategoryOptions = [],
 }: IProps) => {
-  if (!packageData) return <p>Loading...</p>;
+  if (!packageData)
+    return <div className="p-10 text-center font-medium">Loading package preview...</div>;
 
   const getLabel = (options: IOption[], value?: string) =>
     options.find(opt => opt.value === value)?.label || value || '-';
@@ -26,220 +28,177 @@ const Review = ({
     return values.map(v => options.find(opt => opt.value === v)?.label || v).join(', ');
   };
 
-  const renderDataAsList = (html?: string) => {
-    if (!html) return <p>-</p>;
+  const renderHTML = (html?: string) => (
+    <div
+      className="prose prose-sm max-w-none text-gray-600"
+      dangerouslySetInnerHTML={{ __html: html || '-' }}
+    />
+  );
 
-    if (typeof window === 'undefined') {
-      return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />;
-    }
-
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-
-    const text = Array.from(tempDiv.querySelectorAll('p'))
-      .map(p => p.innerHTML)
-      .join('<br>');
-
-    const items = text
-      .split('<br>')
-      .map(i => i.trim())
-      .filter(Boolean);
-
-    return (
-      <ul className="list-disc ml-5">
-        {items.map((item, index) => (
-          <li key={index} dangerouslySetInnerHTML={{ __html: item || '' }} />
-        ))}
-      </ul>
-    );
-  };
+  const DataSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <div className="border border-gray-100 rounded-xl p-6 bg-white">
+      <h3 className="text-lg font-bold text-primary-500 mb-6 border-b pb-2">{title}</h3>
+      {children}
+    </div>
+  );
 
   return (
-    <div className="space-y-8 bg-white my-12">
-      <section className="border rounded-md p-4">
-        <h3 className="font-semibold text-xl mb-4 text-primary-400">Basic Information</h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-base">
-          <div className="space-y-2">
-            <p>
-              <strong>Package Name:</strong> {packageData.name || '-'}
-            </p>
-            <p>
-              <strong>Package Type:</strong>{' '}
-              {getLabel(packageTypeOptions, packageData.package_type_id)}
-            </p>
-            <p>
-              <strong>Category:</strong> {getLabel(packageCategoryOptions, packageData.category_id)}
-            </p>
-            <p>
-              <strong>Country:</strong> {getLabel(countryOptions, packageData.country_id)}
-            </p>
-            <p>
-              <strong>Cities:</strong> {getMultiLabels(cityOptions, packageData.city_id)}
-            </p>
-            <p>
-              <strong>Destination:</strong> {packageData.destination || '-'}
-            </p>
-            <p>
-              <strong>Duration:</strong> {packageData.duration || '-'}
-            </p>
-            <p>
-              <strong>Start Point:</strong> {packageData.start_point || '-'}
-            </p>
-            <p>
-              <strong>End Point:</strong> {packageData.end_point || '-'}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p>
-              <strong>Previous Price:</strong> {packageData.previous_price || '-'}
-            </p>
-            <p>
-              <strong>Current Price:</strong> {packageData.current_price || '-'}
-            </p>
-            <p>
-              <strong>Top Tour:</strong> {packageData.is_top_tour ? 'Yes' : 'No'}
-            </p>
-            <p>
-              <strong>Top Deals:</strong> {packageData.is_top_deals ? 'Yes' : 'No'}
-            </p>
-            <p>
-              <strong>Group Size:</strong> {packageData.group_size || '-'}
-            </p>
-            <p>
-              <strong>Max Altitude:</strong> {packageData.max_altitude || '-'}
-            </p>
-            <p>
-              <strong>Start Date:</strong> {packageData.start_date || '-'}
-            </p>
-            <p>
-              <strong>End Date:</strong> {packageData.end_date || '-'}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-4">
-          {packageData.image ? (
-            <img
-              src={String(packageData.image)}
-              alt="Package"
-              className="max-h-80 max-w-full rounded-md"
+    <div className="max-w-5xl mx-auto space-y-8 my-14">
+      <DataSection title="Basic Information">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-4">
+            <InfoItem label="Package Name" value={packageData.name} />
+            <InfoItem
+              label="Package Type"
+              value={getLabel(packageTypeOptions, packageData.package_type_id)}
             />
-          ) : (
-            <p>No image uploaded</p>
-          )}
+            <InfoItem
+              label="Category"
+              value={getLabel(packageCategoryOptions, packageData.category_id)}
+            />
+            <InfoItem label="Country" value={getLabel(countryOptions, packageData.country_id)} />
+            <InfoItem label="Cities" value={getMultiLabels(cityOptions, packageData.city_id)} />
+          </div>
+          <div className="space-y-4">
+            <InfoItem label="Duration" value={packageData.duration} />
+            <InfoItem label="Destination" value={packageData.destination} />
+            <InfoItem label="Start Point" value={packageData.start_point} />
+            <InfoItem label="End Point" value={packageData.end_point} />
+            <InfoItem label="Group Size" value={packageData.group_size} />
+          </div>
+          <div className="space-y-4">
+            <InfoItem
+              label="Current Price"
+              value={packageData.current_price}
+              className="text-primary-600 font-bold"
+            />
+            <InfoItem
+              label="Previous Price"
+              value={packageData.previous_price}
+              className="line-through text-gray-400"
+            />
+            <InfoItem label="Max Altitude" value={packageData.max_altitude} />
+            <InfoItem
+              label="Top Tour"
+              value={
+                packageData.is_top_tour ? (
+                  <Check className="w-4 h-4 text-green-500" />
+                ) : (
+                  <X className="w-4 h-4 text-red-500" />
+                )
+              }
+            />
+            <InfoItem
+              label="Top Deals"
+              value={
+                packageData.is_top_deals ? (
+                  <Check className="w-4 h-4 text-green-500" />
+                ) : (
+                  <X className="w-4 h-4 text-red-500" />
+                )
+              }
+            />
+          </div>
         </div>
-      </section>
+      </DataSection>
 
-      {/* Package Details */}
-      <section className="border rounded-md p-4">
-        <h3 className="font-semibold text-xl mb-4 text-primary-400">Package Details</h3>
-
-        <div className="space-y-6">
+      <DataSection title="Package Description & Details">
+        <div className="space-y-8">
           <div>
-            <h3 className="font-semibold mb-1">Description:</h3>
+            <h4 className="font-bold text-gray-800 mb-2">Description</h4>
+            {renderHTML(packageData.description)}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <ListDisplay title="Highlights" items={packageData.highlights} />
+            <ListDisplay title="Inclusions" items={packageData.inclusions} />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <ListDisplay title="Exclusions" items={packageData.exclusions} />
+            <ListDisplay title="Notices/Important Info" items={packageData.notices} />
+          </div>
+        </div>
+      </DataSection>
+
+      <DataSection title="Itinerary Schedule">
+        <div className="space-y-4">
+          {packageData.itinerary?.map((item, index) => (
             <div
-              className="prose max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: packageData.description || '',
-              }}
-            />
-          </div>
+              key={index}
+              className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-gray-100"
+            >
+              <div className="flex-shrink-0 w-16 h-16 bg-primary-500 text-white rounded-lg flex flex-col items-center justify-center shadow-sm">
+                <span className="text-xs uppercase font-bold">Day</span>
+                <span className="text-xl font-black">{item.day || index + 1}</span>
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-gray-900 text-lg mb-1">
+                  {item.title || 'Untitled Activity'}
+                </h4>
+                {renderHTML(item.description)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </DataSection>
 
+      <DataSection title="Policies & Legal">
+        <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-semibold mb-1">Cancellation Policy:</h3>
-            {renderDataAsList(packageData.cancellation_policy)}
+            <h4 className="font-bold text-gray-800 mb-2">Cancellation Policy</h4>
+            {renderHTML(packageData.cancellation_policy)}
           </div>
-
           <div>
-            <h3 className="font-semibold mb-1">Payment Policy:</h3>
-            {renderDataAsList(packageData.payment_policy)}
+            <h4 className="font-bold text-gray-800 mb-2">Payment Policy</h4>
+            {renderHTML(packageData.payment_policy)}
           </div>
-
           <div>
-            <h3 className="font-semibold mb-1">Terms & Conditions:</h3>
-            {renderDataAsList(packageData.terms_conditions)}
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-1">Highlights:</h3>
-            <ul className="list-disc ml-5 space-y-1">
-              {packageData.highlights?.map((item, index) => (
-                <li
-                  key={index}
-                  className="prose max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: item.description || '',
-                  }}
-                />
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-1">Notices:</h3>
-            <ul className="list-disc ml-5 space-y-1">
-              {packageData.notices?.map((item, index) => (
-                <li
-                  key={index}
-                  className="prose max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: item.description || '',
-                  }}
-                />
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-1">Inclusions:</h3>
-            <ul className="list-disc ml-5 space-y-1">
-              {packageData.inclusions?.map((item, index) => (
-                <li
-                  key={index}
-                  className="prose max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: item.description || '',
-                  }}
-                />
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-1">Exclusions:</h3>
-            <ul className="list-disc ml-5 space-y-1">
-              {packageData.exclusions?.map((item, index) => (
-                <li
-                  key={index}
-                  className="prose max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: item.description || '',
-                  }}
-                />
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-1">Itinerary:</h3>
-            <ul className="list-disc ml-5 space-y-1">
-              {packageData.itinerary?.map((item, index) => (
-                <li
-                  key={index}
-                  className="prose max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: item.description || '',
-                  }}
-                />
-              ))}
-            </ul>
+            <h4 className="font-bold text-gray-800 mb-2">Terms & Conditions</h4>
+            {renderHTML(packageData.terms_conditions)}
           </div>
         </div>
-      </section>
+      </DataSection>
     </div>
   );
 };
+
+const InfoItem = ({
+  label,
+  value,
+  className = '',
+}: {
+  label: string;
+  value?: any;
+  className?: string;
+}) => (
+  <div>
+    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{label}</p>
+    <p className={`text-sm text-gray-700 ${className}`}>{value || '-'}</p>
+  </div>
+);
+
+const ListDisplay = ({ title, items }: { title: string; items?: any[] }) => (
+  <div>
+    <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+      <span className="w-1.5 h-1.5 bg-primary-400 rounded-full"></span>
+      {title}
+    </h4>
+    <ul className="space-y-3">
+      {items?.map((item, idx) => (
+        <li key={idx} className="bg-gray-50/50 p-3 rounded-md border border-gray-100">
+          {item.title && <p className="font-bold text-sm text-gray-800 mb-1">{item.title}</p>}
+          <div
+            className="prose prose-sm text-gray-600"
+            dangerouslySetInnerHTML={{ __html: item.description || '' }}
+          />
+        </li>
+      ))}
+      {(!items || items.length === 0) && (
+        <p className="text-gray-400 text-sm italic">No items listed</p>
+      )}
+    </ul>
+  </div>
+);
 
 export default Review;

@@ -1,5 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { IContactUsListItem } from '../interface/IContactUs';
+import ActionButtons from '@/components/ActionButtons';
 
 interface ColumnsProps {
   contactUsData?: { data?: { pagingCounter?: number } };
@@ -7,7 +8,11 @@ interface ColumnsProps {
   viewModal?: { open: () => void };
 }
 
-export const getColumns = ({ contactUsData }: ColumnsProps): ColumnDef<IContactUsListItem>[] => [
+export const getColumns = ({
+  contactUsData,
+  viewId,
+  viewModal,
+}: ColumnsProps): ColumnDef<IContactUsListItem>[] => [
   {
     id: 'S.N.',
     accessorKey: 'S.N.',
@@ -34,9 +39,15 @@ export const getColumns = ({ contactUsData }: ColumnsProps): ColumnDef<IContactU
     },
   },
 
-  // {
-  //   header: 'Action',
-  //   size: 150,
-  //   cell: ({ row }) => <ActionButtons row={row} viewId={viewId} viewModal={viewModal} />,
-  // },
+  {
+    header: 'Action',
+    size: 150,
+    cell: ({ row }) => (
+      <ActionButtons
+        row={{ ...row, original: { ...row.original, id: row.original.id || '' } }}
+        viewId={viewId}
+        viewModal={viewModal}
+      />
+    ),
+  },
 ];

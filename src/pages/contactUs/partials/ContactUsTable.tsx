@@ -6,6 +6,8 @@ import { useGetContactUs } from '../hooks/useGetContactUs';
 import type { IContactUsListItem } from '../interface/IContactUs';
 import { getColumns } from './ContactUsColumns';
 import ContactFilterList from './ContactFilterList';
+import Modal from '@/components/Modal';
+import ViewContactModal from '../modal/ViewContactModal';
 
 const ContactUsTable: React.FC = () => {
   const {
@@ -19,13 +21,15 @@ const ContactUsTable: React.FC = () => {
     rowSelection,
     setRowSelection,
     search,
+    viewModal,
+    viewId,
     setSearch,
   } = useGetContactUs();
 
   const column = getColumns({
     contactUsData,
-    // viewId: { setValue: () => {}, values: '' },
-    // viewModal: { open: () => {} },
+    viewId,
+    viewModal,
   });
 
   return (
@@ -57,6 +61,10 @@ const ContactUsTable: React.FC = () => {
           <ErrorMessage />
         )}
       </div>
+
+      <Modal isOpen={viewModal.isOpen} name="View Contact Info" onOpenChange={viewModal.toggle}>
+        <ViewContactModal viewId={viewId.values} closeModal={viewModal.close} />
+      </Modal>
     </div>
   );
 };
