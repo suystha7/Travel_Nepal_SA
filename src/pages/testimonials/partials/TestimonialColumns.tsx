@@ -34,10 +34,10 @@ export const getColumns = ({
       return (
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
-            {isObject && user.image ? (
+            {isObject && 'image' in user && user.image ? (
               <img 
                 src={user.image} 
-                alt={user.name} 
+                alt={user.full_name} 
                 className="w-full h-full object-cover" 
               />
             ) : (
@@ -47,11 +47,11 @@ export const getColumns = ({
             )}
           </div>
           <span className="font-medium text-sm">
-            {isObject ? user.name : (row.original.name || 'Anonymous')}
+            {isObject && 'full_name' in user ? user.full_name : (row.original.name || 'Anonymous')}
           </span>
         </div>
       );
-    },
+    },  
   },
   {
     header: 'Package',
@@ -60,7 +60,7 @@ export const getColumns = ({
       const pkg = row.original.package_id;
       return (
         <span className="text-sm text-slate-600 font-medium">
-          {typeof pkg === 'object' ? pkg?.name : '-'}
+          {typeof pkg === 'object' && pkg !== null ? pkg.name : '-'}
         </span>
       );
     },
@@ -89,7 +89,12 @@ export const getColumns = ({
     size: 100,
     cell: ({ row }) => (
       <ActionButtons
-        row={row}
+        row={{
+          original: {
+            id: row.original.id,
+            is_superuser: false 
+          }
+        }}
         viewId={viewId}
         viewModal={viewModal}
         deleteIdState={deleteIdState}
