@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormikContext, FieldArray } from 'formik';
 import { ChevronDown, ChevronUp, X, Plus } from 'lucide-react';
 import InputText from '@/components/formField/InputText';
@@ -38,9 +38,9 @@ const createEmptyDay = (index: number): ItineraryItem => ({
   day: index + 1,
   title: '',
   description: '',
-  activities: [],
-  accommodations: [],
-  meals: [],
+  activities: [createEmptyEntry()],
+  accommodations: [createEmptyEntry()],
+  meals: [createEmptyEntry()],
 });
 
 const Itinerary = () => {
@@ -49,6 +49,21 @@ const Itinerary = () => {
   const [openNested, setOpenNested] = useState<Record<string, boolean>>({});
 
   const itinerary = values?.itinerary || [];
+
+  useEffect(() => {
+    const initialState: Record<string, boolean> = {};
+
+    itinerary.forEach((day, dayIdx) => {
+      SECTION_KEYS.forEach(section => {
+        if (day?.[section]?.length) {
+          const key = `${dayIdx}-${section}-0`;
+          initialState[key] = true;
+        }
+      });
+    });
+
+    setOpenNested(prev => ({ ...initialState, ...prev }));
+  }, [itinerary]);
 
   const toggleDay = (index: number) => {
     setOpenDays(prev => ({ ...prev, [index]: !prev[index] }));
@@ -96,7 +111,7 @@ const Itinerary = () => {
                       <InputText label="Day Number" name={`itinerary.${dayIdx}.day`} />
                       <InputText label="Day Title" name={`itinerary.${dayIdx}.title`} />
                     </div>
-                  
+
                     <div className="grid grid-cols-1 gap-8">
                       {SECTION_KEYS.map(section => {
                         const entries = dayItem?.[section] || [];
@@ -115,7 +130,9 @@ const Itinerary = () => {
                                       <div key={entry.id || entryIdx} className="border rounded-md">
                                         <div
                                           className="flex justify-between p-3 bg-gray-50/50 cursor-pointer"
-                                          onClick={() => toggleNested(dayIdx, section, entryIdx)}
+                                          onClick={() =>
+                                            toggleNested(dayIdx, section, entryIdx)
+                                          }
                                         >
                                           <span className="text-sm font-medium">
                                             {entry?.title || `New ${section}...`}
@@ -152,9 +169,19 @@ const Itinerary = () => {
                                       </div>
                                     );
                                   })}
+
                                   <button
                                     type="button"
-                                    onClick={() => pushNested(createEmptyEntry())}
+                                    onClick={() => {
+                                      const newIndex = entries.length;
+                                      pushNested(createEmptyEntry());
+
+                                      const key = `${dayIdx}-${section}-${newIndex}`;
+                                      setOpenNested(prev => ({
+                                        ...prev,
+                                        [key]: true,
+                                      }));
+                                    }}
                                     className="text-sm font-bold text-primary-500 flex items-center gap-1 cursor-pointer"
                                   >
                                     <Plus size={14} /> Add {section}
@@ -181,7 +208,7 @@ const Itinerary = () => {
             <button
               type="button"
               onClick={() => push(createEmptyDay(itinerary.length))}
-              className="w-full p-4 border-2 border-dashed rounded-lg text-gray-400 hover:text-primary  -500 hover:border-primary -500 font-bold flex justify-center items-center gap-2"
+              className="w-full p-4 border-2 border-dashed rounded-lg text-gray-400 hover:text-primary-500 hover:border-primary-500 font-bold flex justify-center items-center gap-2"
             >
               <Plus /> Add Itinerary Day
             </button>
