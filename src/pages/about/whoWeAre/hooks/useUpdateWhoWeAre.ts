@@ -27,12 +27,12 @@ export const useUpdateWhoWeAre = (updateId: string) => {
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
-
+      
       const newFiles: File[] = [];
       const existingImages: { image: string }[] = [];
 
       if (Array.isArray(values.image)) {
-        values.image.forEach(img => {
+        values.image.forEach((img: any) => {
           if (img instanceof File) {
             newFiles.push(img);
           } else if (typeof img === 'string') {
