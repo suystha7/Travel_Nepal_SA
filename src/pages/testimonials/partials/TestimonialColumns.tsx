@@ -30,16 +30,12 @@ export const getColumns = ({
     cell: ({ row }) => {
       const user = row.original.user_id;
       const isObject = typeof user === 'object' && user !== null;
-      
+
       return (
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
             {isObject && 'image' in user && user.image ? (
-              <img 
-                src={user.image} 
-                alt={user.full_name} 
-                className="w-full h-full object-cover" 
-              />
+              <img src={user.image} alt={user.full_name} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">
                 NA
@@ -47,11 +43,11 @@ export const getColumns = ({
             )}
           </div>
           <span className="font-medium text-sm">
-            {isObject && 'full_name' in user ? user.full_name : (row.original.name || 'Anonymous')}
+            {isObject && 'full_name' in user ? user.full_name : row.original.name || 'Anonymous'}
           </span>
         </div>
       );
-    },  
+    },
   },
   {
     header: 'Package',
@@ -76,8 +72,8 @@ export const getColumns = ({
             <Star
               key={i}
               size={14}
-              fill={i < rating ? "#f5b50a" : "transparent"}
-              color={i < rating ? "#f5b50a" : "#cbd5e1"}
+              fill={i < rating ? '#f5b50a' : 'transparent'}
+              color={i < rating ? '#f5b50a' : '#cbd5e1'}
             />
           ))}
         </div>
@@ -89,12 +85,7 @@ export const getColumns = ({
     size: 100,
     cell: ({ row }) => (
       <ActionButtons
-        row={{
-          original: {
-            id: row.original.id,
-            is_superuser: false 
-          }
-        }}
+        row={{ ...row, original: { ...row.original, id: row.original.id || '' } }}
         viewId={viewId}
         viewModal={viewModal}
         deleteIdState={deleteIdState}
