@@ -268,15 +268,13 @@ export const Endpoints = {
   },
 
   testimonial: {
-    list: '/testimonial',
-    create: '/testimonial',
-    update: '/testimonial/:id',
-    details: '/testimonial/:id',
-    delete: '/testimonial/:id',
+    list: '/review',
+    details: '/review/:id',
+    delete: '/review/:id',
   },
 
   subscribers: {
     list: '/subscriber',
-    details: '/subscriber/id',
+    details: '/subscriber/:id',
   },
 };

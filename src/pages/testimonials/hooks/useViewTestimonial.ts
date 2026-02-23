@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
-import { TestimonialSchema, type testimonialFormField } from '../schema/TestimonialSchema';
 import { useGetTestimonialDetails } from './useGetTestimonialDetails';
+import type { ITestimonialItem } from '../interface/ITestimonial';
 
 interface IProps {
   viewId: string;
@@ -9,27 +9,31 @@ interface IProps {
 export const useViewTestimonial = ({ viewId }: IProps) => {
   const { data, isLoading } = useGetTestimonialDetails({ id: viewId });
 
-  const initialValues: testimonialFormField = {
+  const initialValues: ITestimonialItem = {
+    user_id: (data?.data?.user_id as any)?.full_name || '',
+    package_id: (data?.data?.package_id as any)?.name || '',
     name: data?.data?.name || '',
-    message: data?.data?.message || '',
+    comment: data?.data?.comment || '',
     rating: data?.data?.rating || '0',
-    image: null,
+    image: (data?.data?.user_id as any)?.image || '',
   };
 
-  const formik = useFormik<testimonialFormField>({
+  const formik = useFormik<ITestimonialItem>({
     initialValues,
     enableReinitialize: true,
-    validationSchema: TestimonialSchema,
     onSubmit: async values => {
       const formData = new FormData();
+      formData.append('user_id', typeof values.user_id === 'string' ? values.user_id : '');
+      formData.append('package_id', typeof values.package_id === 'string' ? values.package_id : '');
       formData.append('name', values.name);
-      formData.append('message', values.message);
+      formData.append('comment', values.comment);
       formData.append('rating', values.rating.toString());
 
-      if (values?.image && values?.image instanceof File) {
-        formData.append('image', values?.image);
+      if (values.image instanceof File) {
+        formData.append('image', values.image);
       }
     },
   });
+
   return { formik, isLoading };
 };

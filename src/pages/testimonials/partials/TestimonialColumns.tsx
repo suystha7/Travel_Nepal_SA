@@ -19,43 +19,67 @@ export const getColumns = ({
   deleteModal,
 }: ColumnsProps): ColumnDef<ITestimonialItem>[] => [
   {
-    id: 'S.N.',
-    accessorKey: 'S.N.',
+    header: 'S.N.',
+    accessorKey: 'sn',
     size: 50,
-    cell: ({ row }) => row.index + (testimonialData?.data?.pagingCounter ?? 0),
+    cell: ({ row }) => row.index + (testimonialData?.data?.pagingCounter ?? 1),
   },
   {
-    header: 'Image',
-    accessorKey: 'image',
-    size: 100,
-    cell: ({ row }) => (
-      <img
-        src={row.original.image}
-        alt={row.original.name || 'Testimonial image'}
-        className="w-16 h-16 object-cover rounded-md"
-      />
-    ),
+    header: 'User',
+    accessorKey: 'user_id',
+    cell: ({ row }) => {
+      const user = row.original.user_id;
+      const isObject = typeof user === 'object' && user !== null;
+      
+      return (
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
+            {isObject && user.image ? (
+              <img 
+                src={user.image} 
+                alt={user.name} 
+                className="w-full h-full object-cover" 
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">
+                NA
+              </div>
+            )}
+          </div>
+          <span className="font-medium text-sm">
+            {isObject ? user.name : (row.original.name || 'Anonymous')}
+          </span>
+        </div>
+      );
+    },
   },
   {
-    header: 'Name',
-    accessorKey: 'name',
+    header: 'Package',
+    accessorKey: 'package_id',
+    cell: ({ row }) => {
+      const pkg = row.original.package_id;
+      return (
+        <span className="text-sm text-slate-600 font-medium">
+          {typeof pkg === 'object' ? pkg?.name : '-'}
+        </span>
+      );
+    },
   },
   {
     header: 'Rating',
     accessorKey: 'rating',
     cell: ({ row }) => {
-      const rating = Number(row.original.rating);
-      const stars = Array.from({ length: 5 }, (_, i) => i < rating);
-
+      const rating = Number(row.original.rating) || 0;
       return (
-        <div className="flex gap-1">
-          {stars.map((filled, idx) =>
-            filled ? (
-              <Star key={idx} size={16} color="#f5b50a" fill="#f5b50a" />
-            ) : (
-              <Star key={idx} size={16} color="#ccc" />
-            )
-          )}
+        <div className="flex gap-0.5">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              key={i}
+              size={14}
+              fill={i < rating ? "#f5b50a" : "transparent"}
+              color={i < rating ? "#f5b50a" : "#cbd5e1"}
+            />
+          ))}
         </div>
       );
     },
