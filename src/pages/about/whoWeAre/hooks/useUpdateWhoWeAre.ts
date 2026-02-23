@@ -1,20 +1,21 @@
 import { useUpdatePutDataMutation } from '@/api/api';
-// import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import { useFormik } from 'formik';
 import handleErrors, { type ApiResponse } from '@/api/api.error';
 import { WhoWeAreSchema, type whoWeAreFormField } from '../schema/whoWeAreSchema';
 import { useGetWhoWeAreDetails } from './useGetWhoWeAreDetails';
+import { Endpoints } from '@/api/endpoints';
 
 export const useUpdateWhoWeAre = (updateId: string) => {
   const [updateWhoWeAre] = useUpdatePutDataMutation();
-
-  const { data: whoWeAreData, refetchWhoWeAreDetails } = useGetWhoWeAreDetails({ id: updateId });
+  const { data: whoWeAreData } = useGetWhoWeAreDetails({ id: updateId });
 
   const initialValues: whoWeAreFormField = {
     title: whoWeAreData?.data?.title ?? '',
-    images: Array.isArray(whoWeAreData?.data?.images) ? whoWeAreData.data.images : [],
+    image: Array.isArray(whoWeAreData?.data?.images)
+      ? whoWeAreData.data.images.map((img: any) => img.image)
+      : [],
     description: whoWeAreData?.data?.description ?? '',
   };
 
@@ -24,32 +25,49 @@ export const useUpdateWhoWeAre = (updateId: string) => {
     enableReinitialize: true,
     onSubmit: async values => {
       const formData = new FormData();
-
       formData.append('title', values.title);
       formData.append('description', values.description);
 
-      if (values.images instanceof File) {
-        formData.append('images', values.images);
+      const newFiles: File[] = [];
+      const existingImages: { image: string }[] = [];
+
+      if (Array.isArray(values.image)) {
+        values.image.forEach(img => {
+          if (img instanceof File) {
+            newFiles.push(img);
+          } else if (typeof img === 'string') {
+            existingImages.push({ image: img }); 
+          }
+        });
       }
 
-      const response = (await updateWhoWeAre({
-        url: '/who-we-are/' + updateId,
-        data: formData,
-        invalidateTag: [apiTags.aboutUs.whoWeAre.list],
-      })) as ApiResponse;
+      newFiles.forEach(file => formData.append('image', file));
 
-      if (response?.data?.message) {
-        showSuccessMessage(response.data.message);
-        refetchWhoWeAreDetails();
-        formik.resetForm();
+      if (existingImages.length) {
+        formData.append('existingImages', JSON.stringify(existingImages));
       }
 
-      if (response?.error?.data?.message) {
-        showErrorMessage(response.error.data.message);
-      }
+      try {
+        const response = (await updateWhoWeAre({
+          url: Endpoints.aboutUs.whoWeAre.update.replace(':id', updateId),
+          data: formData,
+          invalidateTag: [apiTags.aboutUs.whoWeAre.list, apiTags.aboutUs.whoWeAre.details],
+        })) as ApiResponse;
 
-      if (response?.error?.data?.errors) {
-        handleErrors(response, formik.setErrors);
+        if (response?.data?.message) {
+          showSuccessMessage(response.data.message);
+        }
+
+        if (response?.error?.data?.message) {
+          showErrorMessage(response.error.data.message);
+        }
+
+        if (response?.error?.data?.errors) {
+          handleErrors(response, formik.setErrors);
+        }
+      } catch (error) {
+        console.error('Update Who We Are Error:', error);
+        showErrorMessage('Something went wrong while updating.');
       }
     },
   });

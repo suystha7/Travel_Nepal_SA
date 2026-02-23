@@ -14,7 +14,7 @@ export const useDeleteCity = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.location.city.delete.replace('id', deleteIdState.values),
+      url: Endpoints.location.city.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.location.city.list],
     })) as ApiResponse;
     if (response?.data?.message) {

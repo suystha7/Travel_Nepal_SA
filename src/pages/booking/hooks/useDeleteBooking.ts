@@ -14,7 +14,7 @@ export const useDeleteBooking = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.booking.delete.replace('id', deleteIdState.values),
+      url: Endpoints.booking.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.booking.list],
     })) as ApiResponse;
     if (response?.data?.message) {

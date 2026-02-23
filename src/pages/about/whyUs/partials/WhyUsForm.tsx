@@ -117,7 +117,7 @@ const WhyUsForm: React.FC<{ isUpdate: boolean }> = ({ isUpdate }) => {
           type="submit"
           className="px-10 py-2.5 rounded-md bg-primary-600 hover:bg-primary-700 text-white font-bold shadow-md active:scale-95 transition-all cursor-pointer"
         >
-          {isUpdate ? 'Update Changes' : 'Save Section'}
+          {isUpdate ? 'Update' : 'Add'}
         </button>
       </div>
     </Form>

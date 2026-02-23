@@ -17,7 +17,7 @@ export const useUpdateBooking = ({ closeModal, updateId }: IProps) => {
   const [updateBooking, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading, refetchBookingDetails } = useGetBookingDetails({ id: updateId });
+  const { data, isLoading } = useGetBookingDetails({ id: updateId });
 
   const initialValues: bookingFormField = {
     title: data?.data?.title || '',
@@ -64,15 +64,13 @@ export const useUpdateBooking = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateBooking({
-        url: Endpoints.booking.update.replace('id', updateId),
+        url: Endpoints.booking.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.booking.list],
+        invalidateTag: [apiTags.booking.list, apiTags.booking.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        refetchBookingDetails();
-        formik.resetForm();
         closeModal();
       }
 

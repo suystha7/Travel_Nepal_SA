@@ -55,14 +55,13 @@ export const useUpdateCity = ({ closeModal, updateId }: IProps) => {
       formData.append('country_id', values.country_id);
 
       const response = (await updateCity({
-        url: Endpoints.location.city.update.replace('id', updateId),
+        url: Endpoints.location.city.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.location.city.list],
+        invalidateTag: [apiTags.location.city.list, apiTags.location.city.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

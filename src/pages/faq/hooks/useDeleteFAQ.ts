@@ -14,7 +14,7 @@ export const useDeleteFAQ = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.faq.delete.replace('id', deleteIdState.values),
+      url: Endpoints.faq.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.faq.list],
     })) as ApiResponse;
     if (response?.data?.message) {

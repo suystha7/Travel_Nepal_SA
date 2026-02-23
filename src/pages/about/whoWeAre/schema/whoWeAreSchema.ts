@@ -5,7 +5,7 @@ export const WhoWeAreSchema = Yup.object().shape({
   description: Yup.string()
     .required('Description is required')
     .min(10, 'Description must be at least 10 characters'),
-  images: Yup.array().of(Yup.mixed().required('Images are required')),
+  image: Yup.array().of(Yup.string().required('Images are required')),
 });
 
 export type whoWeAreFormField = Yup.InferType<typeof WhoWeAreSchema>;

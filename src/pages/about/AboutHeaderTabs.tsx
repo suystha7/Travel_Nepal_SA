@@ -12,6 +12,13 @@ export const aboutHeaderItem = [
     link: PATH.about.about,
   },
   {
+    id: 'whoWeAre',
+    icon: IoPeople,
+    label: 'Who We Are',
+    active: false,
+    link: PATH.about.whoWeAre,
+  },
+  {
     id: 'stats',
     icon: ChartLine,
     label: 'Stats',
@@ -23,7 +30,7 @@ export const aboutHeaderItem = [
     icon: Target,
     label: 'Mission/Vision',
     active: false,
-    link: PATH.about.missionVision, 
+    link: PATH.about.missionVision,
   },
   {
     id: 'whyUs',
@@ -32,17 +39,11 @@ export const aboutHeaderItem = [
     active: false,
     link: PATH.about.whyUs,
   },
-  {
-    id: 'whoWeAre',
-    icon: IoPeople,
-    label: 'Who We Are',
-    active: false,
-    link: PATH.about.whoWeAre,
-  },
+
   {
     id: 'team',
     icon: Users2,
-    label: 'Team',
+    label: 'Teams',
     active: false,
     link: PATH.about.team,
   },

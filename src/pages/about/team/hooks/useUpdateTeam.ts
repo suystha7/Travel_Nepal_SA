@@ -16,7 +16,7 @@ interface IProps {
 export const useUpdateTeam = ({ closeModal, updateId }: IProps) => {
   const [updateTeam, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
-  const { data, isLoading, refetchTeamDetails } = useGetTeamDetails({ id: updateId });
+  const { data, isLoading } = useGetTeamDetails({ id: updateId });
 
   const initialValues: teamFormField = {
     name: data?.data?.name || '',
@@ -41,15 +41,13 @@ export const useUpdateTeam = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateTeam({
-        url: Endpoints.aboutUs.team.update.replace('id', updateId),
+        url: Endpoints.aboutUs.team.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.aboutUs.team.list],
+        invalidateTag: [apiTags.aboutUs.team.list, apiTags.aboutUs.team.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        refetchTeamDetails();
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

@@ -23,7 +23,7 @@ export const useUpdateBlogImage = ({ closeModal, updateId }: IProps) => {
   const [updateBlogImage, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading, refetchBlogImageDetails } = useGetBlogImageDetails({
+  const { data, isLoading } = useGetBlogImageDetails({
     id: updateId,
   });
 
@@ -60,15 +60,13 @@ export const useUpdateBlogImage = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateBlogImage({
-        url: Endpoints.blogs.blogImage.update.replace('id', updateId),
+        url: Endpoints.blogs.blogImage.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.blogs.blogImage.list],
+        invalidateTag: [apiTags.blogs.blogImage.list, apiTags.blogs.blogImage.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        refetchBlogImageDetails();
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

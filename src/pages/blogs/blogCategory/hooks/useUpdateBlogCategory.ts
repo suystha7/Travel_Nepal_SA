@@ -17,7 +17,7 @@ export const useUpdateBlogCategory = ({ closeModal, updateId }: IProps) => {
   const [updateBlogCategory, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading, refetchBlogCategoryDetails } = useGetBlogCategoryDetails({
+  const { data, isLoading } = useGetBlogCategoryDetails({
     id: updateId,
   });
 
@@ -34,15 +34,13 @@ export const useUpdateBlogCategory = ({ closeModal, updateId }: IProps) => {
       formData.append('name', values.name);
 
       const response = (await updateBlogCategory({
-        url: Endpoints.blogs.blogCategory.update.replace('id', updateId),
+        url: Endpoints.blogs.blogCategory.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.blogs.blogCategory.list],
+        invalidateTag: [apiTags.blogs.blogCategory.list, apiTags.blogs.blogCategory.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        refetchBlogCategoryDetails();
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

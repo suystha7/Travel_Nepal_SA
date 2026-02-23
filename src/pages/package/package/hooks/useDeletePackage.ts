@@ -14,7 +14,7 @@ export const useDeletePackage = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.packages.package.delete.replace('id', deleteIdState.values),
+      url: Endpoints.packages.package.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.packages.package.list],
     })) as ApiResponse;
 

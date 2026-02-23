@@ -20,7 +20,6 @@ export const useUpdateBreadcrumb = ({ closeModal, updateId }: IProps) => {
   const {
     data: breadcrumbData,
     isLoading,
-    refetchBreadcrumbDetails,
   } = useGetBreadcrumbDetails({ id: updateId });
 
   const initialValues: breadcrumbFormField = {
@@ -52,15 +51,13 @@ export const useUpdateBreadcrumb = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateBreadcrumb({
-        url: Endpoints.breadcrumb.update.replace('id', updateId),
+        url: Endpoints.breadcrumb.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.breadcrumb.list],
+        invalidateTag: [apiTags.breadcrumb.list, apiTags.breadcrumb.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
-        refetchBreadcrumbDetails();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

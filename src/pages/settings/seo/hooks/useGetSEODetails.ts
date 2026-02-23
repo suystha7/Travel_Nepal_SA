@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { StaticSEODetailsResponse } from '../interface/IStaticSEO';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -12,15 +13,15 @@ export const useGetSEODetails = ({ id }: IProps) => {
     isLoading,
     isError,
     isSuccess,
-    refetch: refetchSEODetails,
   } = useGetDataQuery<{
     data: StaticSEODetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.settings.seo.details.replace('id', id),
+    url: Endpoints.settings.seo.details.replace(':id', id),
+    tag: apiTags.settings.seo.details
   });
 
-  return { data, isLoading, isError, isSuccess, refetchSEODetails };
+  return { data, isLoading, isError, isSuccess };
 };

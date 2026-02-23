@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { CountryDetailsResponse } from '../interface/ICountry';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -13,7 +14,8 @@ export const useGetCountryDetails = ({ id }: IProps) => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.location.country.details.replace('id', id),
+    url: Endpoints.location.country.details.replace(':id', id),
+    tag: apiTags.location.country.details
   });
 
   return { data, isLoading, isError, isSuccess };

@@ -29,7 +29,7 @@ const UpdateBookingModal: React.FC<IProps> = ({ closeModal, updateId }) => {
               className="px-7 py-2.5 typography-semi-bold-small text-white bg-primary-500 rounded-md flex items-center gap-x-4 cursor-pointer"
             >
               Update
-              {isLoading && <Loader />}
+              {isLoading && <Loader className="animate-spin duration-500 transition-all" />}
             </button>
           </div>
         </div>

@@ -14,7 +14,7 @@ export const useDeleteOrganizationSettings = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.settings.organizationSettings.delete.replace('id', deleteIdState.values),
+      url: Endpoints.settings.organizationSettings.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.settings.organizationSettings.list],
     })) as ApiResponse;
     if (response?.data?.message) {

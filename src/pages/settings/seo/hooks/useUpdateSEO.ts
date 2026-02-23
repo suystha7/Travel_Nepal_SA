@@ -17,7 +17,7 @@ export const useUpdateSEO = ({ closeModal, updateId }: IProps) => {
   const [updateSEO, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading, refetchSEODetails } = useGetSEODetails({
+  const { data, isLoading } = useGetSEODetails({
     id: updateId,
   });
 
@@ -53,15 +53,13 @@ export const useUpdateSEO = ({ closeModal, updateId }: IProps) => {
         formData.append('og_image', values.og_image);
 
       const response = (await updateSEO({
-        url: Endpoints.settings.seo.update.replace('id', updateId),
+        url: Endpoints.settings.seo.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.settings.seo.list],
+        invalidateTag: [apiTags.settings.seo.list, apiTags.settings.seo.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
-        refetchSEODetails();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

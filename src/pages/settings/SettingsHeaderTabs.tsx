@@ -10,6 +10,13 @@ export const settingsHeaderItem = [
     link: PATH.settings.generalSettings,
   },
   {
+    id: 'policy',
+    icon: ScrollText,
+    label: 'Policy',
+    active: false,
+    link: PATH.settings.policy,
+  },
+  {
     id: 'socialMedia',
     icon: ChartPie,
     label: 'Social Media',
@@ -23,11 +30,5 @@ export const settingsHeaderItem = [
     active: false,
     link: PATH.settings.seo,
   },
-  {
-    id: 'policy',
-    icon: ScrollText,
-    label: 'Policy',
-    active: false,
-    link: PATH.settings.policy,
-  },
+  
 ];

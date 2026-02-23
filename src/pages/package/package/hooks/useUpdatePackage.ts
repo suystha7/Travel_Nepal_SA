@@ -3,13 +3,13 @@ import { useUpdateDataMutation, useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import handleErrors from '@/api/api.error';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
-import { apiTags } from '@/constants/tag';
 import { useGetPackageDetails } from './useGetPackageDetails';
 import { PackageValidationSchema, type PackageValidationSchemaType } from '../schema/PackageSchema';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useMemo } from 'react';
 import { mapPackagePayload } from './mapPayload';
 import type { ApiErrorResponse } from '@/service/api.error';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   closeModal: () => void;
@@ -53,6 +53,7 @@ const mapSimpleList = (list: ISimpleListItem[] | undefined | null) =>
 
 export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
   const [updatePackage, mutationState] = useUpdateDataMutation();
+
   const { data: packageData, isLoading: isPackageLoading } = useGetPackageDetails({ id: updateId });
 
   const initialValues = useMemo(
@@ -105,13 +106,13 @@ export const useUpdatePackage = ({ closeModal, updateId }: IProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        const response = await updatePackage({
-          url: Endpoints.packages.package.update.replace('id', updateId),
+        await updatePackage({
+          url: `${Endpoints.packages.package.update.replace(':id', updateId)}`,
           data: mapPackagePayload(values),
-          invalidateTag: [apiTags.packages.package.list],
+          invalidateTag: [apiTags.packages.package.list, apiTags.packages.package.details]
         }).unwrap();
 
-        showSuccessMessage(response.message || 'Package updated successfully');
+        showSuccessMessage('Package updated successfully');
         closeModal();
       } catch (error: unknown) {
         handleErrors(error as ApiErrorResponse, formik.setErrors);

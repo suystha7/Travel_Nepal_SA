@@ -5,11 +5,12 @@ import { useFormik } from 'formik';
 import handleErrors, { type ApiResponse } from '@/api/api.error';
 import { AboutUsSchema, type aboutUsFormField } from '../schema/AboutUsSchema';
 import { useGetAboutUsDetails } from './useGetAboutUsDetails';
+import { Endpoints } from '@/api/endpoints';
 
 export const useUpdateAboutUs = (updateId: string) => {
   const [updateAboutUs] = useUpdatePutDataMutation();
 
-  const { data, refetchAboutUsDetails } = useGetAboutUsDetails({ id: updateId });
+  const { data } = useGetAboutUsDetails({ id: updateId });
 
   const initialValues: aboutUsFormField = {
     title: data?.data?.title || '',
@@ -29,15 +30,13 @@ export const useUpdateAboutUs = (updateId: string) => {
       formData.append('description', values.description);
 
       const response = (await updateAboutUs({
-        url: '/about-us/' + updateId,
+        url: Endpoints.aboutUs.about.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.aboutUs.about.list],
+        invalidateTag: [apiTags.aboutUs.about.list, apiTags.aboutUs.about.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        refetchAboutUsDetails();
-        formik.resetForm();
       }
 
       if (response?.error?.data?.message) {

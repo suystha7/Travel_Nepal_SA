@@ -42,14 +42,13 @@ export const useUpdateCountry = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateCountry({
-        url: Endpoints.location.country.update.replace('id', updateId),
+        url: Endpoints.location.country.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.location.country.list],
+        invalidateTag: [apiTags.location.country.list, apiTags.location.country.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

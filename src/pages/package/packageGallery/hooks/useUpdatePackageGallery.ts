@@ -51,14 +51,13 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
         formData.append('images', values.images);
       }
       const response = (await updatePackageGallery({
-        url: Endpoints.packages.packageGallery.update.replace('id', updateId),
+        url: Endpoints.packages.packageGallery.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.packages.packageGallery.list],
+        invalidateTag: [apiTags.packages.packageGallery.list, apiTags.packages.packageGallery.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response.error.data.message);

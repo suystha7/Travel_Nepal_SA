@@ -27,11 +27,7 @@ interface ILookupRecordUser {
 export const useUpdateBlog = ({ closeModal, updateId }: IProps) => {
   const [updateBlog, { isError, isLoading, isSuccess }] = useUpdatePutDataMutation();
 
-  const {
-    data: blogData,
-    isLoading: isGetDetailsLoading,
-    refetchBlogDetails,
-  } = useGetBlogDetails({ id: updateId });
+  const { data: blogData, isLoading: isGetDetailsLoading } = useGetBlogDetails({ id: updateId });
 
   const { data: userData } = useGetDataQuery({
     url: Endpoints.user.list,
@@ -88,15 +84,13 @@ export const useUpdateBlog = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updateBlog({
-        url: Endpoints.blogs.blog.update.replace('id', updateId),
+        url: Endpoints.blogs.blog.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.blogs.blog.list],
+        invalidateTag: [apiTags.blogs.blog.list, apiTags.blogs.blog.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        refetchBlogDetails();
-        formik.resetForm();
         closeModal();
       }
 

@@ -14,7 +14,7 @@ export const useDeleteSocialMedia = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.settings.socialMedia.delete.replace('id', deleteIdState.values),
+      url: Endpoints.settings.socialMedia.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.settings.socialMedia.list],
     })) as ApiResponse;
 

@@ -14,7 +14,7 @@ export const useDeleteSEO = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.settings.seo.delete.replace('id', deleteIdState.values),
+      url: Endpoints.settings.seo.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.settings.seo.list],
     })) as ApiResponse;
     if (response?.data?.message) {

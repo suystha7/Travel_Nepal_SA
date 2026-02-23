@@ -16,7 +16,7 @@ interface IProps {
 export const useUpdateFAQ = ({ closeModal, updateId }: IProps) => {
   const [updateFAQ, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
-  const { data, isLoading, refetchFAQDetails } = useGetFAQDetails({
+  const { data, isLoading } = useGetFAQDetails({
     id: updateId,
   });
   const initialValues: faqFormField = {
@@ -29,15 +29,13 @@ export const useUpdateFAQ = ({ closeModal, updateId }: IProps) => {
     validationSchema: FAQSchema,
     onSubmit: async values => {
       const response = (await updateFAQ({
-        url: Endpoints.faq.update.replace('id', updateId),
+        url: Endpoints.faq.update.replace(':id', updateId),
         data: values,
-        invalidateTag: [apiTags.faq.list],
+        invalidateTag: [apiTags.faq.list, apiTags.faq.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
-        refetchFAQDetails();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

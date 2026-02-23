@@ -14,7 +14,7 @@ export const useDeleteTeam = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.aboutUs.team.delete.replace('id', deleteIdState.values),
+      url: Endpoints.aboutUs.team.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.aboutUs.team.list],
     })) as ApiResponse;
     if (response?.data?.message) {

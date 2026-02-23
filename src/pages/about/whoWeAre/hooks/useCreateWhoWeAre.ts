@@ -1,5 +1,4 @@
 import { usePostDataMutation } from '@/api/api';
-import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import { useFormik } from 'formik';
@@ -9,7 +8,7 @@ import { WhoWeAreSchema, type whoWeAreFormField } from '../schema/whoWeAreSchema
 export const useCreateWhoWeAre = () => {
   const [createWhoWeAre] = usePostDataMutation();
 
-  const initialValues: whoWeAreFormField = { title: '', description: '', images: [] };
+  const initialValues: whoWeAreFormField = { title: '', description: '', image: [] };
 
   const formik = useFormik({
     initialValues,
@@ -20,14 +19,14 @@ export const useCreateWhoWeAre = () => {
       formData.append('title', values.title);
       formData.append('description', values.description);
 
-      if (values.images instanceof File) {
-        formData.append('images', values.images);
+      if (values.image instanceof File) {
+        formData.append('image', values.image);
       }
 
       const response = (await createWhoWeAre({
-        url: Endpoints?.aboutUs.whoWeAre.create,
+        url: '/who-we-are',
         data: formData,
-        invalidateTag: [apiTags.packages.package.list],
+        invalidateTag: [apiTags.aboutUs.whoWeAre.list],
       })) as ApiResponse;
 
       if (response?.data?.message) {

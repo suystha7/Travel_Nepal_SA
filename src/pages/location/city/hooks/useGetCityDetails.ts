@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { CityDetailsResponse } from '../interface/ICity';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -13,7 +14,8 @@ export const useGetCityDetails = ({ id }: IProps) => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.location.city.details.replace('id', id),
+    url: Endpoints.location.city.details.replace(':id', id),
+    tag: apiTags.location.city.details
   });
 
   return { data, isLoading, isError, isSuccess };

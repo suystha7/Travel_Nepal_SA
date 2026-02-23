@@ -29,7 +29,6 @@ export const useCreateBreadcrumb = ({ closeModal }: IProps) => {
     onSubmit: async values => {
       const formData = new FormData();
 
-      // append text fields
       formData.append('title', values.title);
       formData.append('description', values.description);
       formData.append('subtitle', values.subtitle);

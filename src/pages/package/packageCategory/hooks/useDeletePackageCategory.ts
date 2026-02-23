@@ -14,7 +14,7 @@ export const useDeletePackageCategory = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.packages.packageCategory.delete.replace('id', deleteIdState.values),
+      url: Endpoints.packages.packageCategory.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.packages.packageCategory.list],
     })) as ApiResponse;
 

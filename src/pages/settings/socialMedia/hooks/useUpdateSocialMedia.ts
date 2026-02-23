@@ -42,14 +42,13 @@ export const useUpdateSocialMedia = ({ closeModal, updateId }: IProps) => {
       formData.append('status', values.status);
 
       const response = (await updateSocialMedia({
-        url: Endpoints.settings.socialMedia.update.replace('id', updateId),
+        url: Endpoints.settings.socialMedia.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.settings.socialMedia.list],
+        invalidateTag: [apiTags.settings.socialMedia.list, apiTags.settings.socialMedia.details ],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        formik.resetForm();
         closeModal();
       }
 

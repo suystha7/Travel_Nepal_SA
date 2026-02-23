@@ -55,12 +55,11 @@ export const useUpdatePackageVideo = ({ closeModal, updateId }: IProps) => {
       const response = (await updatePackageVideo({
         url: Endpoints.packages.packageVideo.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.packages.packageVideo.list],
+        invalidateTag: [apiTags.packages.packageVideo.list, apiTags.packages.packageVideo.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response.error.data.message);

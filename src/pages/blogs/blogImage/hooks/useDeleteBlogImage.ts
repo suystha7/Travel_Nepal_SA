@@ -14,7 +14,7 @@ export const useDeleteBlogImage = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.blogs.blogImage.delete.replace('id', deleteIdState.values),
+      url: Endpoints.blogs.blogImage.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.blogs.blogImage.list],
     })) as ApiResponse;
     if (response?.data?.message) {

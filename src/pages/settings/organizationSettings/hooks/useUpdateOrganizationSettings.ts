@@ -15,11 +15,7 @@ export const useUpdateOrganizationSettings = (updateId: string) => {
   const [updateOrganizationSettings, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading, refetchOrganizationSettingsDetails } = useGetOrganizationSettingsDetails(
-    { id: updateId }
-  );
-
-  // console.log("org", data)
+  const { data, isLoading } = useGetOrganizationSettingsDetails({ id: updateId });
 
   const initialValues: organizationSettingsFormField = {
     name: data?.data?.name || '',
@@ -49,14 +45,16 @@ export const useUpdateOrganizationSettings = (updateId: string) => {
         formData.append('logo', values.logo);
       }
       const response = (await updateOrganizationSettings({
-        url: Endpoints.settings.organizationSettings.update.replace('id', updateId),
+        url: Endpoints.settings.organizationSettings.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.settings.organizationSettings.list],
+        invalidateTag: [
+          apiTags.settings.organizationSettings.list,
+          apiTags.settings.organizationSettings.details,
+        ],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        refetchOrganizationSettingsDetails();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);
       if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);

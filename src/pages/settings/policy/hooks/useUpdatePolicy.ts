@@ -1,12 +1,12 @@
 import { useUpdatePutDataMutation } from '@/api/api';
 import { useFormik } from 'formik';
-import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import type { ApiResponse } from '@/api/api.error';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import handleErrors from '@/api/api.error';
 import { useGetPolicyDetails } from './useGetPolicyDetails';
 import { PolicySchema, type policyFormField } from '../schema/PolicySchema';
+import { Endpoints } from '@/api/endpoints';
 
 interface IProps {
   closeModal: () => void;
@@ -16,7 +16,7 @@ interface IProps {
 export const useUpdatePolicy = ({ closeModal, updateId }: IProps) => {
   const [updatePolicy, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
-  const { data, isLoading, refetchPolicyDetails } = useGetPolicyDetails({
+  const { data, isLoading } = useGetPolicyDetails({
     id: updateId,
   });
 
@@ -35,13 +35,11 @@ export const useUpdatePolicy = ({ closeModal, updateId }: IProps) => {
       const response = (await updatePolicy({
         url: Endpoints.settings.policy.update.replace('id', updateId),
         data: values,
-        invalidateTag: [apiTags.settings.policy.list],
+        invalidateTag: [apiTags.settings.policy.list, apiTags.settings.policy.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response?.data?.message);
-        formik.resetForm();
-        refetchPolicyDetails();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response?.error?.data?.message);

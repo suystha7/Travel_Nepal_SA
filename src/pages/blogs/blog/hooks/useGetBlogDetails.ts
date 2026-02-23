@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { BlogDetailsResponse } from '../interface/IBlog';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -12,15 +13,15 @@ export const useGetBlogDetails = ({ id }: IProps) => {
     isLoading,
     isError,
     isSuccess,
-    refetch: refetchBlogDetails,
   } = useGetDataQuery<{
     data: BlogDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.blogs.blog.details.replace('id', id),
+    url: Endpoints.blogs.blog.details.replace(':id', id),
+    tag: apiTags.blogs.blog.details
   });
 
-  return { data, isLoading, isError, isSuccess, refetchBlogDetails };
+  return { data, isLoading, isError, isSuccess };
 };

@@ -5,11 +5,12 @@ import { useFormik } from 'formik';
 import handleErrors, { type ApiResponse } from '@/api/api.error';
 import { useGetStatsDetails } from './useGetStatsDetails';
 import { StatsSchema, type statsFormField } from '../schema/statsSchema';
+import { Endpoints } from '@/api/endpoints';
 
 export const useUpdateStats = (updateId: string) => {
   const [updateStats] = useUpdatePutDataMutation();
 
-  const { data, refetchStatsDetails } = useGetStatsDetails({ id: updateId });
+  const { data } = useGetStatsDetails({ id: updateId });
 
   const initialValues: statsFormField = {
     title: data?.data?.title || '',
@@ -34,17 +35,15 @@ export const useUpdateStats = (updateId: string) => {
       formData.append('travel_history', values.travel_history);
       formData.append('total_packages', values.total_packages);
       formData.append('happy_travellers', values.happy_travellers);
-
+      
       const response = (await updateStats({
-        url: '/stats/' + updateId,
+        url: Endpoints.aboutUs.stats.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.aboutUs.stats.list],
+        invalidateTag: [apiTags.aboutUs.stats.list, apiTags.aboutUs.stats.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        refetchStatsDetails();
-        formik.resetForm();
       }
 
       if (response?.error?.data?.message) {

@@ -14,7 +14,7 @@ const WhoWeAreForm: React.FC<{ isUpdate: boolean }> = ({ isUpdate }) => {
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-7 ">
         <InputText label="Title" name="title" placeholder="Enter title.." required />
-        <InputFileWithPreview name="images" label="Upload Images" multiple />
+        <InputFileWithPreview name="image" label="Upload Images" multiple />
       </div>
 
       <TextEditor label="Description" name="description" required />

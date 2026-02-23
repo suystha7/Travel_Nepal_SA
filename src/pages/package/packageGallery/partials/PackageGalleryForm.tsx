@@ -20,7 +20,7 @@ const PackageGalleryForm: React.FC<GalleryFormProps> = ({ packageOptions }) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-1 gap-x-6 gap-y-4 bg-white container-shadow rounded-md px-4 py-6">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-4 bg-white container-shadow rounded-md">
         <ReactSelect
           required
           label="Package Name"

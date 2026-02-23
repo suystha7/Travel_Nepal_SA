@@ -37,14 +37,13 @@ export const useUpdatePackageType = ({ closeModal, updateId }: IProps) => {
       }
 
       const response = (await updatePackageType({
-        url: Endpoints.packages.packageType.update.replace('id', updateId),
+        url: Endpoints.packages.packageType.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.packages.packageType.list],
+        invalidateTag: [apiTags.packages.packageType.list, apiTags.packages.packageType.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
         showSuccessMessage(response.data.message);
-        formik.resetForm();
         closeModal();
       }
       if (response?.error?.data?.message) showErrorMessage(response.error.data.message);

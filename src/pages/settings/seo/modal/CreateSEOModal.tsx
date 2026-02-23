@@ -25,7 +25,7 @@ const CreateSEOModal: React.FC<IProps> = ({ closeModal }) => {
               className="flex items-center gap-x-4 bg-primary-500 px-7 py-2.5 rounded-md text-white cursor-pointer typography-semi-bold-small"
             >
               Create
-              {isLoading && <Loader />}
+              {isLoading && <Loader className="animate-spin duration-500 transition-all" />}
             </button>
           </div>
         </div>

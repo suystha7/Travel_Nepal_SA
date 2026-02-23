@@ -14,7 +14,7 @@ export const useDeleteBreadcrumb = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.breadcrumb.delete.replace('id', deleteIdState.values),
+      url: Endpoints.breadcrumb.delete.replace(':id', deleteIdState.values),
       invalidates: [apiTags.breadcrumb.list],
     })) as ApiResponse;
     if (response?.data?.message) {

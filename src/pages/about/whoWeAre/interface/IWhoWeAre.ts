@@ -7,7 +7,7 @@ export interface IWhoWeAreListItem {
   updated_at: string;
   title: string;
   description: string;
-  images: (string | File)[];
+  images: {image: string}[];
 }
 export type WhoWeAreListItemResponse = IPaginationResponse<IWhoWeAreListItem>;
 

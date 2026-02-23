@@ -1,6 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import type { SubscriberDetailsResponse } from '../interface/ISubscriber';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -12,15 +13,15 @@ export const useSubscriberDetails = ({ id }: IProps) => {
     isLoading,
     isError,
     isSuccess,
-    refetch: refetchSubscriberDetails,
   } = useGetDataQuery<{
     data: SubscriberDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: `${Endpoints.subscribers.details}/${id}`,
+    url: Endpoints.subscribers.details.replace(':id', id),
+    tag: apiTags.subscriber.details,
   });
 
-  return { data, isLoading, isError, isSuccess, refetchSubscriberDetails };
+  return { data, isLoading, isError, isSuccess };
 };

@@ -8,10 +8,9 @@ import { useGetWhuUsDetails } from './useGetWhyUsDetails';
 import { Endpoints } from '@/api/endpoints';
 
 export const useUpdateWhyUs = (updateId: string) => {
-  const [updateWhoWeAre] = useUpdatePutDataMutation();
-
-  const { data: whyUsData, refetchWhyUsDetails } = useGetWhuUsDetails({ id: updateId });
-
+  const [updateWhyUs] = useUpdatePutDataMutation();
+  const { data: whyUsData } = useGetWhuUsDetails({ id: updateId });
+  
   const listItemsRaw = whyUsData?.data?.listItems;
   const normalizedList = typeof listItemsRaw === 'string' ? JSON.parse(listItemsRaw) : listItemsRaw;
 
@@ -34,7 +33,6 @@ export const useUpdateWhyUs = (updateId: string) => {
     enableReinitialize: true,
     onSubmit: async values => {
       const formData = new FormData();
-
       formData.append('heading', values.heading);
       formData.append('sub_heading', values.sub_heading);
 
@@ -46,24 +44,27 @@ export const useUpdateWhyUs = (updateId: string) => {
         });
       }
 
-      const response = (await updateWhoWeAre({
-        url: Endpoints.aboutUs.whyUs.update.replace('id', updateId),
-        data: formData,
-        invalidateTag: [apiTags.aboutUs.whyUs.list],
-      })) as ApiResponse;
+      try {
+        const response = (await updateWhyUs({
+          url: Endpoints.aboutUs.whyUs.update.replace(':id', updateId),
+          data: formData,
+          invalidateTag: [apiTags.aboutUs.whyUs.list, apiTags.aboutUs.whyUs.details],
+        })) as ApiResponse;
 
-      if (response?.data?.message) {
-        showSuccessMessage(response.data.message);
-        refetchWhyUsDetails();
-        formik.resetForm();
-      }
+        if (response?.data?.message) {
+          showSuccessMessage(response.data.message);
+        }
 
-      if (response?.error?.data?.message) {
-        showErrorMessage(response.error.data.message);
-      }
+        if (response?.error?.data?.message) {
+          showErrorMessage(response.error.data.message);
+        }
 
-      if (response?.error?.data?.errors) {
-        handleErrors(response, formik.setErrors);
+        if (response?.error?.data?.errors) {
+          handleErrors(response, formik.setErrors);
+        }
+      } catch (error) {
+        console.error('Update Why Us Error:', error);
+        showErrorMessage('Something went wrong while updating.');
       }
     },
   });
