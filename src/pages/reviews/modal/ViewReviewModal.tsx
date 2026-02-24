@@ -1,24 +1,24 @@
 import { FormikProvider } from 'formik';
 import React from 'react';
-import { useViewTestimonial } from '../hooks/useViewTestimonial';
-import TestimonialForm from '../partials/TestimonialForm';
+import { useViewReview } from '../hooks/useViewReview';
+import ReviewForm from '../partials/ReviewForm';
 
 interface IProps {
   viewId: string;
   closeModal: () => void;
 }
 
-const ViewTestimonialModal: React.FC<IProps> = ({ viewId }) => {
-  const { formik } = useViewTestimonial({ viewId });
+const ViewReviewModal: React.FC<IProps> = ({ viewId }) => {
+  const { formik } = useViewReview({ viewId });
   return (
     <FormikProvider value={formik}>
       <form>
         <div className="max-h-[80vh] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <TestimonialForm />
+          <ReviewForm />
         </div>
       </form>
     </FormikProvider>
   );
 };
 
-export default ViewTestimonialModal;
+export default ViewReviewModal;

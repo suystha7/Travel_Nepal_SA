@@ -7,8 +7,9 @@ import {
   MapPin,
   Package,
   Phone,
+  SquarePen,
   Users,
-  Users2, 
+  Users2,
 } from 'lucide-react';
 import { HiOutlineQuestionMarkCircle } from 'react-icons/hi2';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -19,7 +20,7 @@ export const mainMenuGroups = [
   //   items: [
   //     {
   //       id: 'dashboard',
-  //       icon: LayoutDashboard,   
+  //       icon: LayoutDashboard,
   //       label: 'Dashboard',
   //       link: PATH.dashboard,
   //     },
@@ -88,9 +89,15 @@ export const mainMenuGroups = [
       },
       {
         id: 'testimonials',
+        icon: SquarePen,
+        label: 'Testimonials',
+        link: PATH.testimonials,
+      },
+      {
+        id: 'reviews',
         icon: MdOutlinePreview,
         label: 'Reviews',
-        link: PATH.testimonials,
+        link: PATH.reviews,
       },
       {
         id: 'contact-us',

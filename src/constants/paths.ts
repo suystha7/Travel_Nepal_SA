@@ -29,7 +29,8 @@ export const PATH = {
     blogImage: '/blogs/blog-image',
   },
   contactUs: '/contact-us',
-  testimonials: '/review',
+  reviews: '/review',
+  testimonials: '/testimonial',
   subscribers: '/subscribers',
   about: {
     about: '/about/about-us',

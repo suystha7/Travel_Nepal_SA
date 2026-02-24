@@ -31,6 +31,10 @@ export const apiTags = {
     list: 'get_all_testimonials',
     details: 'get_testimonial_details',
   },
+  reviews: {
+    list: 'get_all_reviews',
+    details: 'get_review_details',
+  },
   aboutUs: {
     team: {
       list: 'get_all_team',

@@ -5,6 +5,7 @@ import ContactUs from '@/pages/contactUs/ContactUs';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import FAQ from '@/pages/faq/FAQ';
 import Reservation from '@/pages/reservations/Reservation';
+import Review from '@/pages/reviews/Review';
 import Subscriber from '@/pages/subscribers/Subscriber';
 import Testimonial from '@/pages/testimonials/Testimonial';
 import User from '@/pages/user/User';
@@ -33,6 +34,10 @@ export const dashboardRoutes = [
   {
     path: PATH.testimonials,
     element: <Testimonial />,
+  },
+  {
+    path: PATH.reviews,
+    element: <Review />,
   },
   {
     path: PATH.contactUs,

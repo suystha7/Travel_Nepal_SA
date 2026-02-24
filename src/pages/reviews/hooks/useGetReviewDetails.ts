@@ -1,21 +1,21 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
-import type { TestimonialDetailsResponse } from '../interface/ITestimonial';
+import type { ReviewDetailsResponse } from '../interface/IReview';
 import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
 }
 
-export const useGetTestimonialDetails = ({ id }: IProps) => {
+export const useGetReviewDetails = ({ id }: IProps) => {
   const { data, isLoading, isError, isSuccess } = useGetDataQuery<{
-    data: TestimonialDetailsResponse;
+    data: ReviewDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.testimonials.details.replace(':id', id),
-    tag: apiTags.testimonials.details
+    url: Endpoints.reviews.details.replace(':id', id),
+    tag: apiTags.reviews.details,
   });
 
   return { data, isLoading, isError, isSuccess };

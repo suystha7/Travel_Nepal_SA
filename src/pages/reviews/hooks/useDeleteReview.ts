@@ -6,7 +6,7 @@ import { showSuccessMessage } from '@/utils/toast';
 import useDisclosure from '@/utils/useDisclosure';
 import useStringState from '@/utils/useStringState';
 
-export const useDeleteTestimonial = () => {
+export const useDeleteReview = () => {
   const deleteModal = useDisclosure();
   const deleteIdState = useStringState('');
 
@@ -14,8 +14,8 @@ export const useDeleteTestimonial = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.testimonials.delete.replace(':id', deleteIdState.values),
-      invalidates: [apiTags.testimonials.list],
+      url: Endpoints.reviews.delete.replace(':id', deleteIdState.values),
+      invalidates: [apiTags.reviews.list],
     })) as ApiResponse;
     if (response?.data?.message) {
       showSuccessMessage(response?.data?.message);

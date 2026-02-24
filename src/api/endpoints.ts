@@ -18,7 +18,7 @@ export const Endpoints = {
       details: '/country/:id',
       delete: '/country/:id',
     },
-    
+
     city: {
       list: '/city',
       create: '/city',
@@ -267,10 +267,18 @@ export const Endpoints = {
     delete: '/reservation/:id',
   },
 
-  testimonial: {
+  reviews: {
     list: '/review',
     details: '/review/:id',
     delete: '/review/:id',
+  },
+
+  testimonials: {
+    list: '/testimonial',
+    create: '/testimonial',
+    details: '/testimonial/:id',
+    delete: '/testimonial/:id',
+    update: '/testimonial/:id',
   },
 
   subscribers: {

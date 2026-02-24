@@ -1,16 +1,16 @@
 import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiResponse.interface';
 
+// list
 export interface ITestimonialItem {
-  id?: string;
-  created_at?: string;
-  updated_at?: string;
-  user_id?: string | { full_name: string; image: string, email: string };
-  package_id?: string | { name: string };
+  id: string;
+  created_at: string;
+  updated_at: string;
   name: string;
-  comment: string;
+  message: string;
   rating: string;
-  image?: string | File;
+  image: string;
 }
-
 export type TestimonialListItemResponse = IPaginationResponse<ITestimonialItem>;
+
+// details
 export type TestimonialDetailsResponse = IApiDetailsResponse<ITestimonialItem>;
