@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Form, useFormikContext } from 'formik';
 import InputText from '@/components/formField/InputText';
 import { Eye, EyeOff } from 'lucide-react';
-import type { IProfileListItem } from '../interface/IChangePassword';
+import type { IChangePasswordListItem } from '../interface/IChangePassword';
 
 const ChangePasswordForm: React.FC = () => {
-  const { handleSubmit } = useFormikContext<IProfileListItem>();
+  const { handleSubmit } = useFormikContext<IChangePasswordListItem>();
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
