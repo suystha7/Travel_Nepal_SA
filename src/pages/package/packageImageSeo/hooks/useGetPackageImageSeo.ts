@@ -2,13 +2,13 @@ import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import useStringState from '@/utils/useStringState';
-import type { BlogSeoListItemResponse } from '../interface/IBlogSeo';
+import type { PackageImageSeoListItemResponse } from '../interface/IPackageImageSeo';
 import useDisclosure from '@/utils/useDisclosure';
 import { useState } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
 import { useDebounce } from '@/utils/useDebounce';
 
-export const useGetBlogSeo = () => {
+export const useGetPackageImageSeo = () => {
   const createModal = useDisclosure();
   const updateModal = useDisclosure();
   const updateId = useStringState();
@@ -19,18 +19,18 @@ export const useGetBlogSeo = () => {
   const debouncedSearch = useDebounce<string>(search, 500);
 
   const { data, isError, isLoading, isSuccess } = useGetDataQuery<{
-    data: BlogSeoListItemResponse;
+    data: PackageImageSeoListItemResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints?.blogs.blogSeo.list,
+    url: Endpoints?.packages.packageImageSeo.list,
     params: { p: page, page_size: pageSize, search: debouncedSearch },
-    tag: apiTags.blogs.blogSeo.list,
+    tag: apiTags.packages.packageImageSeo.list,
   });
 
   return {
-    blogSeoData: data,
+    packageImageSeoData: data,
     isError,
     isLoading,
     isSuccess,

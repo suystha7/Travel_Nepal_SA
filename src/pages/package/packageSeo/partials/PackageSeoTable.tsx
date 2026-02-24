@@ -4,20 +4,20 @@ import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
 import { PlusCircle } from 'lucide-react';
 import Modal from '@/components/Modal';
-import type { IBlogSeoListItem } from '../interface/IBlogSeo';
-import CreateBlogModal from '../modal/CreateBlogSeoModal';
-import { getColumns } from './BlogSeoColumns';
+import type { IPackageSeoListItem } from '../interface/IPackageSeo';
+import { getColumns } from './PackageSeoColumns';
 import DeleteModal from '@/components/DeleteModal';
-import BlogSeoFilterList from './BlogSeoFilterList';
-import { useGetBlogSeo } from '../hooks/useGetBlogSeo';
-import { useDeleteBlogSeo } from '../hooks/useDeleteBlogSeo';
-import UpdateBlogSeoModal from '../modal/UpdateBlogSeoModal';
+import { useGetPackageSeo } from '../hooks/useGetPackageSeo';
+import { useDeletePackageSeo } from '../hooks/useDeletePackageSeo';
+import PackageSeoFilterList from './PackageSeoFilterList';
+import CreatePackageSeoModal from '../modal/CreatePackageSeoModal';
+import UpdatePackageSeoModal from '../modal/UpdatePackageSeoModal';
 
-const BlogSeoTable: React.FC = () => {
+const PackageSeoTable: React.FC = () => {
   const {
-    blogSeoData,
-    isLoading: isGetBlogSeoLoading,
-    isSuccess: isGetBlogSeoSuccess,
+    packageSeoData,
+    isLoading: isGetPackageSeoLoading,
+    isSuccess: isGetPackageSeoSuccess,
     createModal,
     updateId,
     updateModal,
@@ -29,12 +29,17 @@ const BlogSeoTable: React.FC = () => {
     setRowSelection,
     search,
     setSearch,
-  } = useGetBlogSeo();
+  } = useGetPackageSeo();
 
-  const { deleteModal, deleteIdState, isLoading: isDeleteLoading, handleDelete } = useDeleteBlogSeo();
+  const {
+    deleteModal,
+    deleteIdState,
+    isLoading: isDeleteLoading,
+    handleDelete,
+  } = useDeletePackageSeo();
 
   const columns = getColumns({
-    blogSeoData,
+    packageSeoData,
     updateId,
     updateModal,
     deleteIdState,
@@ -43,7 +48,7 @@ const BlogSeoTable: React.FC = () => {
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
       <div className="flex justify-between items-center h-12 gap-4">
-        <BlogSeoFilterList setSearch={setSearch} search={search} />
+        <PackageSeoFilterList setSearch={setSearch} search={search} />
         <button
           onClick={createModal.open}
           className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
@@ -54,23 +59,23 @@ const BlogSeoTable: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-hidden">
-        {isGetBlogSeoSuccess ? (
-          <Table<IBlogSeoListItem>
+        {isGetPackageSeoSuccess ? (
+          <Table<IPackageSeoListItem>
             columns={columns}
-            data={blogSeoData?.data?.records || []}
+            data={packageSeoData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={blogSeoData?.data?.totalPages}
+            totalPage={packageSeoData?.data?.totalPages}
             pages={{
-              page: blogSeoData?.data?.currentPage || page,
-              pageSize: blogSeoData?.data?.perPage || pageSize,
+              page: packageSeoData?.data?.currentPage || page,
+              pageSize: packageSeoData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={blogSeoData?.data?.totalRecords}
+            totalItem={packageSeoData?.data?.totalRecords}
             maxHeight="500px"
           />
-        ) : isGetBlogSeoLoading ? (
+        ) : isGetPackageSeoLoading ? (
           <LoadingScreen />
         ) : (
           <ErrorMessage />
@@ -84,15 +89,23 @@ const BlogSeoTable: React.FC = () => {
         isLoading={isDeleteLoading}
       />
 
-      <Modal isOpen={createModal.isOpen} name="Create Blog Seo" onOpenChange={createModal.toggle}>
-        <CreateBlogModal closeModal={createModal.close} />
+      <Modal
+        isOpen={createModal.isOpen}
+        name="Create Package Seo"
+        onOpenChange={createModal.toggle}
+      >
+        <CreatePackageSeoModal closeModal={createModal.close} />
       </Modal>
 
-      <Modal isOpen={updateModal.isOpen} name="Update Blog Seo" onOpenChange={updateModal.toggle}>
-        <UpdateBlogSeoModal updateId={updateId.values} closeModal={updateModal.close} />
+      <Modal
+        isOpen={updateModal.isOpen}
+        name="Update Package Seo"
+        onOpenChange={updateModal.toggle}
+      >
+        <UpdatePackageSeoModal updateId={updateId.values} closeModal={updateModal.close} />
       </Modal>
     </div>
   );
 };
 
-export default BlogSeoTable;
+export default PackageSeoTable;

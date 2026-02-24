@@ -4,20 +4,20 @@ import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
 import { PlusCircle } from 'lucide-react';
 import Modal from '@/components/Modal';
-import { getColumns } from './BlogImageSeoColumns';
+import { getColumns } from './PackageImageSeoColumns';
 import DeleteModal from '@/components/DeleteModal';
-import { useGetBlogImageSeo } from '../hooks/useGetBlogImageSeo';
-import { useDeleteBlogImageSeo } from '../hooks/useDeleteBlogImageSeo';
-import type { IBlogImageSeoListItem } from '../interface/IBlogImageSeo';
-import BlogImageSeoFilterList from './BlogImageSeoFilterList';
-import CreateBlogImageSeoModal from '../modal/CreateBlogImageSeoModal';
-import UpdateBlogImageSeoModal from '../modal/UpdateBlogImageSeoModal';
+import { useGetPackageImageSeo } from '../hooks/useGetPackageImageSeo';
+import { useDeletePackageImageSeo } from '../hooks/useDeletePackageImageSeo';
+import type { IPackageImageSeoListItem } from '../interface/IPackageImageSeo';
+import CreatePackageImageSeoModal from '../modal/CreatePackageImageSeoModal';
+import UpdatePackageImageSeoModal from '../modal/UpdatePackageImageSeoModal';
+import PackageImageSeoFilterList from './PackageImageSeoFilterList';
 
-const BlogImageSeoTable: React.FC = () => {
+const PackageImageSeoTable: React.FC = () => {
   const {
-    blogImageSeoData,
-    isLoading: isGetBlogLoading,
-    isSuccess: isGetBlogSuccess,
+    packageImageSeoData,
+    isLoading: isGetPackageImageSeoLoading,
+    isSuccess: isGetPackageImageSeoSuccess,
     createModal,
     updateId,
     updateModal,
@@ -29,17 +29,17 @@ const BlogImageSeoTable: React.FC = () => {
     setRowSelection,
     search,
     setSearch,
-  } = useGetBlogImageSeo();
+  } = useGetPackageImageSeo();
 
   const {
     deleteModal,
     deleteIdState,
     isLoading: isDeleteLoading,
     handleDelete,
-  } = useDeleteBlogImageSeo();
+  } = useDeletePackageImageSeo();
 
   const columns = getColumns({
-    blogImageSeoData,
+    packageImageSeoData,
     updateId,
     updateModal,
     deleteIdState,
@@ -49,7 +49,7 @@ const BlogImageSeoTable: React.FC = () => {
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
       <div className="flex justify-between items-center h-12 gap-4">
-        <BlogImageSeoFilterList setSearch={setSearch} search={search} />
+        <PackageImageSeoFilterList setSearch={setSearch} search={search} />
         <button
           onClick={createModal.open}
           className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
@@ -60,23 +60,23 @@ const BlogImageSeoTable: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-hidden">
-        {isGetBlogSuccess ? (
-          <Table<IBlogImageSeoListItem>
+        {isGetPackageImageSeoSuccess ? (
+          <Table<IPackageImageSeoListItem>
             columns={columns}
-            data={blogImageSeoData?.data?.records || []}
+            data={packageImageSeoData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={blogImageSeoData?.data?.totalPages}
+            totalPage={packageImageSeoData?.data?.totalPages}
             pages={{
-              page: blogImageSeoData?.data?.currentPage || page,
-              pageSize: blogImageSeoData?.data?.perPage || pageSize,
+              page: packageImageSeoData?.data?.currentPage || page,
+              pageSize: packageImageSeoData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={blogImageSeoData?.data?.totalRecords}
+            totalItem={packageImageSeoData?.data?.totalRecords}
             maxHeight="400px"
           />
-        ) : isGetBlogLoading ? (
+        ) : isGetPackageImageSeoLoading ? (
           <LoadingScreen />
         ) : (
           <ErrorMessage />
@@ -90,15 +90,15 @@ const BlogImageSeoTable: React.FC = () => {
         isLoading={isDeleteLoading}
       />
 
-      <Modal isOpen={createModal.isOpen} name="Create Blog Image Seo" onOpenChange={createModal.toggle}>
-        <CreateBlogImageSeoModal closeModal={createModal.close} />
+      <Modal isOpen={createModal.isOpen} name="Create Package Image Seo" onOpenChange={createModal.toggle}>
+        <CreatePackageImageSeoModal closeModal={createModal.close} />
       </Modal>
 
-      <Modal isOpen={updateModal.isOpen} name="Update Blog Image Seo" onOpenChange={updateModal.toggle}>
-        <UpdateBlogImageSeoModal updateId={updateId.values} closeModal={updateModal.close} />
+      <Modal isOpen={updateModal.isOpen} name="Update Package Image Seo" onOpenChange={updateModal.toggle}>
+        <UpdatePackageImageSeoModal updateId={updateId.values} closeModal={updateModal.close} />
       </Modal>
     </div>
   );
 };
 
-export default BlogImageSeoTable;
+export default PackageImageSeoTable;

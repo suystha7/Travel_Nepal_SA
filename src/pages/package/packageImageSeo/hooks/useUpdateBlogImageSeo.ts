@@ -6,52 +6,58 @@ import type { ApiResponse } from '@/api/api.error';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import handleErrors from '@/api/api.error';
 import { useMemo } from 'react';
-import { BlogImageSeoSchema, type blogImageSeoFormField } from '../schema/BlogImageSeoSchema';
-import { useGetBlogImageSeoDetails } from './useGetBlogImageSeoDetails';
+import {
+  PackageImageSeoSchema,
+  type packageImageSeoFormField,
+} from '../schema/PackageImageSeoSchema';
+import { useGetPackageImageSeoDetails } from './useGetPackageImageSeoDetails';
 
 interface IProps {
   closeModal: () => void;
   updateId: string;
 }
 
-interface ILookupRecordBlog {
+interface ILookupRecordPackage {
   id: number | string;
-  title: string;
+  name: string;
 }
 
 export const useUpdateBlogImageSeo = ({ closeModal, updateId }: IProps) => {
   const [updateBlogImageSeo, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const { data, isLoading } = useGetBlogImageSeoDetails({
+  const { data, isLoading } = useGetPackageImageSeoDetails({
     id: updateId,
   });
 
-  const initialValues: blogImageSeoFormField = {
-    blog_id: data?.data?.blog?.id || '',
+  const initialValues: packageImageSeoFormField = {
+    package_id: data?.data?.package?.id || '',
     image: data?.data?.image || '',
     title: data?.data?.title || '',
     caption: data?.data?.caption || '',
     alt: data?.data?.alt || '',
   };
 
-  const formik = useFormik<blogImageSeoFormField>({
+  const formik = useFormik<packageImageSeoFormField>({
     initialValues,
     enableReinitialize: true,
-    validationSchema: BlogImageSeoSchema,
+    validationSchema: PackageImageSeoSchema,
     onSubmit: async values => {
       const formData = new FormData();
 
-      formData.append('blog_id', values.blog_id);
+      formData.append('package_id', values.package_id);
 
       if (values?.image && values?.image instanceof File) {
         formData.append('image', values?.image);
       }
 
       const response = (await updateBlogImageSeo({
-        url: Endpoints.blogs.blogImageSeo.update.replace(':id', updateId),
+        url: Endpoints.packages.packageImageSeo.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.blogs.blogImageSeo.list, apiTags.blogs.blogImageSeo.details],
+        invalidateTag: [
+          apiTags.packages.packageImageSeo.list,
+          apiTags.packages.packageImageSeo.details,
+        ],
       })) as ApiResponse;
 
       if (response?.data?.message) {
@@ -69,13 +75,13 @@ export const useUpdateBlogImageSeo = ({ closeModal, updateId }: IProps) => {
     tag: apiTags.blogs.blog.list,
   });
 
-  const toOptionsBlog = (items?: ILookupRecordBlog[]) =>
+  const toOptionsPackage = (items?: ILookupRecordPackage[]) =>
     items?.map(item => ({
-      label: item?.title,
+      label: item?.name,
       value: item?.id,
     })) || [];
 
-  const blogOptions = useMemo(() => toOptionsBlog(blogData?.data?.records), [blogData]);
+  const packageOptions = useMemo(() => toOptionsPackage(blogData?.data?.records), [blogData]);
 
-  return { formik, isError, isLoading, isSuccess, isGetDetailsLoading, blogOptions };
+  return { formik, isError, isLoading, isSuccess, isGetDetailsLoading, packageOptions };
 };

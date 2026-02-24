@@ -1,26 +1,26 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
-import type { BlogSeoDetailsResponse } from '../interface/IBlogSeo';
+import type { PackageSeoDetailsResponse } from '../interface/IPackageSeo';
 import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
 }
 
-export const useGetBlogSeoDetails = ({ id }: IProps) => {
+export const useGetPackageSeoDetails = ({ id }: IProps) => {
   const {
     data,
     isLoading,
     isError,
     isSuccess,
   } = useGetDataQuery<{
-    data: BlogSeoDetailsResponse;
+    data: PackageSeoDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.blogs.blogSeo.details.replace(':id', id),
-    tag: apiTags.blogs.blogSeo.details
+    url: Endpoints.packages.packageSeo.details.replace(':id', id),
+    tag: apiTags.packages.packageSeo.details
   });
 
   return { data, isLoading, isError, isSuccess };

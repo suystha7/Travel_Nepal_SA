@@ -5,18 +5,18 @@ import ReactSelect from '@/components/formField/ReactSelect';
 import type { IOption } from '@/types/common';
 
 interface IProps {
-  blogOptions: IOption[];
+  packageOptions: IOption[];
 }
 
-const BlogSeoForm: React.FC<IProps> = ({ blogOptions = [] }) => {
+const PackageSeoForm: React.FC<IProps> = ({ packageOptions = [] }) => {
   return (
     <div className="grid grid-cols-2 gap-x-6 gap-y-7 px-1">
       <ReactSelect
         required
-        label="Select Blog"
-        name="blog_id"
+        label="Select Package"
+        name="package_id"
         placeholder="Enter related page/entity"
-        options={blogOptions}
+        options={packageOptions}
       />
 
       <InputText required label="Meta Title" name="meta_title" placeholder="Enter Meta Title" />
@@ -63,4 +63,4 @@ const BlogSeoForm: React.FC<IProps> = ({ blogOptions = [] }) => {
   );
 };
 
-export default BlogSeoForm;
+export default PackageSeoForm;

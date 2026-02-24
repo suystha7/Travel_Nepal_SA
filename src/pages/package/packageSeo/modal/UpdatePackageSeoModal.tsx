@@ -1,21 +1,25 @@
 import { FormikProvider } from 'formik';
 import React from 'react';
-import { useUpdateBlogImageSeo } from '../hooks/useUpdateBlogImageSeo';
 import { Loader } from 'lucide-react';
-import BlogImageForm from '../partials/BlogImageSeoForm';
+import { useUpdatePackageSeo } from '../hooks/useUpdatePackageSeo';
+import PackageSeoForm from '../partials/PackageSeoForm';
 
 interface IProps {
   updateId: string;
   closeModal: () => void;
 }
 
-const UpdateBlogImageSeoModal: React.FC<IProps> = ({ closeModal, updateId }) => {
-  const { formik, isLoading, blogOptions } = useUpdateBlogImageSeo({ closeModal, updateId });
+const UpdatePackageSeoModal: React.FC<IProps> = ({ closeModal, updateId }) => {
+  const { formik, isLoading, packageOptions } = useUpdatePackageSeo({
+    closeModal,
+    updateId,
+  });
+
   return (
     <FormikProvider value={formik}>
       <form>
         <div className="max-h-[80vh] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <BlogImageForm blogOptions={blogOptions} />
+          <PackageSeoForm packageOptions={packageOptions} />
           <div className="my-4 flex items-center justify-end col-span-2 px-2">
             <button
               disabled={isLoading}
@@ -36,4 +40,4 @@ const UpdateBlogImageSeoModal: React.FC<IProps> = ({ closeModal, updateId }) => 
   );
 };
 
-export default UpdateBlogImageSeoModal;
+export default UpdatePackageSeoModal;

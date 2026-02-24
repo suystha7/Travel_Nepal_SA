@@ -4,20 +4,20 @@ import ReactSelect from '@/components/formField/ReactSelect';
 import type { IOption } from '@/types/common';
 import React from 'react';
 
-interface BlogImageSeoFormProps {
-  blogOptions: IOption[];
+interface PackageImageSeoFormProps {
+  packageOptions: IOption[];
 }
 
-const BlogImageSeoForm: React.FC<BlogImageSeoFormProps> = ({ blogOptions }) => {
+const PackageImageSeoForm: React.FC<PackageImageSeoFormProps> = ({ packageOptions }) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 bg-white container-shadow rounded-md px-2">
         <ReactSelect
           required
-          label="Blog Name"
-          name="blog_id"
-          options={blogOptions}
-          placeholder="Select blog name"
+          label="Package Name"
+          name="package_id"
+          options={packageOptions}
+          placeholder="Select package name"
         />
 
         <InputText required label="Image Title" name="title" placeholder="Enter image title" />
@@ -35,4 +35,4 @@ const BlogImageSeoForm: React.FC<BlogImageSeoFormProps> = ({ blogOptions }) => {
   );
 };
 
-export default BlogImageSeoForm;
+export default PackageImageSeoForm;

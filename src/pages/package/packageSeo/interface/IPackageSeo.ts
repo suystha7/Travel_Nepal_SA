@@ -1,7 +1,7 @@
 import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiResponse.interface';
 
 // list
-export interface IBlogSeoListItem {
+export interface IPackageSeoListItem {
   id: string;
   created_at: string;
   updated_at: string;
@@ -16,12 +16,12 @@ export interface IBlogSeoListItem {
   robots: string;
   structured_data: string;
   custom_header: string;
-  blog: { title: string; id: string };
+  package: { name: string; id: string };
   image_url: string;
   image_title: string;
   image_caption: string;
   image_alt: string;
 }
-export type BlogSeoListItemResponse = IPaginationResponse<IBlogSeoListItem>;
+export type PackageSeoListItemResponse = IPaginationResponse<IPackageSeoListItem>;
 
-export type BlogSeoDetailsResponse = IApiDetailsResponse<IBlogSeoListItem>;
+export type PackageSeoDetailsResponse = IApiDetailsResponse<IPackageSeoListItem>;

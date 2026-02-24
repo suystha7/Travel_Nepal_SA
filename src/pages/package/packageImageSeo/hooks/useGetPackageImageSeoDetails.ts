@@ -1,26 +1,26 @@
 import { useGetDataQuery } from '@/api/api';
 import { Endpoints } from '@/api/endpoints';
-import type { BlogImageSeoDetailsResponse } from '../interface/IBlogImageSeo';
+import type { PackageImageSeoDetailsResponse } from '../interface/IPackageImageSeo';
 import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
 }
 
-export const useGetBlogImageSeoDetails = ({ id }: IProps) => {
+export const useGetPackageImageSeoDetails = ({ id }: IProps) => {
   const {
     data,
     isLoading,
     isError,
     isSuccess,
   } = useGetDataQuery<{
-    data: BlogImageSeoDetailsResponse;
+    data: PackageImageSeoDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.blogs.blogImageSeo.details.replace(':id', id),
-    tag: apiTags.blogs.blogImageSeo.details
+    url: Endpoints.packages.packageImageSeo.details.replace(':id', id),
+    tag: apiTags.packages.packageImageSeo.details
   });
 
   return { data, isLoading, isError, isSuccess };

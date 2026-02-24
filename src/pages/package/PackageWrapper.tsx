@@ -6,6 +6,8 @@ import PackageCategory from '@/pages/package/packageCategory/PackageCategory';
 import Package from '@/pages/package/package/Package';
 import PackageGallery from '@/pages/package/packageGallery/PackageGallery';
 import PackageVideo from '@/pages/package/packageVideo/PackageVideo';
+import PackageSeo from './packageSeo/PackageSeo';
+import PackageImageSeo from './packageImageSeo/PackageImageSeo';
 
 export default function PackageWrapper() {
   const [searchParams] = useSearchParams();
@@ -14,11 +16,11 @@ export default function PackageWrapper() {
   const tabComponents: Record<string, React.ReactNode> = {
     'package-type': <PackageType />,
     'package-category': <PackageCategory />,
-    'package': <Package />,
+    package: <Package />,
     'package-gallery': <PackageGallery />,
     'package-video': <PackageVideo />,
-    'package-seo': <div>SEO</div>,
-    'package-image-seo': <div>Image SEO</div>,
+    'package-seo': <PackageSeo />,
+    'package-image-seo': <PackageImageSeo />,
   };
 
   return (

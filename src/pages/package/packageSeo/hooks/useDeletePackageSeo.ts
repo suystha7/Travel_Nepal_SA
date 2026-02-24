@@ -6,7 +6,7 @@ import { showSuccessMessage } from '@/utils/toast';
 import useDisclosure from '@/utils/useDisclosure';
 import useStringState from '@/utils/useStringState';
 
-export const useDeleteBlogSeo = () => {
+export const useDeletePackageSeo = () => {
   const deleteModal = useDisclosure();
   const deleteIdState = useStringState('');
 
@@ -14,8 +14,8 @@ export const useDeleteBlogSeo = () => {
 
   const handleDelete = async () => {
     const response = (await deleteData({
-      url: Endpoints.blogs.blogSeo.delete.replace(':id', deleteIdState.values),
-      invalidates: [apiTags.blogs.blogSeo.list],
+      url: Endpoints.packages.packageSeo.delete.replace(':id', deleteIdState.values),
+      invalidates: [apiTags.packages.packageSeo.list],
     })) as ApiResponse;
     if (response?.data?.message) {
       showSuccessMessage(response?.data?.message);

@@ -1,21 +1,21 @@
 import React from 'react';
-import { useCreateBlogImageSeo } from '../hooks/useCreateBlogImageSeo';
+import { useCreatePackageImageSeo } from '../hooks/useCreatePackageImageSeo';
 import { FormikProvider } from 'formik';
 import { Loader } from 'lucide-react';
-import BlogImageSeoForm from '../partials/BlogImageSeoForm';
+import PackageImageSeoForm from '../partials/PackageImageSeoForm';
 
 interface IProps {
   closeModal: () => void;
 }
 
-const CreateBlogImageSeoModal: React.FC<IProps> = ({ closeModal }) => {
-  const { formik, isLoading, blogOptions } = useCreateBlogImageSeo({ closeModal });
+const CreatePackageImageSeoModal: React.FC<IProps> = ({ closeModal }) => {
+  const { formik, isLoading, packageOptions } = useCreatePackageImageSeo({ closeModal });
 
   return (
     <FormikProvider value={formik}>
       <form>
         <div className="max-h-[80vh] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <BlogImageSeoForm blogOptions={blogOptions} />
+          <PackageImageSeoForm packageOptions={packageOptions} />
           <div className="my-4 flex items-center justify-end col-span-2 px-2">
             <button
               disabled={isLoading}
@@ -36,4 +36,4 @@ const CreateBlogImageSeoModal: React.FC<IProps> = ({ closeModal }) => {
   );
 };
 
-export default CreateBlogImageSeoModal;
+export default CreatePackageImageSeoModal;

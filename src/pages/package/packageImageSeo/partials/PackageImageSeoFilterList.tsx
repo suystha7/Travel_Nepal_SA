@@ -3,17 +3,17 @@
 // import PrintButton from "@/components/reusable-component/PrintButton";
 import SearchSection from '@/components/SearchSection';
 
-interface BlogImageSeoFilterListProps {
+interface PackageImageSeoFilterListProps {
   setSearch: (value: string) => void;
   search?: string;
   onFilter?: () => void;
 }
 
-const BlogImageSeoFilterList = ({
+const PackageImageSeoFilterList = ({
   setSearch,
   search,
   //   onFilter,
-}: BlogImageSeoFilterListProps) => {
+}: PackageImageSeoFilterListProps) => {
   return (
     <div className="flex items-center justify-between">
       <SearchSection
@@ -40,4 +40,4 @@ const BlogImageSeoFilterList = ({
   );
 };
 
-export default BlogImageSeoFilterList;
+export default PackageImageSeoFilterList;

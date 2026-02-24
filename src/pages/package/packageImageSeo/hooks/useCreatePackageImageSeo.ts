@@ -5,59 +5,62 @@ import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import { useFormik } from 'formik';
-import { BlogImageSeoSchema, type blogImageSeoFormField } from '../schema/BlogImageSeoSchema';
+import {
+  PackageImageSeoSchema,
+  type packageImageSeoFormField,
+} from '../schema/PackageImageSeoSchema';
 import { useMemo } from 'react';
 
 interface IProps {
   closeModal: () => void;
 }
 
-interface ILookupRecordBlog {
+interface ILookupRecordPackage {
   id: number | string;
-  title: string;
+  name: string;
 }
 
-export const useCreateBlogImageSeo = ({ closeModal }: IProps) => {
-  const [createBlogImageSeo, { isError, isLoading, isSuccess }] = usePostDataMutation();
+export const useCreatePackageImageSeo = ({ closeModal }: IProps) => {
+  const [createPackageImageSeo, { isError, isLoading, isSuccess }] = usePostDataMutation();
 
-  const initialValues: blogImageSeoFormField = {
-    blog_id: '',
+  const initialValues: packageImageSeoFormField = {
+    package_id: '',
     image: '',
     title: '',
     caption: '',
     alt: '',
   };
 
-  const { data: blogData } = useGetDataQuery({
-    url: Endpoints.blogs.blog.list,
+  const { data: packageData } = useGetDataQuery({
+    url: Endpoints.packages.package.list,
     params: { p: 1, page_size: 100 },
-    tag: apiTags.blogs.blog.list,
+    tag: apiTags.packages.package.list,
   });
 
-  const toOptions = (items?: ILookupRecordBlog[]) =>
+  const toOptions = (items?: ILookupRecordPackage[]) =>
     items?.map(item => ({
-      label: item?.title,
+      label: item?.name,
       value: item?.id,
     })) || [];
 
-  const blogOptions = useMemo(() => toOptions(blogData?.data?.records), [blogData]);
+  const packageOptions = useMemo(() => toOptions(packageData?.data?.records), [packageData]);
 
   const formik = useFormik({
     initialValues,
-    validationSchema: BlogImageSeoSchema,
+    validationSchema: PackageImageSeoSchema,
     onSubmit: async values => {
       const formData = new FormData();
 
-      formData.append('blog_id', values.blog_id);
+      formData.append('package_id', values.package_id);
 
       if (values?.image && values?.image instanceof File) {
         formData.append('image', values?.image);
       }
 
-      const response = (await createBlogImageSeo({
-        url: Endpoints.blogs.blogImageSeo.list,
+      const response = (await createPackageImageSeo({
+        url: Endpoints.packages.packageImageSeo.list,
         data: formData,
-        invalidateTag: [apiTags.blogs.blogImageSeo.list],
+        invalidateTag: [apiTags.packages.packageImageSeo.list],
       })) as ApiResponse;
 
       if (response?.data?.message) {
@@ -81,6 +84,6 @@ export const useCreateBlogImageSeo = ({ closeModal }: IProps) => {
     isError,
     isLoading,
     isSuccess,
-    blogOptions,
+    packageOptions,
   };
 };
