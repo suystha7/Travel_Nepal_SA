@@ -1,7 +1,6 @@
 import LogoSection from './partials/LogoSection';
-import NotificationSection from './partials/NotificationSection';
-import ProfileSection from './partials/ProfileSection';
 // import NotificationSection from './partials/NotificationSection';
+import ProfileSection from './partials/ProfileSection';
 import { IoIosMenu } from 'react-icons/io';
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
@@ -19,7 +18,7 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <NotificationSection />
+        {/* <NotificationSection /> */}
         <ProfileSection />
       </div>
     </header>

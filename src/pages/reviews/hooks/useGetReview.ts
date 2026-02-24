@@ -8,8 +8,9 @@ import type { RowSelectionState } from '@tanstack/react-table';
 import { useState } from 'react';
 
 export const useGetReview = () => {
-  const createModal = useDisclosure();
   const viewModal = useDisclosure();
+  const approveModal = useDisclosure();
+  const approveId = useStringState();
   const viewId = useStringState();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -32,7 +33,8 @@ export const useGetReview = () => {
     isError,
     isLoading,
     isSuccess,
-    createModal,
+    approveModal,
+    approveId,
     viewModal,
     viewId,
     page,

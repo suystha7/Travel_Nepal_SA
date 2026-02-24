@@ -69,7 +69,7 @@ const ProfileSection = () => {
             <Link
               to={PATH.accountSettings.profile}
               onClick={handleAccountSettings}
-              className="flex items-center gap-3 hover:bg-secondary-50 px-4 py-2.5 w-full text-text-main text-sm transition-colors duration-150 hover:cursor-pointer"
+              className="flex items-center gap-3 hover:bg-primary-50 px-4 py-2.5 w-full text-text-main text-sm transition-colors duration-150 hover:cursor-pointer"
             >
               <User2 className="w-4 h-4 text-black" />
               Account Settings

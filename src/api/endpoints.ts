@@ -1,3 +1,4 @@
+
 export const Endpoints = {
   auth: {
     login: '/user/login',
@@ -269,8 +270,8 @@ export const Endpoints = {
 
   reviews: {
     list: '/review',
+    update: '/review/:id',
     details: '/review/:id',
-    delete: '/review/:id',
   },
 
   testimonials: {

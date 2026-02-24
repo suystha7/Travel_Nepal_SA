@@ -5,11 +5,11 @@ import ErrorMessage from '@/components/ErrorMessage';
 import Modal from '@/components/Modal';
 import { useGetReview } from '../hooks/useGetReview';
 import { getColumns } from './ReviewColumns';
-import { useDeleteReview } from '../hooks/useDeleteReview';
-import DeleteModal from '@/components/DeleteModal';
 import type { IReviewItem } from '../interface/IReview';
 import ReviewFilterList from './ReviewFilterList';
 import ViewReviewModal from '../modal/ViewReviewModal';
+import ApproveModal from '../modal/ApproveReviewModal';
+import { useApproveReview } from '../hooks/useApproveReview';
 
 const ReviewTable: React.FC = () => {
   const {
@@ -26,21 +26,21 @@ const ReviewTable: React.FC = () => {
     setRowSelection,
     search,
     setSearch,
+    approveModal,
+    approveId,
   } = useGetReview();
 
-  const {
-    deleteModal,
-    deleteIdState,
-    isLoading: isDeleteLoading,
-    handleDelete,
-  } = useDeleteReview();
+  const { isLoading: isApproveLoading, handleApprove } = useApproveReview({
+    closeModal: approveModal.close,
+    approveId: approveId.values,
+  });
 
   const columns = getColumns({
     reviewData,
     viewId,
     viewModal,
-    deleteIdState,
-    deleteModal,
+    approveId,
+    approveModal,
   });
 
   return (
@@ -73,12 +73,18 @@ const ReviewTable: React.FC = () => {
         )}
       </div>
 
-      <DeleteModal
-        isOpen={deleteModal.isOpen}
-        onClose={deleteModal.close}
-        onDelete={handleDelete}
-        isLoading={isDeleteLoading}
-      />
+      {approveModal?.isOpen && approveId?.values && (
+        <ApproveModal
+          isOpen={approveModal.isOpen}
+          onClose={approveModal.close}
+          onApprove={handleApprove}
+          isLoading={isApproveLoading}
+          primaryMessage="Confirm Approval"
+          secondaryMessage="Are you sure you want to approve this review?"
+          primaryButton="Approve"
+          secondaryButton="Cancel"
+        />
+      )}
 
       <Modal isOpen={viewModal.isOpen} name="View Review" onOpenChange={viewModal.toggle}>
         <ViewReviewModal viewId={viewId.values} closeModal={viewModal.close} />

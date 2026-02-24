@@ -1,10 +1,11 @@
-import { Pencil, Trash2, Eye } from 'lucide-react';
+import { Pencil, Trash2, Eye, Check } from 'lucide-react';
 
 interface ActionButtonsProps {
   row: {
     original: {
       id: string;
       is_superuser?: boolean;
+      approve?: boolean;
     };
   };
   updateId?: { setValue: (value: string) => void };
@@ -13,6 +14,8 @@ interface ActionButtonsProps {
   deleteModal?: { open: () => void };
   viewId?: { setValue: (value: string) => void };
   viewModal?: { open: () => void };
+  approveId?: { setValue: (value: string) => void };
+  approveModal?: { open: () => void };
   disableDelete?: boolean;
   disableUpdate?: boolean;
 }
@@ -25,11 +28,14 @@ const ActionButtons = ({
   deleteModal,
   viewId,
   viewModal,
+  approveId,
+  approveModal,
   disableDelete,
   disableUpdate,
 }: ActionButtonsProps) => {
   const id = row.original.id;
   const isSuperuser = row.original.is_superuser;
+  const isApproved = row.original.approve;
 
   const handleDelete = () => {
     if (disableDelete) {
@@ -57,46 +63,78 @@ const ActionButtons = ({
     updateModal?.open();
   };
 
+  const handleApprove = () => {
+    approveId?.setValue(id);
+    approveModal?.open();
+  };
+
+  const Tooltip = ({ label }: { label: string }) => (
+    <span className="absolute left-full top-1/2 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-primary-500 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition pointer-events-none z-50">
+      {label}
+    </span>
+  );
+
   return (
     <div className="flex items-center gap-2">
       {viewId && viewModal && (
-        <button
-          onClick={() => {
-            viewId.setValue(id);
-            viewModal.open();
-          }}
-          className="text-blue-500 hover:text-blue-600 bg-blue-300/20 rounded-full p-2 cursor-pointer"
-        >
-          <Eye size={16} />
-        </button>
+        <div className="relative group">
+          <Tooltip label="View" />
+          <button
+            onClick={() => {
+              viewId.setValue(id);
+              viewModal.open();
+            }}
+            className="text-blue-500 hover:text-blue-600 bg-blue-300/20 rounded-full p-2 cursor-pointer"
+          >
+            <Eye size={16} />
+          </button>
+        </div>
+      )}
+
+      {!isApproved && approveId && approveModal && (
+        <div className="relative group">
+          <Tooltip label="Approve Review" />
+          <button
+            onClick={handleApprove}
+            className="text-green-500 hover:text-green-600 bg-green-300/20 rounded-full p-2 cursor-pointer"
+          >
+            <Check size={16} />
+          </button>
+        </div>
       )}
 
       {updateId && updateModal && (
-        <button
-          onClick={handleUpdate}
-          disabled={disableUpdate}
-          className={`rounded-full p-2 ${
-            disableUpdate
-              ? 'text-white bg-primary-200/50 cursor-not-allowed'
-              : 'text-primary-500 hover:text-primary-600 bg-primary-300/20 cursor-pointer'
-          }`}
-        >
-          <Pencil size={16} />
-        </button>
+        <div className="relative group">
+          <Tooltip label="Update" />
+          <button
+            onClick={handleUpdate}
+            disabled={disableUpdate}
+            className={`rounded-full p-2 ${
+              disableUpdate
+                ? 'text-white bg-primary-200/50 cursor-not-allowed'
+                : 'text-primary-500 hover:text-primary-600 bg-primary-300/20 cursor-pointer'
+            }`}
+          >
+            <Pencil size={16} />
+          </button>
+        </div>
       )}
 
       {deleteIdState && deleteModal && (
-        <button
-          onClick={handleDelete}
-          disabled={disableDelete}
-          className={`rounded-full p-2 ${
-            disableDelete
-              ? 'text-white bg-red-200/50 cursor-not-allowed'
-              : 'text-red-500 hover:text-red-600 bg-red-300/20 cursor-pointer'
-          }`}
-        >
-          <Trash2 size={16} />
-        </button>
+        <div className="relative group">
+          <Tooltip label="Delete" />
+          <button
+            onClick={handleDelete}
+            disabled={disableDelete}
+            className={`rounded-full p-2 ${
+              disableDelete
+                ? 'text-white bg-red-200/50 cursor-not-allowed'
+                : 'text-red-500 hover:text-red-600 bg-red-300/20 cursor-pointer'
+            }`}
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
       )}
     </div>
   );
