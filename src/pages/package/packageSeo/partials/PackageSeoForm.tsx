@@ -3,6 +3,7 @@ import InputFileWithPreview from '@/components/formField/InputFile';
 import InputText from '@/components/formField/InputText';
 import ReactSelect from '@/components/formField/ReactSelect';
 import type { IOption } from '@/types/common';
+import TextEditor from '@/components/TextEditor';
 
 interface IProps {
   packageOptions: IOption[];
@@ -10,7 +11,7 @@ interface IProps {
 
 const PackageSeoForm: React.FC<IProps> = ({ packageOptions = [] }) => {
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-7 px-1">
+    <div className="grid grid-cols-1 gap-x-6 gap-y-7 px-1">
       <ReactSelect
         required
         label="Select Package"
@@ -20,18 +21,16 @@ const PackageSeoForm: React.FC<IProps> = ({ packageOptions = [] }) => {
       />
 
       <InputText required label="Meta Title" name="meta_title" placeholder="Enter Meta Title" />
-      <InputText
+     <TextEditor
         required
         label="Meta Description"
         name="meta_description"
-        placeholder="Enter Meta Description"
       />
       <InputText required label="OG Title" name="og_title" placeholder="Enter Open Graph Title" />
-      <InputText
+      <TextEditor
         required
         label="OG Description"
         name="og_description"
-        placeholder="Enter Open Graph Description"
       />
       <InputFileWithPreview label="OG Image" name="og_image" />
 

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import InputSwitch from '@/components/formField/InputSwitch';
 // import InputFileWithPreview from '@/components/formField/InputFile';
 import { Eye, EyeOff } from 'lucide-react';
+import ReactSelect from '@/components/formField/ReactSelect';
+import InputFileWithPreview from '@/components/formField/InputFile';
 
 interface UserFormProps {
   isUpdate?: boolean;
@@ -42,13 +44,24 @@ const UserForm: React.FC<UserFormProps> = ({ isUpdate = false }) => {
         )}
 
         <InputText required label="Phone" name="phone_no" placeholder="Enter phone no.." />
-        {/* <InputFileWithPreview name="avatar" label="Avatar" required /> */}
-      </div>
 
-      <div className="flex gap-5 my-4 px-2">
-        <InputSwitch required label="Active" name="is_active" defaultChecked={true} />
-        <InputSwitch required label="Admin" name="is_admin" />
-        <InputSwitch required label="Staff" name="is_staff" />
+        <ReactSelect
+          required
+          label="Role"
+          name="role"
+          options={[
+            { label: 'Admin', value: 'admin' },
+            { label: 'Staff', value: 'staff' },
+          ]}
+        />
+
+        <InputFileWithPreview label="Avatar" name="avatar" />
+
+        {isUpdate && (
+          <div className="mt-12 pl-2">
+            <InputSwitch label="Active" name="is_active" defaultChecked />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import useDisclosure from '@/utils/useDisclosure';
 import { useState } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
 import { useDebounce } from '@/utils/useDebounce';
-import { getCookie } from '@/utils/cookie';
+import { Endpoints } from '@/api/endpoints';
 
 export const useGetProfile = () => {
   const createModal = useDisclosure();
@@ -18,16 +18,14 @@ export const useGetProfile = () => {
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce<string>(search, 500);
 
-  const id = getCookie('user_id') || '';
-
   const { data, isError, isLoading, isSuccess } = useGetDataQuery<{
     data: ProfileDetailsResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: `/user/profile/${id}`,
-    params: { p: page, page_size: pageSize, search: debouncedSearch },
+    url: Endpoints.auth.profile.list,
+    params: {p: page, page_size: pageSize, search: debouncedSearch },
     tag: apiTags.auth.profile.list,
   });
 

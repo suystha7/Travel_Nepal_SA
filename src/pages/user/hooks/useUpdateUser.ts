@@ -35,10 +35,13 @@ export const useUpdateUser = ({ closeModal, updateId }: IProps) => {
       const formData = new FormData();
 
       formData.append('full_name', values.full_name);
-      formData.append('avatar', values.avatar);
       formData.append('email', values.email);
       formData.append('phone_no', values.phone_no);
       formData.append('role', values.role);
+
+      if (values.avatar) {
+        formData.append('avatar', values.avatar)
+      }
 
       const response = (await updateUser({
         url: Endpoints.user.update.replace(':id', updateId),

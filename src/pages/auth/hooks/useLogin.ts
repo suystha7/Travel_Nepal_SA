@@ -6,7 +6,7 @@ import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import { useFormik } from 'formik';
 import type { ILoginData } from '../interface/ILogin';
 import { setCookie } from '@/utils/cookie';
-import { COOKIE_CONFIG } from '@/constants/paths';
+import { COOKIE_CONFIG, PATH } from '@/constants/paths';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
@@ -81,7 +81,7 @@ export const useLogin = () => {
               secure: false,
               sameSite: 'Lax',
             });
-            navigate('/location/country', { replace: true });
+            navigate(PATH.location.location, { replace: true });
           }
         }
       } finally {

@@ -1,14 +1,9 @@
 import * as Yup from 'yup';
 
 export const ProfileSchema = Yup.object().shape({
-  first_name: Yup.string(),
-  last_name: Yup.string(),
-  full_name: Yup.string(),
-  email: Yup.string(),
-  phone_no: Yup.string(),
-  // phone_no: Yup.string().matches(/^\d*$/, 'Phone number must contain only digits'),
-  // .max(10, 'Phone number cannot exceed 10 characters'),
-
+  full_name: Yup.string().required("Full Name is required"),
+  email: Yup.string().required("Email is required"),
+  phone_no: Yup.string().required("Phone No is required"),
   avatar: Yup.mixed(),
 });
 

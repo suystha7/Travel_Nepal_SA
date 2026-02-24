@@ -10,6 +10,8 @@ interface IProps {
 
 const CreateUserModal: React.FC<IProps> = ({ closeModal }) => {
   const { formik, isLoading } = useCreateUser({ closeModal });
+
+  console.log("form", formik.errors)
   return (
     <FormikProvider value={formik}>
       <form>

@@ -10,7 +10,7 @@ export const PATH = {
   accountSettings: {
     changePassword: '/account-settings/change-password',
     resetPassword: '/account-settings/reset-password',
-    profile: '/account-settings/profile',
+    profile: '/account-settings',
   },
   seo: '/seo',
   breadcrumb: '/breadcrumb',

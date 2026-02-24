@@ -31,7 +31,7 @@ export const aboutHeaderItem = [
   {
     id: 'mission-vision',
     icon: Target,
-    label: 'Mission/Vision',
+    label: 'Mission Vision',
     value: 'mission-vision',
     active: false,
     link: PATH.about.missionVision,

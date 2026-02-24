@@ -20,7 +20,7 @@ export const getColumns = ({
   updateModal,
   deleteIdState,
   deleteModal,
-  isSuperuser,  
+  isSuperuser,
   isAdmin,
   currentUserId,
   onResetPassword,
@@ -28,8 +28,7 @@ export const getColumns = ({
   {
     id: 'S.N.',
     size: 50,
-    cell: ({ row }) =>
-      row.index + (userData?.data?.pagingCounter ?? 0),
+    cell: ({ row }) => row.index + (userData?.data?.pagingCounter ?? 0),
   },
   {
     header: 'Avatar',
@@ -49,10 +48,6 @@ export const getColumns = ({
   {
     header: 'Email',
     accessorKey: 'email',
-  },
-  {
-    header: 'Phone No',
-    accessorKey: 'phone_no',
   },
   {
     header: 'Role',
@@ -107,8 +102,7 @@ export const getColumns = ({
       const disableDelete = isSelf || isTargetSuperuser;
       const disableUpdate = isTargetSuperuser;
 
-      const canReset =
-        (isSuperuser || isAdmin) && !isSelf && !isTargetSuperuser;
+      const canReset = (isSuperuser || isAdmin) && !isSelf && !isTargetSuperuser;
 
       return (
         <div className="flex items-center gap-4 group">

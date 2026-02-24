@@ -1,6 +1,7 @@
 import InputFileWithPreview from '@/components/formField/InputFile';
 import InputText from '@/components/formField/InputText';
 import ReactSelect from '@/components/formField/ReactSelect';
+import TextEditor from '@/components/TextEditor';
 import React from 'react';
 
 const seoForOptions = [
@@ -11,7 +12,7 @@ const seoForOptions = [
   { label: 'Reservation', value: 'reservation' },
   { label: 'Package', value: 'package' },
   { label: 'National Tour', value: 'national-tour' },
-  { label: 'International Tour', value: 'international-tour' }, 
+  { label: 'International Tour', value: 'international-tour' },
   { label: 'Privacy Policy', value: 'privacy-policy' },
   { label: 'Terms and Conditions', value: 'terms-and-conditions' },
 ];
@@ -42,7 +43,7 @@ const robotsOptions = [
 
 const SEOForm: React.FC = () => {
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-7 px-1">
+    <div className="grid grid-cols-1 gap-x-6 gap-y-7 px-1">
       <ReactSelect
         required
         label="SEO For"
@@ -52,19 +53,9 @@ const SEOForm: React.FC = () => {
       />
 
       <InputText required label="Meta Title" name="meta_title" placeholder="Enter Meta Title" />
-      <InputText
-        required
-        label="Meta Description"
-        name="meta_description"
-        placeholder="Enter Meta Description"
-      />
+      <TextEditor required label="Meta Description" name="meta_description" />
       <InputText required label="OG Title" name="og_title" placeholder="Enter Open Graph Title" />
-      <InputText
-        required
-        label="OG Description"
-        name="og_description"
-        placeholder="Enter Open Graph Description"
-      />
+      <TextEditor required label="OG Description" name="og_description" />
       <InputFileWithPreview label="OG Image" name="og_image" />
       <InputText required label="OG URL" name="og_url" placeholder="Enter Open Graph URL" />
       <InputText

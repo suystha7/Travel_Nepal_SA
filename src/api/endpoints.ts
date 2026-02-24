@@ -2,9 +2,9 @@ export const Endpoints = {
   auth: {
     login: '/user/login',
     profile: {
-      list: '/user/profile/',
-      details: '/user/profile/:id',
-      update: '/user/profile-update',
+      list: '/user/profile',
+      details: '/user/profile',
+      update: '/user/profile-update/:id',
     },
     resetPassword: '/user/reset-password',
     changePassword: '/user/change-password',
@@ -16,7 +16,7 @@ export const Endpoints = {
       create: '/country',
       update: '/country/:id',
       details: '/country/:id',
-      delete: '/country/:id',
+      delete: '/country/:id', 
     },
 
     city: {
@@ -87,7 +87,7 @@ export const Endpoints = {
     update: '/user/update/:id',
     details: '/user/profile/:id',
     delete: '/user/:id',
-  },
+  },  
 
   blogs: {
     blogCategory: {

@@ -27,14 +27,14 @@ export const blogHeaderItem = [
   {
     id: 'blog-seo',
     icon: TbSeo,
-    label: 'SEO',
+    label: 'Blog SEO',
     active: false,
     link: PATH.blogs.blogSeo,
   },
   {
     id: 'blog-image-seo',
     icon: TbSeo,
-    label: 'Image SEO',
+    label: 'Blog Image SEO',
     active: false,
     link: PATH.blogs.blogImageSeo,
   },

@@ -2,12 +2,12 @@ import { useGetDataQuery } from '@/api/api';
 // import { Endpoints } from '@/api/endpoints';
 import { apiTags } from '@/constants/tag';
 import useStringState from '@/utils/useStringState';
-import type { ProfileDetailsResponse } from '../interface/IChangePassword';
+import type { ChangePasswordListItemResponse } from '../interface/IChangePassword';
 import useDisclosure from '@/utils/useDisclosure';
 import { useState } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
 import { useDebounce } from '@/utils/useDebounce';
-import { getCookie } from '@/utils/cookie';
+import { Endpoints } from '@/api/endpoints';
 
 export const useGetChangePassword = () => {
   const createModal = useDisclosure();
@@ -19,17 +19,15 @@ export const useGetChangePassword = () => {
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce<string>(search, 500);
 
-  const id = getCookie('user_id') || '';
-
   const { data, isError, isLoading, isSuccess } = useGetDataQuery<{
-    data: ProfileDetailsResponse;
+    data: ChangePasswordListItemResponse;
     isLoading: boolean;
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: `/user/profile/${id}`,
+    url: Endpoints.auth.changePassword,
     params: { p: page, page_size: pageSize, search: debouncedSearch },
-    tag: apiTags.auth.profile.list,
+    tag: apiTags.auth.changePassword.list,
   });
 
   return {

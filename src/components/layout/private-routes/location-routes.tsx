@@ -6,5 +6,4 @@ export const locationRoutes = [
     path: PATH.location.location,
     element: <LocationWrapper />,
   },
- 
 ];

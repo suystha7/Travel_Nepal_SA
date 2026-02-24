@@ -54,7 +54,7 @@ const UserTable: React.FC = () => {
     updateModal,
     deleteIdState,
     deleteModal,
-    isSuperuser: profileData?.data?.is_superuser,
+    isSuperuser: profileData?.data?.is_superadmin,
     isAdmin: profileData?.data?.is_admin,
     onResetPassword: openResetModal,
     currentUserId: profileData?.data?.id,
@@ -63,9 +63,7 @@ const UserTable: React.FC = () => {
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
       <div className="flex justify-between items-center h-12 gap-4">
-        <UserFilterList setSearch={setSearch} search={search} />
-
-        {profileData?.data?.is_superuser && (     
+        <UserFilterList setSearch={setSearch} search={search} />  
           <button
             onClick={createModal.open}
             className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
@@ -73,7 +71,6 @@ const UserTable: React.FC = () => {
             <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
             <PlusCircle className="w-5 h-5 text-primary-500" />
           </button>
-        )}
       </div>
         
       <div className="flex-1 overflow-hidden">

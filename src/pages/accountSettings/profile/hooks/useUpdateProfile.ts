@@ -1,4 +1,4 @@
-import { useUpdatePutDataMutation } from '@/api/api';
+import { useUpdateDataMutation } from '@/api/api';
 import { apiTags } from '@/constants/tag';
 import { showErrorMessage, showSuccessMessage } from '@/utils/toast';
 import { useFormik } from 'formik';
@@ -8,13 +8,11 @@ import { useGetProfileDetails } from './useGetProfileDetails';
 import { Endpoints } from '@/api/endpoints';
 
 export const useUpdateProfile = (updateId: string) => {
-  const [updateProfile] = useUpdatePutDataMutation();
+  const [updateProfile] = useUpdateDataMutation();  
   const { data } = useGetProfileDetails({ id: updateId });
 
   const initialValues: profileFormField = {
     full_name: data?.data?.full_name || '',
-    first_name: data?.data?.first_name || '',
-    last_name: data?.data?.last_name || '',
     email: data?.data?.email || '',
     phone_no: data?.data?.phone_no || '',
     avatar: data?.data?.avatar || '',
@@ -25,19 +23,21 @@ export const useUpdateProfile = (updateId: string) => {
     validationSchema: ProfileSchema,
     enableReinitialize: true,
     onSubmit: async values => {
+      console.log("form", formik.errors)
       const formData = new FormData();
 
-      formData.append('full_name', String(values.full_name));
-      formData.append('phone_no', String(values.phone_no));
+      formData.append('full_name', values.full_name);
+      formData.append('email', values.email);
+      formData.append('phone_no', values.phone_no);
 
       if (values.avatar instanceof File || values.avatar instanceof Blob) {
         formData.append('avatar', values.avatar);
       }
 
       const response = (await updateProfile({
-        url: Endpoints.auth.profile.update,
+        url: Endpoints.auth.profile.update.replace(':id', updateId),
         data: formData,
-        invalidateTag: [apiTags.auth.profile.list],
+        invalidateTag: [apiTags.auth.profile.list, apiTags.auth.profile.details],
       })) as ApiResponse;
 
       if (response?.data?.message) {
@@ -53,7 +53,8 @@ export const useUpdateProfile = (updateId: string) => {
         handleErrors(response, formik.setErrors);
       }
     },
-  });
 
+  });
+  
   return { formik };
 };

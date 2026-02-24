@@ -51,10 +51,6 @@ export const getColumns = ({
       ),
     },
     {
-      header: 'Destination',
-      accessorKey: 'destination',
-    },
-    {
       header: 'Top Tours',
       accessorKey: 'is_top_tour',
       cell: ({ row }) => {

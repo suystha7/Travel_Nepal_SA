@@ -47,7 +47,6 @@ const PackageTable: React.FC = () => {
   });
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      {/* Table Header */}
       <div className="flex items-center justify-between">
         <PackageFilterList setSearch={setSearch} search={search} />
         <button
@@ -74,7 +73,7 @@ const PackageTable: React.FC = () => {
               setPageSize: setPageSize,
             }}
             totalItem={packageData?.data?.totalRecords}
-            maxHeight="400px"
+            maxHeight="450px"
           />
         ) : isGetPackageLoading ? (
           <LoadingScreen />

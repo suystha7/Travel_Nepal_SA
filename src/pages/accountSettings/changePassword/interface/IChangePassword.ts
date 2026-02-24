@@ -1,14 +1,14 @@
 import type { IApiDetailsResponse, IPaginationResponse } from '@/interface/apiResponse.interface';
 
 // list
-export interface IProfileListItem {
+export interface IChangePasswordListItem {
   id: string;
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
-export type ProfileListItemResponse = IPaginationResponse<IProfileListItem>;
+export type ChangePasswordListItemResponse = IPaginationResponse<IChangePasswordListItem>;
 
 // details
-export type ProfileDetailsResponse = IApiDetailsResponse<IProfileListItem>;
+export type ChangePasswordDetailsResponse = IApiDetailsResponse<IChangePasswordListItem>;

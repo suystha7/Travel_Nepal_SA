@@ -1,5 +1,7 @@
 import { useGetDataQuery } from '@/api/api';
 import type { ProfileDetailsResponse } from '../interface/IProfile';
+import { Endpoints } from '@/api/endpoints';
+import { apiTags } from '@/constants/tag';
 
 interface IProps {
   id: string;
@@ -12,7 +14,8 @@ export const useGetProfileDetails = ({ id }: IProps) => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: '/user/profile/' + id,
+    url: Endpoints.auth.profile.details.replace(':id', id),
+    tag: apiTags.auth.profile.details,
   });
 
   return { data, isLoading, isError, isSuccess };

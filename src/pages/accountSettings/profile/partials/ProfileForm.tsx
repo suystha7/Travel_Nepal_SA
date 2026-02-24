@@ -17,8 +17,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ isUpdate }) => {
       className="flex flex-col gap-6 bg-white container-shadow mt-4 rounded-md px-6 py-5"
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-7">
-        <InputText label="Full Name" name="full_name" placeholder="Enter last name" required />
-        <InputText disabled label="Email" name="email" placeholder="Enter email" required />
+        <InputText label="Full Name" name="full_name" placeholder="Enter full name" required />
+        <InputText label="Email" name="email" placeholder="Enter email" required />
         <InputText label="Phone No" name="phone_no" placeholder="Enter phone no" />
         <InputFileWithPreview name="avatar" label="Avatar" />
       </div>
