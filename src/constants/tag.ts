@@ -78,34 +78,6 @@ export const apiTags = {
       list: 'get_all_package_category',
       details: 'get_package_category_details',
     },
-    packageInclusion: {
-      list: 'get_all_package_inclusion',
-      details: 'get_package_inclusion_details',
-    },
-    packageExclusion: {
-      list: 'get_all_package_exclusion',
-      details: 'get_package_exclusion_details',
-    },
-    packageNotice: {
-      list: 'get_all_package_notice',
-      details: 'get_package_notice_details',
-    },
-    packageAccommodation: {
-      list: 'get_all_package_accommodation',
-      details: 'get_package_accommodation_details',
-    },
-    packageItinerary: {
-      list: 'get_all_package_itinerary',
-      details: 'get_package_itinerary_details',
-    },
-    packageHighlights: {
-      list: 'get_all_package_Highlights',
-      details: 'get_package_highlights_details',
-    },
-    packageMeals: {
-      list: 'get_all_package_meals',
-      details: 'get_package_meals_details',
-    },
     packageVideo: {
       list: 'get_all_package_video',
       details: 'get_package_video_details',
@@ -114,9 +86,13 @@ export const apiTags = {
       list: 'get_all_package_gallery',
       details: 'get_package_gallery_details',
     },
-    packageActivities: {
-      list: 'get_all_package_activities',
-      details: 'get_package_activities_details',
+    packageSeo: {
+      list: 'get_all_package_seo',
+      details: 'get_package_seo_details',
+    },
+    packageImageSeo: {
+      list: 'get_all_package_image_seo',
+      details: 'get_package_image_seo_details',
     },
   },
   settings: {
@@ -169,6 +145,14 @@ export const apiTags = {
     blogImage: {
       list: 'get_all_blog_image',
       details: 'get_blog_image_details',
+    },
+    blogSeo: {
+      list: 'get_all_blog_seo',
+      details: 'get_blog_seo_details',
+    },
+    blogImageSeo: {
+      list: 'get_all_blog_image_seo',
+      details: 'get_blog_image_seo_details',
     },
   },
   contactUs: {

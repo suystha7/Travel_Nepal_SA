@@ -9,6 +9,9 @@ import { useState } from 'react';
 import { useDebounce } from '@/utils/useDebounce';
 
 export const useGetCity = () => {
+
+
+  //params bara value line
   const createModal = useDisclosure();
   const updateModal = useDisclosure();
   const updateId = useStringState();
@@ -24,7 +27,8 @@ export const useGetCity = () => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints?.location.city.list,
+    // search params value
+    url:`${Endpoints?.location?.city?.list}`,
     params: { p: page, page_size: pageSize, search: debouncedSearch },
     tag: apiTags.location.city.list,
   });

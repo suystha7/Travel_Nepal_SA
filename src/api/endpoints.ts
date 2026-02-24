@@ -1,4 +1,3 @@
-
 export const Endpoints = {
   auth: {
     login: '/user/login',
@@ -112,6 +111,20 @@ export const Endpoints = {
       details: '/blog-image/:id',
       delete: '/blog-image/:id',
     },
+    blogImageSeo: {
+      list: '/blog-image-seo',
+      create: '/blog-image-seo',
+      update: '/blog-image-seo/:id',
+      details: '/blog-image-seo/:id',
+      delete: '/blog-image-seo/:id',
+    },
+    blogSeo: {
+      list: '/blog-seo',
+      create: '/blog-seo',
+      update: '/blog-seo/:id',
+      details: '/blog-seo/:id',
+      delete: '/blog-seo/:id',
+    },
   },
 
   packages: {
@@ -136,55 +149,6 @@ export const Endpoints = {
       details: '/package-category/:id',
       delete: '/package-category/:id',
     },
-    packageInclusion: {
-      list: '/package-inclusion',
-      create: '/package-inclusion',
-      update: '/package-inclusion/:id',
-      details: '/package-inclusion/:id',
-      delete: '/package-inclusion/:id',
-    },
-    packageExclusion: {
-      list: '/package-exclusion',
-      create: '/package-exclusion',
-      update: '/package-exclusion/:id',
-      details: '/package-exclusion/:id',
-      delete: '/package-exclusion/:id',
-    },
-    packageNotice: {
-      list: '/package-notice',
-      create: '/package-notice',
-      update: '/package-notice/:id',
-      details: '/package-notice/:id',
-      delete: '/package-notice/:id',
-    },
-    packageHighlight: {
-      list: '/package-highlight',
-      create: '/package-highlight',
-      update: '/package-highlight/:id',
-      details: '/package-highlight/:id',
-      delete: '/package-highlight/:id',
-    },
-    packageItinerary: {
-      list: '/package-itinerary',
-      create: '/package-itinerary',
-      update: '/package-itinerary/:id',
-      details: '/package-itinerary/:id',
-      delete: '/package-itinerary/:id',
-    },
-    packageAccommodation: {
-      list: '/package-accommodation',
-      create: '/package-accommodation',
-      update: '/package-accommodation/:id',
-      details: '/package-accommodation/:id',
-      delete: '/package-accommodation/:id',
-    },
-    packageMeals: {
-      list: '/package-meals',
-      create: '/package-meals',
-      update: '/package-meals/:id',
-      details: '/package-meals/:id',
-      delete: '/package-meals/:id',
-    },
     packageGallery: {
       list: '/image-gallery',
       create: '/image-gallery',
@@ -199,13 +163,20 @@ export const Endpoints = {
       details: '/package-video/:id',
       delete: '/package-video/:id',
     },
-    packageActivities: {
-      list: '/package-activities',
-      create: '/package-activities',
-      update: '/package-activities/:id',
-      details: '/package-activities/:id',
-      delete: '/package-activities/:id',
+    packageSeo:{
+      list: '/package-seo',
+      create: '/package-seo',
+      update: '/package-seo/:id',
+      details: '/package-seo/:id',
+      delete: '/package-seo/:id',
     },
+    packageImageSeo:{
+      list: '/package-image-seo',
+      create: '/package-image-seo',
+      update: '/package-image-seo/:id',
+      details: '/package-image-seo/:id',
+      delete: '/package-image-seo/:id',
+    }
   },
 
   booking: {

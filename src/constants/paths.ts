@@ -3,6 +3,7 @@ export const PATH = {
   dashboard: '/',
   user: '/user',
   location: {
+    location: '/location',
     country: '/location/country',
     city: '/location/city',
   },
@@ -16,24 +17,29 @@ export const PATH = {
   auth: '/auth',
   faq: '/faq',
   packages: {
-    packageOverview: '/packages/packages-overview',
+    packages: '/packages',
     packageType: '/packages/packages-type',
     packageCategory: '/packages/packages-category',
     packageGallery: '/packages/packages-gallery',
     packageVideo: '/packages/packages-video',
+    packageSeo: '/packages/packages-seo',
+    packageImageSeo: '/packages/packages-image-seo',
+
   },
   booking: '/booking',
   blogs: {
+    blog: '/blogs',
     blogCategory: '/blogs/blog-category',
-    blog: '/blogs/blog',
     blogImage: '/blogs/blog-image',
+    blogImageSeo: '/blogs/blog-image-seo',
+    blogSeo: '/blogs/blog-seo',
   },
   contactUs: '/contact-us',
   reviews: '/review',
   testimonials: '/testimonial',
   subscribers: '/subscribers',
   about: {
-    about: '/about/about-us',
+    about: '/about',
     stats: '/about/stats',
     whoWeAre: '/about/who-we-are',
     team: '/about/team',
@@ -42,6 +48,7 @@ export const PATH = {
   },
   reservation: '/reservation',
   settings: {
+    settings: '/settings',
     generalSettings: '/settings/general-settings',
     policy: '/settings/policy',
     socialMedia: '/settings/social-media',

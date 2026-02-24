@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface IHeaderItem {
   id: string;
@@ -14,7 +15,18 @@ interface IUserHeaderProps {
 }
 
 const HeaderSection = ({ items, classname }: IUserHeaderProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { pathname } = useLocation();
+
+  const defaultTab = items?.[0]?.id;
+  const activeTab = searchParams.get('tab') ?? defaultTab;
+
+  useEffect(() => {
+    if (!searchParams.get('tab') && defaultTab) {
+      setSearchParams({ tab: defaultTab });
+    }
+  }, [searchParams, setSearchParams, defaultTab]);
+
   const segments = pathname.split('/').filter(Boolean);
 
   const breadcrumb = segments.map((segment, i) => ({
@@ -47,13 +59,13 @@ const HeaderSection = ({ items, classname }: IUserHeaderProps) => {
 
       <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
         {items?.map(item => {
-          const isActive = pathname === item.link;
+          const isActive = activeTab === item.id;
           const Icon = item.icon;
 
           return (
             <Link
-              key={item.link}
-              to={item.link}
+              key={item.id}
+              to={`${pathname}?tab=${item.id}`}
               className={cn(
                 'flex items-center gap-2 px-4 py-3 text-sm rounded-md flex-shrink-0 transition',
                 isActive

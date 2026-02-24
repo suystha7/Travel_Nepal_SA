@@ -11,7 +11,7 @@ import UpdateBlogModal from '../modal/UpdateBlogModal';
 import { useDeleteBlog } from '../hooks/useDeleteBlog';
 import { getColumns } from './BlogColumns';
 import DeleteModal from '@/components/DeleteModal';
-import BlogFilterList from './BlogFilterList';
+import BlogFilterList from './BlogFilterList';  
 
 const BlogTable: React.FC = () => {
   const {
@@ -68,7 +68,7 @@ const BlogTable: React.FC = () => {
               setPageSize: setPageSize,
             }}
             totalItem={blogData?.data?.totalRecords}
-            maxHeight="500px"
+            maxHeight="400px"
           />
         ) : isGetBlogLoading ? (
           <LoadingScreen />

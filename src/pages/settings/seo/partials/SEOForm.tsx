@@ -3,21 +3,54 @@ import InputText from '@/components/formField/InputText';
 import ReactSelect from '@/components/formField/ReactSelect';
 import React from 'react';
 
+const seoForOptions = [
+  { label: 'Home', value: 'home' },
+  { label: 'About Us', value: 'about-us' },
+  { label: 'Contact Us', value: 'contact-us' },
+  { label: 'Blog', value: 'blog' },
+  { label: 'Reservation', value: 'reservation' },
+  { label: 'Package', value: 'package' },
+  { label: 'National Tour', value: 'national-tour' },
+  { label: 'International Tour', value: 'international-tour' }, 
+  { label: 'Privacy Policy', value: 'privacy-policy' },
+  { label: 'Terms and Conditions', value: 'terms-and-conditions' },
+];
+
+const robotsOptions = [
+  { label: 'index, follow', value: 'index, follow' },
+  { label: 'noindex, follow', value: 'noindex, follow' },
+  { label: 'index, nofollow', value: 'index, nofollow' },
+  { label: 'noindex, nofollow', value: 'noindex, nofollow' },
+  { label: 'max-image-preview:large', value: 'max-image-preview:large' },
+  {
+    label: 'index, follow, max-image-preview:large',
+    value: 'index, follow, max-image-preview:large',
+  },
+  {
+    label: 'noindex, follow, max-image-preview:large',
+    value: 'noindex, follow, max-image-preview:large',
+  },
+  {
+    label: 'index, nofollow, max-image-preview:large',
+    value: 'index, nofollow, max-image-preview:large',
+  },
+  {
+    label: 'noindex, nofollow, max-image-preview:large',
+    value: 'noindex, nofollow, max-image-preview:large',
+  },
+];
+
 const SEOForm: React.FC = () => {
   return (
-    <div className="gap-x-6 gap-y-7 grid grid-cols-2 px-1">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-7 px-1">
       <ReactSelect
         required
         label="SEO For"
         name="seo_for"
-        placeholder="Enter related page/entity"
-        options={[
-          { label: 'Dashboard', value: 'Dashboard' },
-          { label: 'About Us', value: 'about-us' },
-          { label: 'Contact', value: 'contact' },
-          { label: 'Menu', value: 'menu' },
-        ]}
+        placeholder="Select page/entity"
+        options={seoForOptions}
       />
+
       <InputText required label="Meta Title" name="meta_title" placeholder="Enter Meta Title" />
       <InputText
         required
@@ -40,31 +73,11 @@ const SEOForm: React.FC = () => {
         name="canonical_url"
         placeholder="Enter Canonical URL"
       />
+
       <ReactSelect
         label="Robots"
         name="robots"
-        options={[
-          { label: 'index, follow', value: 'index, follow' },
-          { label: 'noindex, follow', value: 'noindex, follow' },
-          { label: 'index, nofollow', value: 'index, nofollow' },
-          { label: 'noindex, nofollow', value: 'noindex, nofollow' },
-          {
-            label: 'max-image-preview:large, index, follow',
-            value: 'max-image-preview:large, index, follow',
-          },
-          {
-            label: 'max-image-preview:large, noindex, follow',
-            value: 'max-image-preview:large, noindex, follow',
-          },
-          {
-            label: 'max-image-preview:large, index, nofollow',
-            value: 'max-image-preview:large, index, nofollow',
-          },
-          {
-            label: 'max-image-preview:large, noindex, nofollow',
-            value: 'max-image-preview:large, noindex, nofollow',
-          },
-        ]}
+        options={robotsOptions}
         placeholder="Select Robots Option"
       />
     </div>

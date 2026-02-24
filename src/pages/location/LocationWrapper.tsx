@@ -1,14 +1,17 @@
 import HeaderSection from '@/common/HeaderTabs';
 import { locationHeaderItem } from './LocationHeaderTabs';
-import { Outlet } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import Country from './country/Country';
+import City from './city/City';
 
 export default function LocationWrapper() {
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get('tab') ?? 'country';
+  
   return (
     <>
       <HeaderSection items={locationHeaderItem} />
-      <div className="flex-1 flex flex-col overflow-y-hidden">
-        <Outlet />
-      </div>
+      {tab === 'country' ? <Country /> : <City />}
     </>
   );
 }

@@ -3,11 +3,11 @@ import { ChartPie, Cog, ScrollText, TrendingUp } from 'lucide-react';
 
 export const settingsHeaderItem = [
   {
-    id: 'generalSettings',
+    id: 'general-settings',
     icon: Cog,
     label: 'General Settings',
     active: false,
-    link: PATH.settings.generalSettings,
+    link: PATH.settings.settings,
   },
   {
     id: 'policy',
@@ -17,14 +17,14 @@ export const settingsHeaderItem = [
     link: PATH.settings.policy,
   },
   {
-    id: 'socialMedia',
+    id: 'social-media',
     icon: ChartPie,
     label: 'Social Media',
     active: false,
     link: PATH.settings.socialMedia,
   },
   {
-    id: 'staticSeo',
+    id: 'static-seo',
     icon: TrendingUp,
     label: 'Static SEO',
     active: false,

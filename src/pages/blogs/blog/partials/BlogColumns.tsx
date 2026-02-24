@@ -57,18 +57,18 @@ export const getColumns = ({
         return <span>{row.original?.author?.name}</span>;
       },
     },
-    {
-      header: 'Popular',
-      accessorKey: 'is_popular',
-      cell: ({ row }) => {
-        const isActive = row.original.is_popular;
-        return (
-          <div className="flex items-center gap-2">
-            <span className="capitalize">{isActive ? 'Yes' : 'No'}</span>
-          </div>
-        );
-      },
-    },
+    // {
+    //   header: 'Popular',
+    //   accessorKey: 'is_popular',
+    //   cell: ({ row }) => {
+    //     const isActive = row.original.is_popular;
+    //     return (
+    //       <div className="flex items-center gap-2">
+    //         <span className="capitalize">{isActive ? 'Yes' : 'No'}</span>
+    //       </div>
+    //     );
+    //   },
+    // },
 
     {
       header: 'Action',
