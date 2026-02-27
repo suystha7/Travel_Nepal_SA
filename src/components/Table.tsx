@@ -121,7 +121,7 @@ const Table = <T,>({
               maxWidth: header.column.columnDef.maxSize
             }}
             className={cn(
-              'py-3 text-primary-500 bg-white border-b border-primary-200',
+              'py-3 text-primary-500 bg-white border-b border-primary-100',
               tHeadCellClassName
             )}
           >
@@ -151,9 +151,9 @@ const Table = <T,>({
               minWidth: cell.column.columnDef.minSize,
               maxWidth: cell.column.columnDef.maxSize
             }}
-            className="px-5 py-3 border-b border-primary-200"
+            className="px-5 py-3 border-b border-primary-100"
           >
-            <div className="flex justify-center items-center text-center">
+            <div className="flex justify-center items-center text-center text-sm">
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </div>
           </td>
@@ -166,7 +166,7 @@ const Table = <T,>({
   return (
     <div
       className={cn(
-        'w-full border border-primary-200 rounded-xl overflow-x-hidden bg-white',
+        'w-full border border-primary-100 rounded-xl overflow-x-hidden bg-white',
         mainClassName
       )}
     >
