@@ -45,7 +45,7 @@ export const getColumns = ({
       <img
         src={row.original.image}
         alt={row.original.title || 'Booking image'}
-        className="w-16 h-16 object-cover rounded-md"
+        className="w-16 h-16 object-cover rounded-full"
       />
     ),
   },

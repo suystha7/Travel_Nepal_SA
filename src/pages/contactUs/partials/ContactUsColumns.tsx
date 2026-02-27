@@ -41,7 +41,7 @@ export const getColumns = ({
 
   {
     header: 'Action',
-    size: 150,
+    size: 200,
     cell: ({ row }) => (
       <ActionButtons
         row={{ ...row, original: { ...row.original, id: row.original.id || '' } }}

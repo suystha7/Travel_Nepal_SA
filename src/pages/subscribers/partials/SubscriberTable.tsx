@@ -6,6 +6,7 @@ import type { ISubscriberListItem } from '../interface/ISubscriber';
 import { useGetSubscriber } from '../hooks/useGetSubscriber';
 import { getColumns } from './SubscriberColumns';
 import SubscriberFilterList from './SubscriberFilterList';
+import Header from './Header';
 
 const SubscriberTable: React.FC = () => {
   const {
@@ -27,27 +28,30 @@ const SubscriberTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex items-center justify-between h-12 gap-4">
-        <SubscriberFilterList setSearch={setSearch} search={search} />
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <SubscriberFilterList setSearch={setSearch} search={search} />
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isSuccess ? (
           <Table<ISubscriberListItem>
             columns={columns}
             data={subscriberData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={subscriberData?.data?.totalPages}
+            totalPages={subscriberData?.data?.totalPages}
             pages={{
               page: subscriberData?.data?.currentPage || page,
               pageSize: subscriberData?.data?.perPage || pageSize,
               setPage,
               setPageSize,
             }}
-            totalItem={subscriberData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={subscriberData?.data?.totalRecords}
           />
         ) : isLoading ? (
           <LoadingScreen />

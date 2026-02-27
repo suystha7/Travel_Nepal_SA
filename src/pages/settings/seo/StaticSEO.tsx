@@ -3,7 +3,7 @@ import SEOTable from './partials/SEOTable';
 
 const StaticSEO: React.FC = () => {
   return (
-    <div>
+    <div className='flex flex-col'>
       <SEOTable />
     </div>
   );

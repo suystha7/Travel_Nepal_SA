@@ -2,7 +2,7 @@ import Table from '@/components/Table';
 import React from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Modal from '@/components/Modal';
 import { getColumns } from './BookingColumns';
 import DeleteModal from '@/components/DeleteModal';
@@ -44,7 +44,7 @@ const BookingTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
       {/* Table Header */}
       <div className="flex justify-between items-center">
         <p className="text-primary-900 typography-semi-bold-large">Bookings</p>
@@ -54,27 +54,26 @@ const BookingTable: React.FC = () => {
             className="flex items-center gap-2 px-4 py-2 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
           >
             <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-            <PlusCircle color="#0bd592" className="w-4 h-4" />
+            <Plus color="#0bd592" className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isGetBookingSuccess ? (
           <Table<IBookingListItem>
             columns={columns}
             data={bookingData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={bookingData?.data?.totalPages}
+            totalPages={bookingData?.data?.totalPages}
             pages={{
               page: bookingData?.data?.currentPage || page,
               pageSize: bookingData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={bookingData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={bookingData?.data?.totalRecords}
           />
         ) : isGetBookingLoading ? (
           <LoadingScreen />

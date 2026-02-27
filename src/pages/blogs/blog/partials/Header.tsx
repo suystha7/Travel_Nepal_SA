@@ -5,9 +5,9 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     <div>
-      <div className="bg-white px-4 py-3 rounded-md">
-        <Breadcrumb items={[{ name: 'Dashboard', link: PATH.dashboard }, { name: 'Blog' }]} />
-      </div>
+      <>
+        <Breadcrumb items={[{ name: 'Dashboard', link: PATH.dashboard }, { name: 'Blogs' }, { name: 'Blog' }]} />
+      </>
     </div>
   );
 };

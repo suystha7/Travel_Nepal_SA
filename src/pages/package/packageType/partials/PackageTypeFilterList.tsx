@@ -3,17 +3,17 @@
 // import PrintButton from "@/components/reusable-component/PrintButton";
 import SearchSection from '@/components/SearchSection';
 
-interface PackageFilterListProps {
+interface PackageTypeFilterListProps {
   setSearch: (value: string) => void;
   search?: string;
   onFilter?: () => void;
 }
 
-const PackageFilterList = ({
+const PackageTypeFilterList = ({
   setSearch,
   search,
   //   onFilter,
-}: PackageFilterListProps) => {
+}: PackageTypeFilterListProps) => {
   return (
     <div className="flex items-center justify-between">
       <SearchSection
@@ -40,4 +40,4 @@ const PackageFilterList = ({
   );
 };
 
-export default PackageFilterList;
+export default PackageTypeFilterList;

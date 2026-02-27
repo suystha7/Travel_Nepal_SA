@@ -2,7 +2,7 @@ import Table from '@/components/Table';
 import React from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Modal from '@/components/Modal';
 import DeleteModal from '@/components/DeleteModal';
 import type { IBreadcrumbListItem } from '../interface/IBreadcrumb';
@@ -12,6 +12,7 @@ import CreateBreadcrumbModal from '../modal/CreateBreadcrumbModal';
 import UpdateBreadcrumbModal from '../modal/UpdateBreadcrumbModal';
 import { getColumns } from './BreadcrumbColumns';
 import BreadcrumbFilterList from './BreadcrumbFilterList';
+import Header from './Header';
 
 const BreadcrumbTable: React.FC = () => {
   const {
@@ -42,34 +43,37 @@ const BreadcrumbTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex items-center justify-between h-12 gap-4">
-        <BreadcrumbFilterList setSearch={setSearch} search={search} />
-        <button
-          onClick={createModal.open}
-          className="flex items-center gap-2 px-4 py-3 border rounded-md cursor-pointer border-primary-500"
-        >
-          <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-          <PlusCircle className="w-5 h-5 text-primary-500" />
-        </button>
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <BreadcrumbFilterList setSearch={setSearch} search={search} />
+          <button
+            onClick={createModal.open}
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="typography-semi-bold-extra-small">Add</span>
+          </button>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isSuccess ? (
           <Table<IBreadcrumbListItem>
             columns={columns}
             data={breadcrumbData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={breadcrumbData?.data?.totalPages}
+            totalPages={breadcrumbData?.data?.totalPages}
             pages={{
               page: breadcrumbData?.data?.currentPage || page,
               pageSize: breadcrumbData?.data?.perPage || pageSize,
               setPage,
               setPageSize,
             }}
-            totalItem={breadcrumbData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={breadcrumbData?.data?.totalRecords}
           />
         ) : isLoading ? (
           <LoadingScreen />

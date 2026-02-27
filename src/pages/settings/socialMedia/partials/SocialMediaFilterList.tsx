@@ -1,12 +1,12 @@
 import SearchSection from '@/components/SearchSection';
 
-interface SocialMediaListProps {
+interface SocialMediaFilterListProps {
   setSearch: (value: string) => void;
   search?: string;
   onFilter?: () => void;
 }
 
-const SocialMediaList = ({ setSearch, search }: SocialMediaListProps) => {
+const SocialMediaFilterList = ({ setSearch, search }: SocialMediaFilterListProps) => {
   return (
     <div className="flex items-center justify-between">
       <SearchSection
@@ -19,4 +19,4 @@ const SocialMediaList = ({ setSearch, search }: SocialMediaListProps) => {
   );
 };
 
-export default SocialMediaList;
+export default SocialMediaFilterList;

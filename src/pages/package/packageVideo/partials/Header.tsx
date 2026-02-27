@@ -1,14 +1,19 @@
 import Breadcrumb from '@/components/BreadCrum';
+import { PATH } from '@/constants/paths';
 import React from 'react';
 
-interface HeaderProps {
-  items: { name: string; link?: string }[];
-}
-
-const Header: React.FC<HeaderProps> = ({ items }) => {
+const Header: React.FC = () => {
   return (
-    <div className="bg-white px-4 py-3 rounded-md">
-      <Breadcrumb items={items} />
+    <div>
+      <>
+        <Breadcrumb
+          items={[
+            { name: 'Dashboard', link: PATH.dashboard },
+            { name: 'Packages' },
+            { name: 'Package Videos' },
+          ]}
+        />
+      </>
     </div>
   );
 };

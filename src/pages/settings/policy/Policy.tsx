@@ -3,7 +3,7 @@ import PolicyTable from './partials/PolicyTable';
 
 const Policy: React.FC = () => {
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="flex flex-col">
       <PolicyTable />
     </div>
   );

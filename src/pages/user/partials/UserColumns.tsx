@@ -27,6 +27,7 @@ export const getColumns = ({
 }: ColumnsProps): ColumnDef<IUserListItem>[] => [
   {
     id: 'S.N.',
+    accessorKey: 'S.N.',
     size: 50,
     cell: ({ row }) => row.index + (userData?.data?.pagingCounter ?? 0),
   },
@@ -94,7 +95,7 @@ export const getColumns = ({
   },
   {
     header: 'Action',
-    size: 180,
+    size: 200,
     cell: ({ row }) => {
       const isSelf = row.original.id === currentUserId;
       const isTargetSuperuser = row.original.role === 'superadmin';

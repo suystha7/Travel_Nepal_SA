@@ -1,11 +1,10 @@
-import Header from './partials/Header';
+
 import SubscriberTable from './partials/SubscriberTable';
 
 export default function Subscriber() {
   return (
-    <>
-      <Header />
+    <div className='flex flex-col'>
       <SubscriberTable />
-    </>
+    </div>
   );
 }

@@ -24,19 +24,19 @@ export const getColumns = ({
     cell: ({ row }) => row.index + (seoData?.data?.pagingCounter ?? 0),
   },
   {
-    header: 'Meta Title',
-    accessorKey: 'meta_title',
-  },
-  {
     header: 'SEO For',
     accessorKey: 'seo_for',
     cell: ({ row }) =>
       row.original.seo_for?.slice(0).charAt(0).toUpperCase() + row.original.seo_for?.slice(1),
   },
+  {
+    header: 'Meta Title', 
+    accessorKey: 'meta_title',
+  },
 
   {
     header: 'Action',
-    size: 100,
+    size: 150,
     cell: ({ row }) => (
       <ActionButtons
         row={row}

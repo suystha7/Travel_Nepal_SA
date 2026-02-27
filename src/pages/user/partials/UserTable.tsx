@@ -13,7 +13,8 @@ import DeleteModal from '@/components/DeleteModal';
 import UserFilterList from './UserFilterList';
 import { useGetProfile } from '@/pages/accountSettings/profile/hooks/useGetProfile';
 import { useResetUserPassword } from '../hooks/useResetPassword';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import Header from './Header';
 
 const UserTable: React.FC = () => {
   const {
@@ -61,34 +62,37 @@ const UserTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex justify-between items-center h-12 gap-4">
-        <UserFilterList setSearch={setSearch} search={search} />  
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <UserFilterList setSearch={setSearch} search={search} />
           <button
             onClick={createModal.open}
-            className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
           >
-            <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-            <PlusCircle className="w-5 h-5 text-primary-500" />
+            <Plus className="w-5 h-5" />
+            <span className="typography-semi-bold-extra-small">Add</span>
           </button>
+        </div>
       </div>
-        
-      <div className="flex-1 overflow-hidden">
+
+      <div className="flex">
         {isGetUserSuccess ? (
           <Table<IUserListItem>
             data={getFilteredSortedUsers(userData?.data?.records?.filter(u => u.role !== 'user'))}
             columns={columns}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={userData?.data?.totalPages}
+            totalPages={userData?.data?.totalPages}
             pages={{
               page: userData?.data?.currentPage || page,
               pageSize: userData?.data?.perPage || pageSize,
               setPage,
               setPageSize,
             }}
-            totalItem={userData?.data?.totalRecords}
-            maxHeight="450px"
+            totalItems={userData?.data?.totalRecords}
           />
         ) : isGetUserLoading ? (
           <LoadingScreen />

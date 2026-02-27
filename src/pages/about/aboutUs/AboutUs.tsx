@@ -17,7 +17,7 @@ export const AboutUs = () => {
   if (!isSuccess) return <ErrorMessage />;
 
   return (
-    <div>
+    <div className='overflow-y-auto'>
       <FormikProvider value={isUpdate ? updateAboutUs.formik : createAboutUs.formik}>
         <AboutUsForm isUpdate={isUpdate} />
       </FormikProvider>

@@ -16,7 +16,7 @@ const SearchSection = ({
 }: ISearchSectionProps) => {
   return (
     <div
-      className={`flex items-center bg-white px-3 border border-primary-400 rounded-md ${styleClass}`}
+      className={`flex items-center bg-white px-3 border border-primary-400 rounded-full ${styleClass}`}
     >
       <Search size={20} className="mr-3 text-primary-400" />
       <input
@@ -26,7 +26,7 @@ const SearchSection = ({
           setSearch?.(e.target.value);
         }}
         placeholder="Search"
-        className="flex-1 bg-transparent outline-none placeholder:font-[500] text-primary-500 placeholder:text-primary-400 placeholder:text-sm h-10"
+        className="flex-1 bg-transparent outline-none placeholder:font-[500] text-primary-500 placeholder:text-primary-400 placeholder:text-sm h-8"
       />
       {showAdjustmentIcon && (
         <div className="flex justify-center items-center bg-secondary-50 ml-3 p-1 rounded-xl">

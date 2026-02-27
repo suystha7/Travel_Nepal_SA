@@ -16,7 +16,7 @@ const MissionVision = () => {
   if (!isSuccess) return <ErrorMessage />;
 
   return (
-    <div className="overflow-auto">
+    <div className="overflow-y-auto">
       <FormikProvider value={isUpdate ? updateMissionVision.formik : createMissionVision.formik}>
         <MissionVisionForm isUpdate={isUpdate} />
       </FormikProvider>

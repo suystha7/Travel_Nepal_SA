@@ -1,11 +1,9 @@
-import Header from './partials/Header';
 import TestimonialTable from './partials/TestimonialTable';
 
 export default function Testimonial() {
   return (
-    <>
-      <Header />
+    <div className="flex flex-col">
       <TestimonialTable />
-    </>
+    </div>
   );
 }

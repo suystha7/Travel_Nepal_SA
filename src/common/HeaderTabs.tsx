@@ -1,81 +1,55 @@
-import { cn } from '@/lib/utils'
-import { Link, useLocation, useSearchParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { cn } from '@/lib/utils';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface IHeaderItem {
-  id: string
-  icon: React.ComponentType<{ size?: number }>
-  label: string
-  link: string
+  id: string;
+  icon: React.ComponentType<{ size?: number }>;
+  label: string;
+  link: string;
 }
 
 interface IUserHeaderProps {
-  items?: IHeaderItem[]
-  classname?: string
+  items?: IHeaderItem[];
+  classname?: string;
 }
 
 const HeaderSection = ({ items, classname }: IUserHeaderProps) => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const { pathname } = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { pathname } = useLocation();
 
-  const defaultTab = items?.[0]?.id
-  const activeTab = searchParams.get('tab') ?? defaultTab
+  const defaultTab = items?.[0]?.id;
+  const activeTab = searchParams.get('tab') ?? defaultTab;
 
   useEffect(() => {
     if (!searchParams.get('tab') && defaultTab) {
-      setSearchParams({ tab: defaultTab })
+      setSearchParams({ tab: defaultTab });
     }
-  }, [searchParams, setSearchParams, defaultTab])
+  }, [searchParams, setSearchParams, defaultTab]);
 
-  const segments = pathname.split('/').filter(Boolean)
+  const segments = pathname.split('/').filter(Boolean);
 
   const breadcrumb = segments.map((segment, i) => ({
     label: segment.replace(/-/g, ' '),
-    path: '/' + segments.slice(0, i + 1).join('/')
-  }))
+    path: '/' + segments.slice(0, i + 1).join('/'),
+  }));
 
   if (activeTab) {
-    const tabItem = items?.find(item => item.id === activeTab)
+    const tabItem = items?.find(item => item.id === activeTab);
     if (tabItem) {
       breadcrumb.push({
         label: tabItem.label,
-        path: `${pathname}?tab=${tabItem.id}`
-      })
+        path: `${pathname}?tab=${tabItem.id}`,
+      });
     }
   }
 
   return (
     <section className={cn('w-full', classname)}>
-      <nav className="text-sm mb-4 text-gray-500 bg-white p-4 rounded-md">
-        <ol className="flex items-center gap-2">
-          <li>
-            <Link to="/" className="hover:text-primary-500 text-gray-400">
-              Dashboard
-            </Link>
-          </li>
-
-          {breadcrumb.map((item, i) => (
-            <li key={item.path} className="flex items-center gap-2 text-gray-400">
-              /
-              {i === breadcrumb.length - 1 ? (
-                <span className="text-primary-500 font-medium capitalize">{item.label}</span>
-              ) : (
-                <Link
-                  to={item.path}
-                  className="hover:text-primary-500 capitalize"
-                >
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-
       <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
         {items?.map(item => {
-          const isActive = activeTab === item.id
-          const Icon = item.icon
+          const isActive = activeTab === item.id;
+          const Icon = item.icon;
 
           return (
             <Link
@@ -91,11 +65,11 @@ const HeaderSection = ({ items, classname }: IUserHeaderProps) => {
               <Icon size={20} />
               <span>{item.label}</span>
             </Link>
-          )
+          );
         })}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeaderSection
+export default HeaderSection;

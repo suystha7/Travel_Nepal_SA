@@ -2,7 +2,7 @@ import Table from '@/components/Table';
 import React from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Modal from '@/components/Modal';
 import AlertModal from '@/components/DeleteModal';
 import { useGetSEO } from '../hooks/useGetSEO';
@@ -12,6 +12,7 @@ import CreateSEOModal from '../modal/CreateSEOModal';
 import UpdateSEOModal from '../modal/UpdateSEOModal';
 import { getColumns } from './SEOColumns';
 import SEOFilterList from './SEOFilterList';
+import Header from './Header';
 
 const SEOTable: React.FC = () => {
   const {
@@ -36,35 +37,37 @@ const SEOTable: React.FC = () => {
   const columns = getColumns({ seoData, updateId, updateModal, deleteIdState, deleteModal });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex justify-between items-center">
-        <SEOFilterList setSearch={setSearch} search={search} />
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
 
-        <button
-          onClick={createModal.open}
-          className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
-        >
-          <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-          <PlusCircle className="text-primary-500" size={18} />
-        </button>
+        <div className="flex justify-end gap-2 items-center">
+          <SEOFilterList setSearch={setSearch} search={search} />
+          <button
+            onClick={createModal.open}
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="typography-semi-bold-extra-small">Add</span>
+          </button>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isGetSEOSuccess ? (
           <Table<IStaticSEOListItem>
             columns={columns}
             data={seoData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={seoData?.data?.totalPages}
+            totalPages={seoData?.data?.totalPages}
             pages={{
               page: seoData?.data?.currentPage || page,
               pageSize: seoData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={seoData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={seoData?.data?.totalRecords}
           />
         ) : isGetSEOLoading ? (
           <LoadingScreen />

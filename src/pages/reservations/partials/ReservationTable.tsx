@@ -2,7 +2,7 @@ import Table from '@/components/Table';
 import React from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Modal from '@/components/Modal';
 import type { IReservationListItem } from '../interface/IReservation';
 import { useGetReservation } from '../hooks/useGetReseravation';
@@ -47,34 +47,33 @@ const ReservationTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
       <div className="flex items-center justify-between h-12 gap-4">
         <ReservationFilterList setSearch={setSearch} search={search} />
         <button
           onClick={createModal.open}
-          className="flex items-center gap-2 px-4 py-3 border border-primary-500 rounded-md cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
         >
-          <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-          <PlusCircle className="w-5 h-5 text-primary-500" />
+          <Plus className="w-5 h-5" />
+          <span className="typography-semi-bold-extra-small">Add</span>
         </button>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isSuccess ? (
           <Table<IReservationListItem>
             columns={columns}
             data={reservationData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={reservationData?.data?.totalPages}
+            totalPages={reservationData?.data?.totalPages}
             pages={{
               page: reservationData?.data?.currentPage || page,
               pageSize: reservationData?.data?.perPage || pageSize,
               setPage,
               setPageSize,
             }}
-            totalItem={reservationData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={reservationData?.data?.totalRecords}
           />
         ) : isLoading ? (
           <LoadingScreen />

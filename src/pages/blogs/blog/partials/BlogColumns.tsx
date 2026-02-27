@@ -31,7 +31,7 @@ export const getColumns = ({
         <img
           src={row.original.image}
           alt={row.original.title || 'Blog image'}
-          className="w-16 h-16 object-cover rounded-md"
+          className="w-16 h-16 object-cover rounded-full"
         />
       ),
     },
@@ -57,22 +57,11 @@ export const getColumns = ({
         return <span>{row.original?.author?.name}</span>;
       },
     },
-    // {
-    //   header: 'Popular',
-    //   accessorKey: 'is_popular',
-    //   cell: ({ row }) => {
-    //     const isActive = row.original.is_popular;
-    //     return (
-    //       <div className="flex items-center gap-2">
-    //         <span className="capitalize">{isActive ? 'Yes' : 'No'}</span>
-    //       </div>
-    //     );
-    //   },
-    // },
+  
 
     {
-      header: 'Action',
-      size: 100,
+      header: 'Actions',
+      size: 200,
       cell: ({ row }) => (
         <ActionButtons
           row={row}

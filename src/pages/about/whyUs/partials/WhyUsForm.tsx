@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, useFormikContext, FieldArray } from 'formik';
 import InputText from '@/components/formField/InputText';
 import TextEditor from '@/components/TextEditor';
-import { FaTrash, FaPlus } from 'react-icons/fa';
+import { Plus, Trash2 } from 'lucide-react';
 
 interface ListItem {
   title: string;
@@ -46,7 +46,7 @@ const WhyUsForm: React.FC<{ isUpdate: boolean }> = ({ isUpdate }) => {
                 }
                 className="flex items-center gap-2 text-xs bg-primary-600 text-white px-3 py-2 rounded hover:bg-primary-700 transition-all shadow-sm cursor-pointer"
               >
-                <FaPlus size={10} /> Add New Order Item
+                <Plus size={10} /> Add New Order Item
               </button>
             </div>
 
@@ -70,7 +70,7 @@ const WhyUsForm: React.FC<{ isUpdate: boolean }> = ({ isUpdate }) => {
                       onClick={() => remove(index)}
                       className="text-red-500 hover:bg-red-50 p-1.5 rounded transition-all"
                     >
-                      <FaTrash size={14} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
 

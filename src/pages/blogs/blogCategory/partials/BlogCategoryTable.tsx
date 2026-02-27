@@ -2,7 +2,6 @@ import Table from '@/components/Table';
 import React from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import ErrorMessage from '@/components/ErrorMessage';
-import { PlusCircle } from 'lucide-react';
 import Modal from '@/components/Modal';
 import type { IBlogCategoryListItem } from '../interface/IBlogCategory';
 import { useGetBlogCategory } from '../hooks/useGetBlogCategory';
@@ -12,6 +11,8 @@ import DeleteModal from '@/components/DeleteModal';
 import BlogCategoryFilterList from './BlogCategoryFilterList';
 import CreateBlogCategoryModal from '../modal/CreateBlogCategoryModal';
 import UpdateBlogCategoryModal from '../modal/UpdateBlogCategoryModal';
+import { Plus } from 'lucide-react';
+import Header from './Header';
 
 const BlogCategoryTable: React.FC = () => {
   const {
@@ -47,34 +48,37 @@ const BlogCategoryTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex justify-between items-center h-12 gap-4">
-        <BlogCategoryFilterList setSearch={setSearch} search={search} />
-        <button
-          onClick={createModal.open}
-          className="flex items-center gap-2 px-4 py-3 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
-        >
-          <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-          <PlusCircle className="w-5 h-5 text-primary-500" />
-        </button>
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <BlogCategoryFilterList setSearch={setSearch} search={search} />
+          <button
+            onClick={createModal.open}
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="typography-semi-bold-extra-small">Add</span>
+          </button>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isGetBlogSuccess ? (
           <Table<IBlogCategoryListItem>
             columns={columns}
             data={blogCategoryData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={blogCategoryData?.data?.totalPages}
+            totalPages={blogCategoryData?.data?.totalPages}
             pages={{
               page: blogCategoryData?.data?.currentPage || page,
               pageSize: blogCategoryData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={blogCategoryData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={blogCategoryData?.data?.totalRecords}
           />
         ) : isGetBlogLoading ? (
           <LoadingScreen />

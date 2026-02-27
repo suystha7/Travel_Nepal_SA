@@ -24,7 +24,7 @@ function Breadcrumb({
 }: BreadcrumbProps) {
   return (
     <nav className={`flex items-center ${className} p-1`} aria-label="Breadcrumb">
-      <ol className="flex items-center space-x-2 text-sm">
+      <ol className="flex items-center space-x-2 text-base">
         {items?.map((item: BreadcrumbItem, index: number) => {
           const isLast = index === items.length - 1;
 

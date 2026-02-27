@@ -6,7 +6,7 @@ export const blogHeaderItem = [
   {
     id: 'blog-category',
     icon: ChartBar,
-    label: 'Blog Category',
+    label: 'Category',
     active: false,
     link: PATH.blogs.blogCategory,
   },
@@ -20,21 +20,21 @@ export const blogHeaderItem = [
   {
     id: 'blog-image',
     icon: Image,
-    label: 'Blog Image',
+    label: 'Image',
     active: false,
     link: PATH.blogs.blogImage,
   },
   {
     id: 'blog-seo',
     icon: TbSeo,
-    label: 'Blog SEO',
+    label: 'SEO',
     active: false,
     link: PATH.blogs.blogSeo,
   },
   {
     id: 'blog-image-seo',
     icon: TbSeo,
-    label: 'Blog Image SEO',
+    label: 'Image SEO',
     active: false,
     link: PATH.blogs.blogImageSeo,
   },

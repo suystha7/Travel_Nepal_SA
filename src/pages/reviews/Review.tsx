@@ -1,11 +1,9 @@
-import Header from './partials/Header';
 import ReviewTable from './partials/ReviewTable';
 
 export default function Review() {
   return (
-    <>
-      <Header />
+    <div className="flex flex-col">
       <ReviewTable />
-    </>
+    </div>
   );
 }

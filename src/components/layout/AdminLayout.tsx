@@ -13,8 +13,6 @@ const AdminLayout = () => {
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
   const access = getCookie(COOKIE_CONFIG.accessToken);
   const refresh = getCookie(COOKIE_CONFIG.refreshToken);
-  // const access = true;
-  // const refresh = true;
   useEffect(() => {
     if (!access || !refresh) {
       clearAllCookies();

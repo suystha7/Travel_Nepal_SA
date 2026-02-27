@@ -10,6 +10,7 @@ import ReviewFilterList from './ReviewFilterList';
 import ViewReviewModal from '../modal/ViewReviewModal';
 import ApproveModal from '../modal/ApproveReviewModal';
 import { useApproveReview } from '../hooks/useApproveReview';
+import Header from './Header';
 
 const ReviewTable: React.FC = () => {
   const {
@@ -44,27 +45,30 @@ const ReviewTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex items-center justify-between h-12 gap-4">
-        <ReviewFilterList setSearch={setSearch} search={search} />
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <ReviewFilterList setSearch={setSearch} search={search} />
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isSuccess ? (
           <Table<IReviewItem>
             columns={columns}
             data={reviewData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={reviewData?.data?.totalPages}
+            totalPages={reviewData?.data?.totalPages}
             pages={{
               page: reviewData?.data?.currentPage || page,
               pageSize: reviewData?.data?.perPage || pageSize,
               setPage,
               setPageSize,
             }}
-            totalItem={reviewData?.data?.totalRecords}
-            maxHeight="520px"
+            totalItems={reviewData?.data?.totalRecords}
           />
         ) : isLoading ? (
           <LoadingScreen />

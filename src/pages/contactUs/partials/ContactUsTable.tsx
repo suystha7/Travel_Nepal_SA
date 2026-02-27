@@ -8,6 +8,7 @@ import { getColumns } from './ContactUsColumns';
 import ContactFilterList from './ContactFilterList';
 import Modal from '@/components/Modal';
 import ViewContactModal from '../modal/ViewContactModal';
+import Header from './Header';
 
 const ContactUsTable: React.FC = () => {
   const {
@@ -33,27 +34,30 @@ const ContactUsTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-5 rounded-[8px] overflow-hidden">
-      <div className="flex justify-between items-center">
-        <ContactFilterList setSearch={setSearch} search={search} />
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <ContactFilterList setSearch={setSearch} search={search} />
+        </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex">
         {isGetContactUsSuccess ? (
           <Table<IContactUsListItem>
             columns={column}
             data={contactUsData?.data?.records || []}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}
-            totalPage={contactUsData?.data?.totalPages}
+            totalPages={contactUsData?.data?.totalPages}
             pages={{
               page: contactUsData?.data?.currentPage || page,
               pageSize: contactUsData?.data?.perPage || pageSize,
               setPage: setPage,
               setPageSize: setPageSize,
             }}
-            totalItem={contactUsData?.data?.totalRecords}
-            maxHeight="500px"
+            totalItems={contactUsData?.data?.totalRecords}
           />
         ) : isGetContactUsLoading ? (
           <LoadingScreen />

@@ -31,7 +31,7 @@ export const getColumns = ({
   //     <img
   //       src={row.original.image}
   //       alt={row.original.title || 'Breadcrumb image'}
-  //       className="w-16 h-16 object-cover rounded-md"
+  //       className="w-16 h-16 object-cover rounded-full"
   //     />
   //   ),
   // },
@@ -50,7 +50,7 @@ export const getColumns = ({
 
   {
     header: 'Action',
-    size: 100,
+    size: 200,
     cell: ({ row }) => (
       <ActionButtons
         row={row}
