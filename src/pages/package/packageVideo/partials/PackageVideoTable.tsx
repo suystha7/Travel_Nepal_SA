@@ -64,7 +64,7 @@ const PackageVideoTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetPackageSuccess ? (
           <Table<IPackageVideoListItem>
             columns={columns}

@@ -59,7 +59,7 @@ const ReservationTable: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isSuccess ? (
           <Table<IReservationListItem>
             columns={columns}

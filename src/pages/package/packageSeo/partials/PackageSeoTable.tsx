@@ -63,7 +63,7 @@ const PackageSeoTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetPackageSeoSuccess ? (
           <Table<IPackageSeoListItem>
             columns={columns}

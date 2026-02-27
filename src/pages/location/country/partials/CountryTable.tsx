@@ -64,7 +64,7 @@ const CountryTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isSuccess ? (
           <Table<ICountryListItem>
             columns={columns}

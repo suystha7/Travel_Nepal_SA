@@ -78,7 +78,7 @@ const UserTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetUserSuccess ? (
           <Table<IUserListItem>
             data={getFilteredSortedUsers(userData?.data?.records?.filter(u => u.role !== 'user'))}

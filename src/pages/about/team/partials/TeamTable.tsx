@@ -59,7 +59,7 @@ const TeamTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetTeamSuccess ? (
           <Table<ITeamListItem>
             columns={columns}

@@ -63,7 +63,7 @@ const PackageGalleryTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetPackageSuccess ? (
           <Table<IPackageGalleryListItem>
             columns={columns}

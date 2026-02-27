@@ -64,7 +64,7 @@ const PackageTypeTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetPackageSuccess ? (
           <Table<IPackageTypeListItem>
             columns={columns}

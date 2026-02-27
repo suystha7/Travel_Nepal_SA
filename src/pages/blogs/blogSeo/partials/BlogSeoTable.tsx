@@ -58,7 +58,7 @@ const BlogSeoTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetBlogSeoSuccess ? (
           <Table<IBlogSeoListItem>
             columns={columns}

@@ -59,7 +59,7 @@ const FAQTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetFAQSuccess ? (
           <Table<IFAQListItem>
             columns={columns}

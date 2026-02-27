@@ -58,7 +58,7 @@ const PolicyTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetPolicySuccess ? (
           <Table<IPolicyListItem>
             columns={columns}

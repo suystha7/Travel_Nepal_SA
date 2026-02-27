@@ -43,7 +43,7 @@ const ContactUsTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetContactUsSuccess ? (
           <Table<IContactUsListItem>
             columns={column}

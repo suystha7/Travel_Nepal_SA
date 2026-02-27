@@ -58,7 +58,7 @@ const BlogTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetBlogSuccess ? (
           <Table<IBlogListItem>
             columns={columns}

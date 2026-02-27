@@ -53,7 +53,7 @@ const SEOTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex items-center justify-center">
         {isGetSEOSuccess ? (
           <Table<IStaticSEOListItem>
             columns={columns}
