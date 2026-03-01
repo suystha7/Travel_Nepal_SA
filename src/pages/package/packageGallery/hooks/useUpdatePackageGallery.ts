@@ -16,6 +16,10 @@ interface IProps {
   updateId: string;
 }
 
+interface IImageItem {
+  url: string;
+}
+
 export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
   const [updatePackageGallery, { isError, isLoading: isUpdating, isSuccess }] =
     useUpdatePutDataMutation();
@@ -23,8 +27,10 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
   const { data, isLoading: isGetDetailsLoading } = useGetPackageGalleryDetails({ id: updateId });
 
   const initialValues: packageGalleryFormField = {
-    url: Array.isArray(data?.data?.images) ? data.data.images.map((img: any) => img.url) : [],
-    package_id: data?.data?.package?.id || '',
+    url: Array.isArray(data?.data?.images)
+      ? (data.data.images as IImageItem[]).map(img => img.url)
+      : [],
+    package_id: data?.data?.package?.id ?? '',
   };
 
   const { packageData } = useGetPackage();
@@ -32,9 +38,9 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
   const packageOptions: IOption[] = useMemo(() => {
     return (
       packageData?.data?.records?.map(item => ({
-        label: item?.name,
-        value: item?.id,
-      })) || []
+        label: item.name,
+        value: item.id,
+      })) ?? []
     );
   }, [packageData]);
 
@@ -44,15 +50,15 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
     validationSchema: PackageGallerySchema,
     onSubmit: async values => {
       const formData = new FormData();
-      formData.append('package_id', values.package_id || '');
+      formData.append('package_id', values.package_id ?? '');
 
       const existingImages: { url: string }[] = [];
 
-      if (Array.isArray(values?.url)) {
-        values.url.forEach((img, index) => {
+      if (Array.isArray(values.url)) {
+        values.url.forEach((img: File | string, index: number) => {
           if (img instanceof File) {
             formData.append(`image[${index}]`, img);
-          } else if (typeof img === 'string') {
+          } else {
             existingImages.push({ url: img });
           }
         });
@@ -71,8 +77,14 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
         showSuccessMessage(response.data.message);
         closeModal();
       }
-      if (response?.error?.data?.message) showErrorMessage(response.error.data.message);
-      if (response?.error?.data?.errors) handleErrors(response, formik.setErrors);
+
+      if (response?.error?.data?.message) {
+        showErrorMessage(response.error.data.message);
+      }
+
+      if (response?.error?.data?.errors) {
+        handleErrors(response, formik.setErrors);
+      }
     },
   });
 

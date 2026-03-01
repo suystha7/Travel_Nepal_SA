@@ -9,7 +9,7 @@ export interface IBreadcrumbListItem {
   description: string;
   subtitle: string;
   type: string;
-  image: string;
+  image: { image: string };
   video: string;
 }
 export type BreadcrumbListItemResponse = IPaginationResponse<IBreadcrumbListItem>;

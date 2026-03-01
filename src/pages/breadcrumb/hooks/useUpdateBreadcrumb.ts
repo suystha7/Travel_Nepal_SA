@@ -17,10 +17,7 @@ export const useUpdateBreadcrumb = ({ closeModal, updateId }: IProps) => {
   const [updateBreadcrumb, { isError, isLoading: isGetDetailsLoading, isSuccess }] =
     useUpdatePutDataMutation();
 
-  const {
-    data: breadcrumbData,
-    isLoading,
-  } = useGetBreadcrumbDetails({ id: updateId });
+  const { data: breadcrumbData, isLoading } = useGetBreadcrumbDetails({ id: updateId });
 
   const initialValues: breadcrumbFormField = {
     title: breadcrumbData?.data?.title || '',
@@ -43,9 +40,18 @@ export const useUpdateBreadcrumb = ({ closeModal, updateId }: IProps) => {
       formData.append('subtitle', values.subtitle);
       formData.append('type', values.type);
 
-      if (values.image && typeof values.image !== 'string') {
-        formData.append('image', values.image as File);
+      const existingImages: { image: string }[] = [];
+
+      if (Array.isArray(values.image)) {
+        values.image.forEach((img: File | string, index: number) => {
+          if (img instanceof File) {
+            formData.append(`image[${index}]`, img);
+          } else {
+            existingImages.push({ image: img });
+          }
+        });
       }
+
       if (values?.video && values?.video instanceof File) {
         formData.append('video', values?.video);
       }
