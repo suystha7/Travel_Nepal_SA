@@ -29,7 +29,7 @@ export const getColumns = ({
       size: 100,
       cell: ({ row }) => (
         <img
-          src={row.original.image}
+          src={row.original.image?.image}
           alt={row.original.title || 'Blog image'}
           className="w-16 h-16 object-cover rounded-full"
         />
