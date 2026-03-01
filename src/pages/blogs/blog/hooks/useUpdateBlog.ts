@@ -83,6 +83,18 @@ export const useUpdateBlog = ({ closeModal, updateId }: IProps) => {
         formData.append('image', values.image as File);
       }
 
+      const existingImages: { image: string }[] = [];
+
+      if (Array.isArray(values.image)) {
+        values.image.forEach((img: File | string, index: number) => {
+          if (img instanceof File) {
+            formData.append(`image[${index}]`, img);
+          } else {
+            existingImages.push({ image: img });
+          }
+        });
+      }
+
       const response = (await updateBlog({
         url: Endpoints.blogs.blog.update.replace(':id', updateId),
         data: formData,

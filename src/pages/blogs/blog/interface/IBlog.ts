@@ -5,7 +5,7 @@ export interface IBlogListItem {
   id: string;
   title: string;
   description: string;
-  image: string;
+  image: {image: string};
   author: { id: string; name: string };
   category: { id: string; name: string };
   is_popular: boolean;
