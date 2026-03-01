@@ -45,7 +45,7 @@ const SEOTable: React.FC = () => {
           <SEOFilterList setSearch={setSearch} search={search} />
           <button
             onClick={createModal.open}
-            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-500 text-white rounded-md"
           >
             <Plus className="w-5 h-5" />
             <span className="typography-semi-bold-extra-small">Add</span>

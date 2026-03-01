@@ -7,9 +7,9 @@ import { ProfileSchema, type profileFormField } from '../schema/ProfileSchema';
 import { useGetProfileDetails } from './useGetProfileDetails';
 import { Endpoints } from '@/api/endpoints';
 
-export const useUpdateProfile = (updateId: string) => {
+export const useUpdateProfile = (userId: string) => {
   const [updateProfile] = useUpdateDataMutation();  
-  const { data } = useGetProfileDetails({ id: updateId });
+  const { data } = useGetProfileDetails({ id: userId });
 
   const initialValues: profileFormField = {
     full_name: data?.data?.full_name || '',
@@ -23,7 +23,6 @@ export const useUpdateProfile = (updateId: string) => {
     validationSchema: ProfileSchema,
     enableReinitialize: true,
     onSubmit: async values => {
-      console.log("form", formik.errors)
       const formData = new FormData();
 
       formData.append('full_name', values.full_name);
@@ -35,7 +34,7 @@ export const useUpdateProfile = (updateId: string) => {
       }
 
       const response = (await updateProfile({
-        url: Endpoints.auth.profile.update.replace(':id', updateId),
+        url: Endpoints.auth.profile.update.replace(':id', userId),
         data: formData,
         invalidateTag: [apiTags.auth.profile.list, apiTags.auth.profile.details],
       })) as ApiResponse;

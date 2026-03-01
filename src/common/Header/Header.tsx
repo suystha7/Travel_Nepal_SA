@@ -7,6 +7,7 @@ import { Menu } from 'lucide-react';
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const { profileData } = useGetProfile();
+  console.log("dara", profileData)
 
   const hour = new Date().getHours();
 

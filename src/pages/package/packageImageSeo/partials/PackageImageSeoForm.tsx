@@ -29,7 +29,7 @@ const PackageImageSeoForm: React.FC<PackageImageSeoFormProps> = ({ packageOption
         />
         <InputText required label="Image Alt Text" name="alt" placeholder="Enter image alt text" />
 
-        <InputFileWithPreview label="Blog Image Seo" name="image" required />
+        <InputFileWithPreview label="Package Image Seo" name="image" required />
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import { useGetProfile } from '@/pages/accountSettings/profile/hooks/useGetProfi
 import { useResetUserPassword } from '../hooks/useResetPassword';
 import { Plus } from 'lucide-react';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 const UserTable: React.FC = () => {
   const {
@@ -36,7 +37,10 @@ const UserTable: React.FC = () => {
 
   const { deleteModal, deleteIdState, handleDelete, isLoading: isDeleteLoading } = useDeleteUser();
 
+  const navigate = useNavigate();
+
   const { profileData } = useGetProfile();
+  const currentUserId = profileData?.data?.id ?? '';
 
   const [resetUserId, setResetUserId] = useState<string | null>(null);
 
@@ -59,6 +63,7 @@ const UserTable: React.FC = () => {
     isAdmin: profileData?.data?.is_admin,
     onResetPassword: openResetModal,
     currentUserId: profileData?.data?.id,
+    navigate,
   });
 
   return (
@@ -70,7 +75,7 @@ const UserTable: React.FC = () => {
           <UserFilterList setSearch={setSearch} search={search} />
           <button
             onClick={createModal.open}
-            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-500 text-white rounded-md"
           >
             <Plus className="w-5 h-5" />
             <span className="typography-semi-bold-extra-small">Add</span>
@@ -81,7 +86,7 @@ const UserTable: React.FC = () => {
       <div className="flex items-center justify-center">
         {isGetUserSuccess ? (
           <Table<IUserListItem>
-            data={getFilteredSortedUsers(userData?.data?.records?.filter(u => u.role !== 'user'))}
+            data={getFilteredSortedUsers(userData?.data?.records, currentUserId)}
             columns={columns}
             rowSelection={rowSelection}
             setRowSelection={setRowSelection}

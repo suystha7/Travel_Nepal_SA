@@ -121,7 +121,7 @@ const Table = <T,>({
               maxWidth: header.column.columnDef.maxSize
             }}
             className={cn(
-              'py-3 text-primary-500 bg-white border-b border-primary-100',
+              'py-3 text-primary-500 bg-white border-b border-primary-100 font-semibold',
               tHeadCellClassName
             )}
           >
@@ -165,13 +165,13 @@ const Table = <T,>({
 
   return (
     <div
-      className={cn(
-        'w-full border border-primary-100 rounded-xl overflow-x-hidden bg-white',
+     className={cn(
+        'w-full border border-primary-100 rounded-xl overflow-y-auto',
         mainClassName
       )}
     >
-      <div className="w-full overflow-auto">
-        <table className="w-full table-fixed border-separate border-spacing-0">
+      <div className="w-full overflow-auto max-h-[43vh] min-h-[43vh] overflow-y-auto">
+        <table className="w-full  table-fixed border-separate border-spacing-0">
           <thead className="bg-white">
             {table.getHeaderGroups().map(renderHeader)}
           </thead>
@@ -185,7 +185,7 @@ const Table = <T,>({
       </div>
 
       {isPagination && (
-        <div className="p-3">
+        <div className="p-3 ">
           <CustomPagination
             currentPage={pagination.pagination.pageIndex + 1}
             totalItems={totalItems}

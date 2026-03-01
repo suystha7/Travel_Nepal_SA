@@ -1,4 +1,5 @@
 import { Pencil, Trash2, Eye, Check } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 interface ActionButtonsProps {
   row: {
@@ -18,6 +19,7 @@ interface ActionButtonsProps {
   approveModal?: { open: () => void };
   disableDelete?: boolean;
   disableUpdate?: boolean;
+  onUpdate?: (id: string) => void;
 }
 
 const ActionButtons = ({
@@ -32,6 +34,7 @@ const ActionButtons = ({
   approveModal,
   disableDelete,
   disableUpdate,
+  onUpdate,
 }: ActionButtonsProps) => {
   const id = row.original.id;
   const isSuperuser = row.original.is_superuser;
@@ -40,9 +43,9 @@ const ActionButtons = ({
   const handleDelete = () => {
     if (disableDelete) {
       if (isSuperuser) {
-        alert("You can't delete a superuser account");
+        toast.error("You can't delete a superuser account");
       } else {
-        alert("You can't delete your own account.");
+        toast.error("You can't delete your own account.");
       }
       return;
     }
@@ -54,8 +57,15 @@ const ActionButtons = ({
   const handleUpdate = () => {
     if (disableUpdate) {
       if (isSuperuser) {
-        alert("You can't update a superuser account");
+        toast.error("You can't update a superuser account");
+      } else {
+        toast.error("You don't have permission to update this user");
       }
+      return;
+    }
+
+    if (onUpdate) {
+      onUpdate(id);
       return;
     }
 

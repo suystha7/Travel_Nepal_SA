@@ -22,7 +22,6 @@ const UserForm: React.FC<UserFormProps> = ({ isUpdate = false }) => {
           name="email"
           placeholder="Enter email.."
           type="email"
-          disabled={isUpdate}
         />
 
         {!isUpdate && (

@@ -71,7 +71,7 @@ const CustomPagination = ({
           <button
             onClick={() => handlePage(currentPage - 1)}
             disabled={currentPage === 1}
-            className="disabled:opacity-50 p-2 rounded-full disabled:cursor-not-allowed cursor-pointer"
+            className="disabled:opacity-50 p-2 rounded-md disabled:cursor-not-allowed cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -80,7 +80,7 @@ const CustomPagination = ({
             <button
               key={num}
               onClick={() => handlePage(num)}
-              className={`px-3 py-1 rounded-full text-sm cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-sm cursor-pointer ${
                 currentPage === num
                   ? 'bg-primary-500 text-white'
                   : 'text-gray-700 hover:bg-primary-400/80 hover:text-white'
@@ -93,7 +93,7 @@ const CustomPagination = ({
           <button
             onClick={() => handlePage(currentPage + 1)}
             disabled={currentPage === pageCount}
-            className="disabled:opacity-50 p-2 rounded-full disabled:cursor-not-allowed cursor-pointer"
+            className="disabled:opacity-50 p-2 rounded-md disabled:cursor-not-allowed cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

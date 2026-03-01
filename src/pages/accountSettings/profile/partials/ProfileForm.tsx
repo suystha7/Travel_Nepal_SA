@@ -1,14 +1,9 @@
-import React from 'react';
 import { Form, useFormikContext } from 'formik';
 import InputText from '@/components/formField/InputText';
 import type { IProfileListItem } from '../interface/IProfile';
 import InputFileWithPreview from '@/components/formField/InputFile';
 
-interface ProfileFormProps {
-  isUpdate: boolean;
-}
-
-const ProfileForm: React.FC<ProfileFormProps> = ({ isUpdate }) => {
+const ProfileForm = () => {
   const { handleSubmit } = useFormikContext<IProfileListItem>();
 
   return (
@@ -18,7 +13,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ isUpdate }) => {
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-7">
         <InputText label="Full Name" name="full_name" placeholder="Enter full name" required />
-        <InputText label="Email" name="email" placeholder="Enter email" required />
+        <InputText label="Email" name="email" placeholder="Enter email" required disabled/>
         <InputText label="Phone No" name="phone_no" placeholder="Enter phone no" />
         <InputFileWithPreview name="avatar" label="Avatar" />
       </div>
@@ -27,7 +22,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ isUpdate }) => {
           type="submit"
           className="px-4 py-2 rounded-md bg-primary-600 hover:bg-primary-700 text-white cursor-pointer"
         >
-          {isUpdate ? 'Update' : 'Add'}
+          Update
         </button>
       </div>
     </Form>

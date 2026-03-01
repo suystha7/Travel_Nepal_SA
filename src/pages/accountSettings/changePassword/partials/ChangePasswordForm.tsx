@@ -15,7 +15,7 @@ const ChangePasswordForm: React.FC = () => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-6 bg-white container-shadow mt-4 rounded-md px-6 py-5"
     >
-      <div className="grid grid-cols-3 gap-x-6 gap-y-7">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-7">
         <div className="relative">
           <InputText
             label="Old Password"

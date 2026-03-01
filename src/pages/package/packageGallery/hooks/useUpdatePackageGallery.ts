@@ -46,23 +46,16 @@ export const useUpdatePackageGallery = ({ closeModal, updateId }: IProps) => {
       const formData = new FormData();
       formData.append('package_id', values.package_id || '');
 
-      const newFiles: File[] = [];
       const existingImages: { url: string }[] = [];
 
       if (Array.isArray(values?.url)) {
-        values.url.forEach((img: any) => {
+        values.url.forEach((img, index) => {
           if (img instanceof File) {
-            newFiles.push(img);
+            formData.append(`image[${index}]`, img);
           } else if (typeof img === 'string') {
             existingImages.push({ url: img });
           }
         });
-      }
-
-      newFiles.forEach(file => formData.append('url', file));
-
-      if (existingImages.length) {
-        formData.append('existingImages', JSON.stringify(existingImages));
       }
 
       const response = (await updatePackageGallery({

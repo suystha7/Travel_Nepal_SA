@@ -4,12 +4,14 @@ import { LogOut, User2, UserRoundCog } from 'lucide-react';
 import { PATH } from '@/constants/paths';
 import { clearAllCookies } from '@/utils/cookie';
 import { useGetProfile } from '@/pages/accountSettings/profile/hooks/useGetProfile';
+// import Cookies from 'js-cookie';
 
 const ProfileSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { profileData } = useGetProfile();
+  const { profileData } = useGetProfile()
+
 
   const navigate = useNavigate();
   useEffect(() => {

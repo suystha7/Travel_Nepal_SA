@@ -47,15 +47,15 @@ const PackageGalleryTable: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-4 rounded-[8px] overflow-y-scroll">
+    <div className="flex flex-col flex-1 gap-6 bg-white container-shadow mt-4 px-6 py-4 rounded-[8px] overflow-y-scroll ">
      <div className="flex items-center justify-between">
         <Header />
 
         <div className="flex justify-end gap-2 items-center">
           <PackageGalleryFilterList setSearch={setSearch} search={search} />
-          <button
+         <button
             onClick={createModal.open}
-            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-400 text-white rounded-full"
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-500 text-white rounded-md"
           >
             <Plus className="w-5 h-5" />
             <span className="typography-semi-bold-extra-small">Add</span>
@@ -69,7 +69,7 @@ const PackageGalleryTable: React.FC = () => {
             columns={columns}
             data={packageGalleryData?.data?.records || []}
             rowSelection={rowSelection}
-            setRowSelection={setRowSelection}
+            setRowSelection={setRowSelection} 
             totalPages={packageGalleryData?.data?.totalPages}
             pages={{
               page: packageGalleryData?.data?.currentPage || page,

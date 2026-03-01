@@ -26,7 +26,7 @@ export const appRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to={PATH.dashboard} replace />,
+        element: <Navigate to={PATH.location.country} replace />,
       },
       ...dashboardRoutes,
       ...locationRoutes,

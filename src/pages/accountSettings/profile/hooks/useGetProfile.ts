@@ -24,11 +24,13 @@ export const useGetProfile = () => {
     isError: boolean;
     isSuccess: boolean;
   }>({
-    url: Endpoints.auth.profile.list,
+    url: Endpoints?.auth?.profile?.get,
     params: {p: page, page_size: pageSize, search: debouncedSearch },
     tag: apiTags.auth.profile.list,
-  });
+  }); 
 
+  console.log("data", data)
+  
   return {
     profileData: data,
     isError,

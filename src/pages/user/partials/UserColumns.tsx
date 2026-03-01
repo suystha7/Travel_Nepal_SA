@@ -1,6 +1,8 @@
 import ActionButtons from '@/components/ActionButtons';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { IUserListItem } from '../interface/IUser';
+import type { NavigateFunction } from 'react-router-dom';
+import { PATH } from '@/constants/paths';
 
 interface ColumnsProps {
   userData?: { data?: { users?: IUserListItem[]; pagingCounter?: number } };
@@ -12,6 +14,7 @@ interface ColumnsProps {
   isAdmin?: boolean;
   currentUserId?: string;
   onResetPassword?: (id: string) => void;
+  navigate: NavigateFunction;
 }
 
 export const getColumns = ({
@@ -24,6 +27,7 @@ export const getColumns = ({
   isAdmin,
   currentUserId,
   onResetPassword,
+  navigate,
 }: ColumnsProps): ColumnDef<IUserListItem>[] => [
   {
     id: 'S.N.',
@@ -95,18 +99,26 @@ export const getColumns = ({
   },
   {
     header: 'Action',
-    size: 200,
+    size: 320,
     cell: ({ row }) => {
       const isSelf = row.original.id === currentUserId;
       const isTargetSuperuser = row.original.role === 'superadmin';
 
       const disableDelete = isSelf || isTargetSuperuser;
-      const disableUpdate = isTargetSuperuser;
-
       const canReset = (isSuperuser || isAdmin) && !isSelf && !isTargetSuperuser;
 
+      const handleUpdate = (id: string) => {
+        if (isSelf) {
+          navigate(PATH.accountSettings.profile);
+          return;
+        }
+
+        updateId?.setValue(id);
+        updateModal?.open();
+      };
+
       return (
-        <div className="flex items-center gap-4 group">
+        <div className="flex items-center gap-3 whitespace-nowrap">
           <ActionButtons
             row={row}
             updateId={updateId}
@@ -114,7 +126,7 @@ export const getColumns = ({
             deleteIdState={deleteIdState}
             deleteModal={deleteModal}
             disableDelete={disableDelete}
-            disableUpdate={disableUpdate}
+            onUpdate={handleUpdate}
           />
 
           {canReset && (
@@ -131,11 +143,14 @@ export const getColumns = ({
   },
 ];
 
-export const getFilteredSortedUsers = (users?: IUserListItem[]) =>
+export const getFilteredSortedUsers = (
+  users?: IUserListItem[],
+  currentUserId?: string
+) =>
   (users || [])
-    .filter(user => user.role !== 'user')
+    .filter(user => user.role !== 'user' && user.id !== currentUserId)
     .sort((a, b) => {
-      if (a.role === 'superadmin') return -1;
-      if (b.role === 'superadmin') return 1;
-      return 0;
+      const rolePriority = { superadmin: 1, admin: 2, staff: 3 };
+      return (rolePriority[a.role as keyof typeof rolePriority] || 99) -
+             (rolePriority[b.role as keyof typeof rolePriority] || 99);
     });

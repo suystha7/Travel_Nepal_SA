@@ -25,6 +25,7 @@ export const useUpdateUser = ({ closeModal, updateId }: IProps) => {
     email: data?.data?.email || '',
     role: data?.data?.role || '',
     phone_no: data?.data?.phone_no || '',
+    is_active: data?.data?.is_active || false,
   };
 
   const formik = useFormik<userFormField>({
@@ -38,6 +39,7 @@ export const useUpdateUser = ({ closeModal, updateId }: IProps) => {
       formData.append('email', values.email);
       formData.append('phone_no', values.phone_no);
       formData.append('role', values.role);
+      formData.append('is_active', String(values.is_active));
 
       if (values.avatar) {
         formData.append('avatar', values.avatar)

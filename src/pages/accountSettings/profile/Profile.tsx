@@ -1,26 +1,20 @@
-import { FormikProvider } from 'formik';
-import LoadingScreen from '@/components/LoadingScreen';
-import ErrorMessage from '@/components/ErrorMessage';
-import { useGetProfile } from './hooks/useGetProfile';
-import { useUpdateProfile } from './hooks/useUpdateProfile';
-import ProfileForm from './partials/ProfileForm';
+import { FormikProvider } from 'formik'
+import { useUpdateProfile } from './hooks/useUpdateProfile'
+import ProfileForm from './partials/ProfileForm'
+import Cookies from 'js-cookie'
 
 const Profile = () => {
-  const { profileData, isLoading, isSuccess } = useGetProfile();
-  const isUpdate = !!profileData?.data?.id;
+  const userId = Cookies.get('user_id') ?? ''
 
-  const updateProfile = useUpdateProfile(profileData?.data?.id || '');
-
-  if (isLoading) return <LoadingScreen />;
-  if (!isSuccess) return <ErrorMessage />;
+  const updateProfile = useUpdateProfile(userId ?? '')
 
   return (
     <div>
       <FormikProvider value={updateProfile.formik}>
-        <ProfileForm isUpdate={isUpdate} />
+        <ProfileForm  />
       </FormikProvider>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

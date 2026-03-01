@@ -56,7 +56,7 @@ const HeaderSection = ({ items, classname }: IUserHeaderProps) => {
               key={item.id}
               to={`${pathname}?tab=${item.id}`}
               className={cn(
-                'flex items-center gap-2 px-4 py-3 text-sm rounded-md flex-shrink-0 transition',
+                'flex items-center gap-2 px-4 py-2.5 text-sm rounded-md flex-shrink-0 transition',
                 isActive
                   ? 'bg-primary-500 text-white font-medium'
                   : 'bg-white text-gray-700 hover:bg-primary-500 hover:text-white'

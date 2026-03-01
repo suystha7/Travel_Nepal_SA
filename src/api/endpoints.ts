@@ -2,13 +2,21 @@ export const Endpoints = {
   auth: {
     login: '/user/login',
     profile: {
-      list: '/user/profile',
-      details: '/user/profile',
+      get: '/user/profile',
+      details: '/user/profile/:id',
       update: '/user/profile-update/:id',
     },
     resetPassword: '/user/reset-password',
     changePassword: '/user/change-password',
   },
+
+  user: {
+    list: '/user/',
+    create: '/user/register',
+    update: '/user/update/:id',
+    details: '/user/profile/:id',
+    delete: '/user/:id',
+  }, 
 
   location: {
     country: {
@@ -16,7 +24,7 @@ export const Endpoints = {
       create: '/country',
       update: '/country/:id',
       details: '/country/:id',
-      delete: '/country/:id', 
+      delete: '/country/:id',
     },
 
     city: {
@@ -80,14 +88,6 @@ export const Endpoints = {
     details: '/breadcrumb/:id',
     delete: '/breadcrumb/:id',
   },
-
-  user: {
-    list: '/user/',
-    create: '/user/register',
-    update: '/user/update/:id',
-    details: '/user/profile/:id',
-    delete: '/user/:id',
-  },  
 
   blogs: {
     blogCategory: {
@@ -163,20 +163,20 @@ export const Endpoints = {
       details: '/package-video/:id',
       delete: '/package-video/:id',
     },
-    packageSeo:{
+    packageSeo: {
       list: '/package-seo',
       create: '/package-seo',
       update: '/package-seo/:id',
       details: '/package-seo/:id',
       delete: '/package-seo/:id',
     },
-    packageImageSeo:{
+    packageImageSeo: {
       list: '/package-image-seo',
       create: '/package-image-seo',
       update: '/package-image-seo/:id',
       details: '/package-image-seo/:id',
       delete: '/package-image-seo/:id',
-    }
+    },
   },
 
   booking: {
