@@ -11,6 +11,8 @@ import { useDeleteBooking } from '../hooks/useDeleteBooking';
 import type { IBookingListItem } from '../interface/IBooking';
 import CreateBookingModal from '../modal/CreateBookingModal';
 import UpdateBookingModal from '../modal/UpdateBookingModal';
+import Header from './Header';
+import BookingFilterList from './BookingFilterList';
 
 const BookingTable: React.FC = () => {
   const {
@@ -20,6 +22,8 @@ const BookingTable: React.FC = () => {
     createModal,
     updateId,
     updateModal,
+    search,
+    setSearch,
     page,
     pageSize,
     setPage,
@@ -45,18 +49,19 @@ const BookingTable: React.FC = () => {
 
   return (
     <div className="flex flex-col flex-1 gap-6 bg-white container-shadow px-6 py-4 rounded-[8px] overflow-y-scroll">
-      {/* Table Header */}
-      <div className="flex justify-between items-center">
-        <p className="text-primary-900 typography-semi-bold-large">Bookings</p>
-        {bookingData?.data?.records?.length && (
+      <div className="flex items-center justify-between">
+        <Header />
+
+        <div className="flex justify-end gap-2 items-center">
+          <BookingFilterList setSearch={setSearch} search={search} />
           <button
             onClick={createModal.open}
-            className="flex items-center gap-2 px-4 py-2 border-[0.6px] border-primary-500 rounded-md cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-primary-500 text-white rounded-md"
           >
-            <span className="text-primary-500 typography-semi-bold-extra-small">CREATE</span>
-            <Plus color="#0bd592" className="w-4 h-4" />
+            <Plus className="w-5 h-5" />
+            <span className="typography-semi-bold-extra-small">Add</span>
           </button>
-        )}
+        </div>
       </div>
 
       <div className="flex items-center justify-center">

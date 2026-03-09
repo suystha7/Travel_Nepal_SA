@@ -6,6 +6,7 @@ import type { BookingListItemResponse } from '../interface/IBooking';
 import useDisclosure from '@/utils/useDisclosure';
 import { useState } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
+import { useDebounce } from '@/utils/useDebounce';
 
 export const useGetBooking = () => {
   const createModal = useDisclosure();
@@ -15,6 +16,8 @@ export const useGetBooking = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [search, setSearch] = useState<string>('');
+  const debouncedSearch = useDebounce<string>(search, 500);
 
   const { data, isError, isLoading, isSuccess } = useGetDataQuery<{
     data: BookingListItemResponse;
@@ -23,6 +26,7 @@ export const useGetBooking = () => {
     isSuccess: boolean;
   }>({
     url: Endpoints.booking.list,
+    params: { p: page, page_size: pageSize, search: debouncedSearch },
     tag: apiTags.booking.list,
   });
 
@@ -40,5 +44,7 @@ export const useGetBooking = () => {
     setPageSize,
     rowSelection,
     setRowSelection,
+    search,
+    setSearch,
   };
 };

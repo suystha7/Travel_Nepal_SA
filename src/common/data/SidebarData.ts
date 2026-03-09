@@ -5,6 +5,7 @@ import {
   // LayoutDashboard,
   List,
   MapPin,
+  // NotebookText,
   Package,
   Phone,
   SquarePen,
