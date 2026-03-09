@@ -16,6 +16,7 @@ export const useUpdateProfile = (userId: string) => {
     email: data?.data?.email || '',
     phone_no: data?.data?.phone_no || '',
     avatar: data?.data?.avatar || '',
+    role: data?.data?.role || ''
   };
 
   const formik = useFormik({

@@ -104,14 +104,17 @@ export const getColumns = ({
       const isSelf = row.original.id === currentUserId;
       const isTargetSuperuser = row.original.role === 'superadmin';
 
-      const disableDelete = isSelf || isTargetSuperuser;
-      const canReset = (isSuperuser || isAdmin) && !isSelf && !isTargetSuperuser;
+      const disableDelete = isSelf || (isTargetSuperuser && !isSuperuser); 
+      const disableUpdate = isSelf || (isTargetSuperuser && !isSuperuser);
+
+      const canReset = (isSuperuser || isAdmin) && !isSelf && !(isTargetSuperuser && !isSuperuser);
 
       const handleUpdate = (id: string) => {
         if (isSelf) {
           navigate(PATH.accountSettings.profile);
           return;
         }
+        if (disableUpdate) return; 
 
         updateId?.setValue(id);
         updateModal?.open();
@@ -132,7 +135,7 @@ export const getColumns = ({
           {canReset && (
             <button
               onClick={() => onResetPassword?.(row.original.id)}
-              className="bg-white px-3 py-1 text-primary-500 text-sm border rounded-md cursor-pointer"
+              className="bg-white px-3 py-1 text-primary-500 text-sm border border-primary-100 rounded-full cursor-pointer"
             >
               Reset Password
             </button>
@@ -143,14 +146,13 @@ export const getColumns = ({
   },
 ];
 
-export const getFilteredSortedUsers = (
-  users?: IUserListItem[],
-  currentUserId?: string
-) =>
+export const getFilteredSortedUsers = (users?: IUserListItem[], currentUserId?: string) =>
   (users || [])
     .filter(user => user.role !== 'user' && user.id !== currentUserId)
     .sort((a, b) => {
       const rolePriority = { superadmin: 1, admin: 2, staff: 3 };
-      return (rolePriority[a.role as keyof typeof rolePriority] || 99) -
-             (rolePriority[b.role as keyof typeof rolePriority] || 99);
+      return (
+        (rolePriority[a.role as keyof typeof rolePriority] || 99) -
+        (rolePriority[b.role as keyof typeof rolePriority] || 99)
+      );
     });

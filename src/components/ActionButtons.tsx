@@ -5,10 +5,11 @@ interface ActionButtonsProps {
   row: {
     original: {
       id: string;
-      is_superuser?: boolean;
+      role?: string;
       approve?: boolean;
     };
   };
+  currentUserRole?: string; // added to know if current user is superadmin/admin
   updateId?: { setValue: (value: string) => void };
   updateModal?: { open: () => void };
   deleteIdState?: { setValue: (value: string) => void };
@@ -17,13 +18,12 @@ interface ActionButtonsProps {
   viewModal?: { open: () => void };
   approveId?: { setValue: (value: string) => void };
   approveModal?: { open: () => void };
-  disableDelete?: boolean;
-  disableUpdate?: boolean;
   onUpdate?: (id: string) => void;
 }
 
 const ActionButtons = ({
   row,
+  currentUserRole = 'user',
   updateId,
   updateModal,
   deleteIdState,
@@ -32,35 +32,31 @@ const ActionButtons = ({
   viewModal,
   approveId,
   approveModal,
-  disableDelete,
-  disableUpdate,
   onUpdate,
 }: ActionButtonsProps) => {
-  const id = row.original.id;
-  const isSuperuser = row.original.is_superuser;
-  const isApproved = row.original.approve;
+  const { id, role: targetRole, approve: isApproved } = row.original;
+
+  const isSelf = false;
+  const isTargetSuperuser = targetRole === 'superadmin';
+  const disableDelete = isSelf || (isTargetSuperuser && currentUserRole !== 'superadmin');
+  const disableUpdate = isSelf || (isTargetSuperuser && currentUserRole !== 'superadmin');
+  const canApprove =
+    !isApproved && (currentUserRole === 'superadmin' || currentUserRole === 'admin');
 
   const handleDelete = () => {
     if (disableDelete) {
-      if (isSuperuser) {
-        toast.error("You can't delete a superuser account");
-      } else {
-        toast.error("You can't delete your own account.");
-      }
+      if (isTargetSuperuser) toast.error("You can't delete a superadmin");
+      else toast.error("You can't delete this user");
       return;
     }
-
     deleteIdState?.setValue(id);
     deleteModal?.open();
   };
 
   const handleUpdate = () => {
     if (disableUpdate) {
-      if (isSuperuser) {
-        toast.error("You can't update a superuser account");
-      } else {
-        toast.error("You don't have permission to update this user");
-      }
+      if (isTargetSuperuser) toast.error("You can't update a superadmin");
+      else toast.error("You don't have permission to update this user");
       return;
     }
 
@@ -101,7 +97,7 @@ const ActionButtons = ({
         </div>
       )}
 
-      {!isApproved && approveId && approveModal && (
+      {canApprove && approveId && approveModal && (
         <div className="relative group">
           <Tooltip label="Approve Review" />
           <button

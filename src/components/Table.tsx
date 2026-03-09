@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 import {
   flexRender,
   getCoreRowModel,
@@ -6,25 +6,25 @@ import {
   useReactTable,
   type ColumnDef,
   type HeaderGroup,
-  type RowSelectionState
-} from '@tanstack/react-table'
-import React, { useCallback, useMemo } from 'react'
-import CustomPagination from './CustomPagination'
-import { usePagination } from '@/hooks/usePagination'
+  type RowSelectionState,
+} from '@tanstack/react-table';
+import React, { useCallback, useMemo } from 'react';
+import CustomPagination from './CustomPagination';
+import { usePagination } from '@/hooks/usePagination';
 
 interface TableProps<T> {
-  data: T[]
-  columns: ColumnDef<T>[]
-  getRowId?: (row: T, index: number) => string
-  rowSelection?: RowSelectionState
-  setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>
-  onSelectedRowsChange?: (rows: T[]) => void
-  mainClassName?: string
-  tHeadCellClassName?: string
-  totalItems?: number
-  totalPages?: number
-  pages?: { [key: string]: any }
-  isPagination?: boolean
+  data: T[];
+  columns: ColumnDef<T>[];
+  getRowId?: (row: T, index: number) => string;
+  rowSelection?: RowSelectionState;
+  setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>;
+  onSelectedRowsChange?: (rows: T[]) => void;
+  mainClassName?: string;
+  tHeadCellClassName?: string;
+  totalItems?: number;
+  totalPages?: number;
+  pages?: { [key: string]: any };
+  isPagination?: boolean;
 }
 
 const Table = <T,>({
@@ -39,9 +39,9 @@ const Table = <T,>({
   onSelectedRowsChange,
   mainClassName,
   tHeadCellClassName,
-  isPagination = true
+  isPagination = true,
 }: TableProps<T>) => {
-  const pagination = usePagination()
+  const pagination = usePagination();
 
   const tableConfig = useMemo(
     () => ({
@@ -52,7 +52,7 @@ const Table = <T,>({
       pageCount: totalPages,
       state: {
         rowSelection,
-        pagination: pagination.pagination
+        pagination: pagination.pagination,
       },
       enableRowSelection: true,
       enableMultiRowSelection: true,
@@ -60,7 +60,7 @@ const Table = <T,>({
       onRowSelectionChange: setRowSelection,
       onPaginationChange: pagination.handlePaginationChange,
       getPaginationRowModel: getPaginationRowModel(),
-      getRowId
+      getRowId,
     }),
     [
       data,
@@ -70,44 +70,42 @@ const Table = <T,>({
       pagination.pagination,
       setRowSelection,
       pagination.handlePaginationChange,
-      getRowId
+      getRowId,
     ]
-  )
+  );
 
-  const table = useReactTable(tableConfig)
+  const table = useReactTable(tableConfig);
 
   const handleSelectedRowsChange = useCallback(() => {
     if (onSelectedRowsChange) {
-      const selectedData = table.getSelectedRowModel().rows.map(
-        row => row.original
-      )
-      onSelectedRowsChange(selectedData)
+      const selectedData = table.getSelectedRowModel().rows.map(row => row.original);
+      onSelectedRowsChange(selectedData);
     }
-  }, [onSelectedRowsChange, table])
+  }, [onSelectedRowsChange, table]);
 
   React.useEffect(() => {
-    handleSelectedRowsChange()
-  }, [rowSelection, handleSelectedRowsChange])
+    handleSelectedRowsChange();
+  }, [rowSelection, handleSelectedRowsChange]);
 
   const handlePageChange = useCallback(
     (page: number) => {
       pagination.handlePaginationChange({
         pageIndex: page - 1,
-        pageSize: pagination.pagination.pageSize
-      })
+        pageSize: pagination.pagination.pageSize,
+      });
     },
     [pagination]
-  )
+  );
 
   const handlePerPageChange = useCallback(
     (size: number) => {
       pagination.handlePaginationChange({
         pageIndex: 0,
-        pageSize: size
-      })
+        pageSize: size,
+      });
     },
     [pagination]
-  )
+  );
 
   const renderHeader = useCallback(
     (headerGroup: HeaderGroup<T>) => (
@@ -118,7 +116,7 @@ const Table = <T,>({
             style={{
               width: header.column.getSize(),
               minWidth: header.column.columnDef.minSize,
-              maxWidth: header.column.columnDef.maxSize
+              maxWidth: header.column.columnDef.maxSize,
             }}
             className={cn(
               'py-3 text-primary-500 bg-white border-b border-primary-100 font-semibold',
@@ -133,59 +131,66 @@ const Table = <T,>({
       </tr>
     ),
     [tHeadCellClassName]
-  )
+  );
 
   const renderRow = useCallback(
-    (row: any, index: number) => (
-      <tr
-        key={row.id}
-        className={`hover:bg-primary-50/50 ${
-          index % 2 === 0 ? '' : 'bg-primary-50/20'
-        }`}
-      >
-        {row.getVisibleCells().map((cell: any) => (
-          <td
-            key={cell.id}
-            style={{
-              width: cell.column.getSize(),
-              minWidth: cell.column.columnDef.minSize,
-              maxWidth: cell.column.columnDef.maxSize
-            }}
-            className="px-5 py-3 border-b border-primary-100"
-          >
-            <div className="flex justify-center items-center text-center text-sm">
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-            </div>
-          </td>
-        ))}
-      </tr>
-    ),
-    []
-  )
+    (row: any, index: number) => {
+      const rows = table.getRowModel().rows;
+      const isLastRow = rows.length > 1 && index === rows.length - 1;
+
+      return (
+        <tr
+          key={row.id}
+          className={`hover:bg-primary-50/50 ${index % 2 === 0 ? '' : 'bg-primary-50/20'}`}
+        >
+          {row.getVisibleCells().map((cell: any) => (
+            <td
+              key={cell.id}
+              style={{
+                width: cell.column.getSize(),
+                minWidth: cell.column.columnDef.minSize,
+                maxWidth: cell.column.columnDef.maxSize,
+              }}
+              className={`px-5 py-3 border-b border-primary-100 ${isLastRow ? 'border-b-0' : ''}`}
+            >
+              <div className="flex justify-center items-center text-center text-sm">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </div>
+            </td>
+          ))}
+        </tr>
+      );
+    },
+    [table]
+  );
 
   return (
     <div
-     className={cn(
-        'w-full border border-primary-100 rounded-xl overflow-y-auto',
+      className={cn(
+        'w-full border border-primary-100 rounded-xl overflow-hidden flex flex-col',
         mainClassName
       )}
     >
-      <div className="w-full overflow-auto max-h-[43vh] min-h-[43vh] overflow-y-auto">
-        <table className="w-full  table-fixed border-separate border-spacing-0">
-          <thead className="bg-white">
-            {table.getHeaderGroups().map(renderHeader)}
-          </thead>
+      <div className="w-full max-h-[48vh] min-h-[48vh] overflow-auto">
+        <table className="w-full table-fixed border-separate border-spacing-0">
+          <thead className="bg-white">{table.getHeaderGroups().map(renderHeader)}</thead>
 
           <tbody>
-            {table.getRowModel().rows.map((row, index) =>
-              renderRow(row, index)
+            {table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row, index) => renderRow(row, index))
+            ) : (
+              <tr>
+                <td colSpan={columns.length} className="py-20 text-center text-sm text-gray-500 ">
+                  No data available
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
       </div>
 
       {isPagination && (
-        <div className="p-3 ">
+        <div className="p-3 border-t border-gray-100 bg-white">
           <CustomPagination
             currentPage={pagination.pagination.pageIndex + 1}
             totalItems={totalItems}
@@ -197,7 +202,7 @@ const Table = <T,>({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;

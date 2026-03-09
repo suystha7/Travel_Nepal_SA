@@ -21,19 +21,8 @@ export const getColumns = ({
     {
       id: 'S.N.',
       accessorKey: 'S.N.',
-      size: 50,
+      size: 50, 
       cell: ({ row }) => row.index + (packageData?.data?.pagingCounter ?? 0),
-    },
-    {
-      header: 'Image',
-      size: 100,
-      cell: ({ row }) => (
-        <img
-          src={row.original.image}
-          alt={row.original.name || 'Package image'}
-          className="w-16 h-16 object-cover rounded-full"
-        />
-      ),
     },
     {
       header: 'Package Type',

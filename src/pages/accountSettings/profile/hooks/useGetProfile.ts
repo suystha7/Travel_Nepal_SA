@@ -29,7 +29,6 @@ export const useGetProfile = () => {
     tag: apiTags.auth.profile.list,
   }); 
 
-  console.log("data", data)
   
   return {
     profileData: data,

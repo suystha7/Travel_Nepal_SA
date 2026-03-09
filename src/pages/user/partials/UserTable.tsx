@@ -40,13 +40,14 @@ const UserTable: React.FC = () => {
   const navigate = useNavigate();
 
   const { profileData } = useGetProfile();
-  const currentUserId = profileData?.data?.id ?? '';
+  const currentUserId = profileData?.data?.id?.toString() ?? '';
+  const isSuperuser = profileData?.data?.role === 'superadmin';
+  const isAdmin = profileData?.data?.role === 'admin';
 
   const [resetUserId, setResetUserId] = useState<string | null>(null);
 
   const selectedEmail = userData?.data?.records?.find(u => u.id === resetUserId)?.email ?? '';
 
-  const openResetModal = (id: string) => setResetUserId(id);
   const closeResetModal = () => setResetUserId(null);
 
   const { handleReset, isLoading: isResetLoading } = useResetUserPassword({
@@ -59,10 +60,10 @@ const UserTable: React.FC = () => {
     updateModal,
     deleteIdState,
     deleteModal,
-    isSuperuser: profileData?.data?.is_superadmin,
-    isAdmin: profileData?.data?.is_admin,
-    onResetPassword: openResetModal,
-    currentUserId: profileData?.data?.id,
+    isSuperuser,
+    isAdmin,
+    currentUserId,
+    onResetPassword: (id: string) => setResetUserId(id),
     navigate,
   });
 
@@ -135,7 +136,7 @@ const UserTable: React.FC = () => {
             </button>
 
             <button
-              onClick={() => handleReset()}
+              onClick={() => resetUserId && handleReset(resetUserId)}
               className="px-4 py-2 bg-primary-500 text-white rounded-md text-sm cursor-pointer disabled:opacity-50"
               disabled={isResetLoading}
             >
