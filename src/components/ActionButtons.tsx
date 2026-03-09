@@ -9,7 +9,7 @@ interface ActionButtonsProps {
       approve?: boolean;
     };
   };
-  currentUserRole?: string; // added to know if current user is superadmin/admin
+  currentUserRole?: string;
   updateId?: { setValue: (value: string) => void };
   updateModal?: { open: () => void };
   deleteIdState?: { setValue: (value: string) => void };

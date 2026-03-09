@@ -103,8 +103,6 @@ export const getColumns = ({
     cell: ({ row }) => {
       const isSelf = row.original.id === currentUserId;
       const isTargetSuperuser = row.original.role === 'superadmin';
-
-      const disableDelete = isSelf || (isTargetSuperuser && !isSuperuser); 
       const disableUpdate = isSelf || (isTargetSuperuser && !isSuperuser);
 
       const canReset = (isSuperuser || isAdmin) && !isSelf && !(isTargetSuperuser && !isSuperuser);
@@ -114,23 +112,24 @@ export const getColumns = ({
           navigate(PATH.accountSettings.profile);
           return;
         }
-        if (disableUpdate) return; 
+        if (disableUpdate) return;
 
         updateId?.setValue(id);
-        updateModal?.open();
+        updateModal?.open?.();
       };
 
       return (
         <div className="flex items-center gap-3 whitespace-nowrap">
-          <ActionButtons
-            row={row}
-            updateId={updateId}
-            updateModal={updateModal}
-            deleteIdState={deleteIdState}
-            deleteModal={deleteModal}
-            disableDelete={disableDelete}
-            onUpdate={handleUpdate}
-          />
+          {updateId && updateModal && deleteIdState && deleteModal && (
+            <ActionButtons
+              row={row}
+              updateId={updateId}
+              updateModal={updateModal}
+              deleteIdState={deleteIdState}
+              deleteModal={deleteModal}
+              onUpdate={handleUpdate}
+            />
+          )}
 
           {canReset && (
             <button
